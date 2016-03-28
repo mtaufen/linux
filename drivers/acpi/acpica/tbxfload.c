@@ -103,9 +103,24 @@ static acpi_status acpi_tb_load_namespace(void)
 	u32 i;
 	struct acpi_table_header *new_dsdt;
 
+	struct acpi_table_desc *table;
+
 	ACPI_FUNCTION_TRACE(tb_load_namespace);
 
 	(void)acpi_ut_acquire_mutex(ACPI_MTX_TABLES);
+
+	printk("ACPIMIKE: current table count: %d\n", acpi_gbl_root_table_list.current_table_count);
+	printk("ACPIMIKE: ACPI_COMPARE_NAME result: %d\n",
+		ACPI_COMPARE_NAME(&
+			       (acpi_gbl_root_table_list.
+				tables[ACPI_TABLE_INDEX_DSDT].signature),
+			       ACPI_SIG_DSDT));
+
+	table = &acpi_gbl_root_table_list.tables[ACPI_TABLE_INDEX_DSDT];
+	//table = &acpi_gbl_root_table_list.tables[acpi_gbl_dsdt_index];
+	printk("ACPIMIKE: ACPI_COMPARE_NAME new way result: %d\n",
+		ACPI_COMPARE_NAME(table->signature.ascii, ACPI_SIG_DSDT));
+
 
 	/*
 	 * Load the namespace. The DSDT is required, but any SSDT and
