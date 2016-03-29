@@ -76,6 +76,7 @@ ACPI_MODULE_NAME("evxfgpe")
 
 acpi_status acpi_update_all_gpes(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_update_all_gpes);
@@ -98,6 +99,7 @@ unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_update_all_gpes)
@@ -117,6 +119,7 @@ ACPI_EXPORT_SYMBOL(acpi_update_all_gpes)
  ******************************************************************************/
 acpi_status acpi_enable_gpe(acpi_handle gpe_device, u32 gpe_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_BAD_PARAMETER;
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_cpu_flags flags;
@@ -142,6 +145,7 @@ acpi_status acpi_enable_gpe(acpi_handle gpe_device, u32 gpe_number)
 
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 ACPI_EXPORT_SYMBOL(acpi_enable_gpe)
 
@@ -162,6 +166,7 @@ ACPI_EXPORT_SYMBOL(acpi_enable_gpe)
 
 acpi_status acpi_disable_gpe(acpi_handle gpe_device, u32 gpe_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_BAD_PARAMETER;
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_cpu_flags flags;
@@ -179,6 +184,7 @@ acpi_status acpi_disable_gpe(acpi_handle gpe_device, u32 gpe_number)
 
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_disable_gpe)
@@ -213,6 +219,7 @@ ACPI_EXPORT_SYMBOL(acpi_disable_gpe)
  ******************************************************************************/
 acpi_status acpi_set_gpe(acpi_handle gpe_device, u32 gpe_number, u8 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_status status;
 	acpi_cpu_flags flags;
@@ -251,6 +258,7 @@ acpi_status acpi_set_gpe(acpi_handle gpe_device, u32 gpe_number, u8 action)
 unlock_and_exit:
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_set_gpe)
@@ -277,6 +285,7 @@ ACPI_EXPORT_SYMBOL(acpi_set_gpe)
  ******************************************************************************/
 acpi_status acpi_mark_gpe_for_wake(acpi_handle gpe_device, u32 gpe_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_status status = AE_BAD_PARAMETER;
 	acpi_cpu_flags flags;
@@ -298,6 +307,7 @@ acpi_status acpi_mark_gpe_for_wake(acpi_handle gpe_device, u32 gpe_number)
 
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_mark_gpe_for_wake)
@@ -324,6 +334,7 @@ acpi_status
 acpi_setup_gpe_for_wake(acpi_handle wake_device,
 			acpi_handle gpe_device, u32 gpe_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_gpe_event_info *gpe_event_info;
 	struct acpi_namespace_node *device_node;
@@ -434,6 +445,7 @@ unlock_and_exit:
 		ACPI_FREE(new_notify);
 	}
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 ACPI_EXPORT_SYMBOL(acpi_setup_gpe_for_wake)
 
@@ -455,6 +467,7 @@ ACPI_EXPORT_SYMBOL(acpi_setup_gpe_for_wake)
 acpi_status
 acpi_set_gpe_wake_mask(acpi_handle gpe_device, u32 gpe_number, u8 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_gpe_event_info *gpe_event_info;
 	struct acpi_gpe_register_info *gpe_register_info;
@@ -513,6 +526,7 @@ acpi_set_gpe_wake_mask(acpi_handle gpe_device, u32 gpe_number, u8 action)
 unlock_and_exit:
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_set_gpe_wake_mask)
@@ -531,6 +545,7 @@ ACPI_EXPORT_SYMBOL(acpi_set_gpe_wake_mask)
  ******************************************************************************/
 acpi_status acpi_clear_gpe(acpi_handle gpe_device, u32 gpe_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_cpu_flags flags;
@@ -552,6 +567,7 @@ acpi_status acpi_clear_gpe(acpi_handle gpe_device, u32 gpe_number)
       unlock_and_exit:
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_clear_gpe)
@@ -574,6 +590,7 @@ acpi_status
 acpi_get_gpe_status(acpi_handle gpe_device,
 		    u32 gpe_number, acpi_event_status *event_status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_cpu_flags flags;
@@ -597,6 +614,7 @@ acpi_get_gpe_status(acpi_handle gpe_device,
 unlock_and_exit:
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_gpe_status)
@@ -619,6 +637,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_gpe_status)
  ******************************************************************************/
 acpi_status acpi_finish_gpe(acpi_handle gpe_device, u32 gpe_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_event_info *gpe_event_info;
 	acpi_status status;
 	acpi_cpu_flags flags;
@@ -640,6 +659,7 @@ acpi_status acpi_finish_gpe(acpi_handle gpe_device, u32 gpe_number)
 unlock_and_exit:
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_finish_gpe)
@@ -658,6 +678,7 @@ ACPI_EXPORT_SYMBOL(acpi_finish_gpe)
 
 acpi_status acpi_disable_all_gpes(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_disable_all_gpes);
@@ -671,6 +692,7 @@ acpi_status acpi_disable_all_gpes(void)
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_disable_all_gpes)
@@ -689,6 +711,7 @@ ACPI_EXPORT_SYMBOL(acpi_disable_all_gpes)
 
 acpi_status acpi_enable_all_runtime_gpes(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_enable_all_runtime_gpes);
@@ -702,6 +725,7 @@ acpi_status acpi_enable_all_runtime_gpes(void)
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enable_all_runtime_gpes)
@@ -720,6 +744,7 @@ ACPI_EXPORT_SYMBOL(acpi_enable_all_runtime_gpes)
  ******************************************************************************/
 acpi_status acpi_enable_all_wakeup_gpes(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_enable_all_wakeup_gpes);
@@ -733,6 +758,7 @@ acpi_status acpi_enable_all_wakeup_gpes(void)
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enable_all_wakeup_gpes)
@@ -757,6 +783,7 @@ acpi_install_gpe_block(acpi_handle gpe_device,
 		       struct acpi_generic_address *gpe_block_address,
 		       u32 register_count, u32 interrupt_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
@@ -837,6 +864,7 @@ acpi_install_gpe_block(acpi_handle gpe_device,
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_gpe_block)
@@ -854,6 +882,7 @@ ACPI_EXPORT_SYMBOL(acpi_install_gpe_block)
  ******************************************************************************/
 acpi_status acpi_remove_gpe_block(acpi_handle gpe_device)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 	struct acpi_namespace_node *node;
@@ -899,6 +928,7 @@ acpi_status acpi_remove_gpe_block(acpi_handle gpe_device)
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_gpe_block)
@@ -919,6 +949,7 @@ ACPI_EXPORT_SYMBOL(acpi_remove_gpe_block)
  ******************************************************************************/
 acpi_status acpi_get_gpe_device(u32 index, acpi_handle * gpe_device)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_device_info info;
 	acpi_status status;
 
@@ -946,6 +977,7 @@ acpi_status acpi_get_gpe_device(u32 index, acpi_handle * gpe_device)
 
 	*gpe_device = ACPI_CAST_PTR(acpi_handle, info.gpe_device);
 	return_ACPI_STATUS(info.status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_gpe_device)

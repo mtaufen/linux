@@ -75,10 +75,12 @@ acpi_ps_update_parameter_list(struct acpi_evaluate_info *info, u16 action);
 acpi_status
 acpi_debug_trace(const char *name, u32 debug_level, u32 debug_layer, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -89,6 +91,7 @@ acpi_debug_trace(const char *name, u32 debug_level, u32 debug_layer, u32 flags)
 	status = AE_OK;
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -117,6 +120,7 @@ acpi_debug_trace(const char *name, u32 debug_level, u32 debug_layer, u32 flags)
 
 acpi_status acpi_ps_execute_method(struct acpi_evaluate_info * info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *op;
 	struct acpi_walk_state *walk_state;
@@ -248,6 +252,7 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -267,6 +272,7 @@ cleanup:
 static void
 acpi_ps_update_parameter_list(struct acpi_evaluate_info *info, u16 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (info->parameters) {
@@ -282,4 +288,5 @@ acpi_ps_update_parameter_list(struct acpi_evaluate_info *info, u16 action)
 							      action);
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

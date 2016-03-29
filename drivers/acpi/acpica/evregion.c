@@ -76,6 +76,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
 
 acpi_status acpi_ev_initialize_op_regions(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 
@@ -105,6 +106,7 @@ acpi_status acpi_ev_initialize_op_regions(void)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -138,6 +140,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
 			       u32 function,
 			       u32 region_offset, u32 bit_width, u64 *value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_adr_space_handler handler;
 	acpi_adr_space_setup region_setup;
@@ -310,6 +313,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -330,6 +334,7 @@ void
 acpi_ev_detach_region(union acpi_operand_object *region_obj,
 		      u8 acpi_ns_is_locked)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *handler_obj;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *start_desc;
@@ -476,6 +481,7 @@ acpi_ev_detach_region(union acpi_operand_object *region_obj,
 			  region_obj, handler_obj));
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -498,6 +504,7 @@ acpi_ev_attach_region(union acpi_operand_object *handler_obj,
 		      union acpi_operand_object *region_obj,
 		      u8 acpi_ns_is_locked)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE(ev_attach_region);
 
@@ -522,6 +529,7 @@ acpi_ev_attach_region(union acpi_operand_object *handler_obj,
 	acpi_ut_add_reference(handler_obj);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -538,6 +546,7 @@ acpi_ev_attach_region(union acpi_operand_object *handler_obj,
 
 void acpi_ev_associate_reg_method(union acpi_operand_object *region_obj)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_name *reg_name_ptr = (acpi_name *) METHOD_NAME__REG;
 	struct acpi_namespace_node *method_node;
 	struct acpi_namespace_node *node;
@@ -568,6 +577,7 @@ void acpi_ev_associate_reg_method(union acpi_operand_object *region_obj)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -586,6 +596,7 @@ void acpi_ev_associate_reg_method(union acpi_operand_object *region_obj)
 acpi_status
 acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_evaluate_info *info;
 	union acpi_operand_object *args[3];
 	union acpi_operand_object *region_obj2;
@@ -674,6 +685,7 @@ cleanup2:
 cleanup1:
 	ACPI_FREE(info);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -695,6 +707,7 @@ void
 acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
 			    acpi_adr_space_type space_id, u32 function)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_reg_walk_info info;
 
 	ACPI_FUNCTION_TRACE(ev_execute_reg_methods);
@@ -729,6 +742,7 @@ acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
 			      acpi_ut_get_region_name(info.space_id)));
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -745,6 +759,7 @@ static acpi_status
 acpi_ev_reg_run(acpi_handle obj_handle,
 		u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
 	acpi_status status;
@@ -756,6 +771,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
 
 	node = acpi_ns_validate_handle(obj_handle);
 	if (!node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -764,6 +780,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
 	 * space handlers
 	 */
 	if ((node->type != ACPI_TYPE_REGION) && (node != acpi_gbl_root_node)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -774,6 +791,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
 
 		/* No object, just exit */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -783,11 +801,13 @@ acpi_ev_reg_run(acpi_handle obj_handle,
 
 		/* This region is for a different address space, just ignore it */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	info->reg_run_count++;
 	status = acpi_ev_execute_reg_method(obj_desc, info->function);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -819,6 +839,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
 static void
 acpi_ev_orphan_ec_reg_method(struct acpi_namespace_node *ec_device_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_handle reg_method;
 	struct acpi_namespace_node *next_node;
 	acpi_status status;
@@ -876,4 +897,5 @@ exit:
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

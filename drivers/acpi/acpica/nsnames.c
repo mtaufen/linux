@@ -65,12 +65,14 @@ ACPI_MODULE_NAME("nsnames")
  ******************************************************************************/
 char *acpi_ns_get_external_pathname(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *name_buffer;
 
 	ACPI_FUNCTION_TRACE_PTR(ns_get_external_pathname, node);
 
 	name_buffer = acpi_ns_get_normalized_pathname(node, FALSE);
 	return_PTR(name_buffer);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -87,11 +89,13 @@ char *acpi_ns_get_external_pathname(struct acpi_namespace_node *node)
 
 acpi_size acpi_ns_get_pathname_length(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size size;
 
 	ACPI_FUNCTION_ENTRY();
 
 	size = acpi_ns_build_normalized_path(node, NULL, 0, FALSE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (size);
 }
 
@@ -115,6 +119,7 @@ acpi_status
 acpi_ns_handle_to_pathname(acpi_handle target_handle,
 			   struct acpi_buffer * buffer, u8 no_trailing)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	acpi_size required_size;
@@ -152,6 +157,7 @@ acpi_ns_handle_to_pathname(acpi_handle target_handle,
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "%s [%X]\n",
 			  (char *)buffer->pointer, (u32) required_size));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -180,6 +186,7 @@ u32
 acpi_ns_build_normalized_path(struct acpi_namespace_node *node,
 			      char *full_path, u32 path_size, u8 no_trailing)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length = 0, i;
 	char name[ACPI_NAME_SIZE];
 	u8 do_no_trailing;
@@ -254,6 +261,7 @@ build_trailing_null:
 #undef ACPI_PATH_PUT8
 
 	return_UINT32(length);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -276,6 +284,7 @@ build_trailing_null:
 char *acpi_ns_get_normalized_pathname(struct acpi_namespace_node *node,
 				      u8 no_trailing)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *name_buffer;
 	acpi_size size;
 
@@ -302,4 +311,5 @@ char *acpi_ns_get_normalized_pathname(struct acpi_namespace_node *node,
 					    no_trailing);
 
 	return_PTR(name_buffer);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

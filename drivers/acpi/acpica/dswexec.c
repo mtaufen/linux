@@ -89,6 +89,7 @@ acpi_status
 acpi_ds_get_predicate_value(struct acpi_walk_state *walk_state,
 			    union acpi_operand_object *result_obj)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *local_obj_desc = NULL;
@@ -192,6 +193,7 @@ cleanup:
 
 	walk_state->control_state->common.state = ACPI_CONTROL_NORMAL;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*****************************************************************************
@@ -213,6 +215,7 @@ acpi_status
 acpi_ds_exec_begin_op(struct acpi_walk_state *walk_state,
 		      union acpi_parse_object **out_op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op;
 	acpi_status status = AE_OK;
 	u32 opcode_class;
@@ -338,6 +341,7 @@ acpi_ds_exec_begin_op(struct acpi_walk_state *walk_state,
 error_exit:
 	status = acpi_ds_method_error(status, walk_state);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*****************************************************************************
@@ -356,6 +360,7 @@ error_exit:
 
 acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op;
 	acpi_status status = AE_OK;
 	u32 op_type;
@@ -755,4 +760,5 @@ cleanup:
 
 	walk_state->num_operands = 0;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -73,15 +73,18 @@ ACPI_MODULE_NAME("psparse")
  ******************************************************************************/
 u32 acpi_ps_get_opcode_size(u32 opcode)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Extended (2-byte) opcode if > 255 */
 
 	if (opcode > 0x00FF) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (2);
 	}
 
 	/* Otherwise, just a single byte opcode */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (1);
 }
 
@@ -99,6 +102,7 @@ u32 acpi_ps_get_opcode_size(u32 opcode)
 
 u16 acpi_ps_peek_opcode(struct acpi_parse_state * parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *aml;
 	u16 opcode;
 
@@ -113,6 +117,7 @@ u16 acpi_ps_peek_opcode(struct acpi_parse_state * parser_state)
 		opcode = (u16) ((opcode << 8) | ACPI_GET8(aml));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (opcode);
 }
 
@@ -133,6 +138,7 @@ acpi_status
 acpi_ps_complete_this_op(struct acpi_walk_state * walk_state,
 			 union acpi_parse_object * op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *prev;
 	union acpi_parse_object *next;
 	const struct acpi_opcode_info *parent_info;
@@ -309,6 +315,7 @@ cleanup:
 
 	acpi_ps_delete_parse_tree(op);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -331,6 +338,7 @@ acpi_ps_next_parse_state(struct acpi_walk_state *walk_state,
 			 union acpi_parse_object *op,
 			 acpi_status callback_status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_parse_state *parser_state = &walk_state->parser_state;
 	acpi_status status = AE_CTRL_PENDING;
 
@@ -423,6 +431,7 @@ acpi_ps_next_parse_state(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -440,6 +449,7 @@ acpi_ps_next_parse_state(struct acpi_walk_state *walk_state,
 
 acpi_status acpi_ps_parse_aml(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_thread_state *thread;
 	struct acpi_thread_state *prev_walk_list = acpi_gbl_current_walk_list;
@@ -691,4 +701,5 @@ acpi_status acpi_ps_parse_aml(struct acpi_walk_state *walk_state)
 				     (union acpi_generic_state, thread));
 	acpi_gbl_current_walk_list = prev_walk_list;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

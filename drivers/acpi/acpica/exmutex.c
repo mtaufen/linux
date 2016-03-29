@@ -68,9 +68,11 @@ acpi_ex_link_mutex(union acpi_operand_object *obj_desc,
 
 void acpi_ex_unlink_mutex(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_thread_state *thread = obj_desc->mutex.owner_thread;
 
 	if (!thread) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -94,6 +96,7 @@ void acpi_ex_unlink_mutex(union acpi_operand_object *obj_desc)
 	} else {
 		thread->acquired_mutex_list = obj_desc->mutex.next;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -113,6 +116,7 @@ static void
 acpi_ex_link_mutex(union acpi_operand_object *obj_desc,
 		   struct acpi_thread_state *thread)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *list_head;
 
 	list_head = thread->acquired_mutex_list;
@@ -131,6 +135,7 @@ acpi_ex_link_mutex(union acpi_operand_object *obj_desc,
 	/* Update list head */
 
 	thread->acquired_mutex_list = obj_desc;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -161,6 +166,7 @@ acpi_ex_acquire_mutex_object(u16 timeout,
 			     union acpi_operand_object *obj_desc,
 			     acpi_thread_id thread_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE_PTR(ex_acquire_mutex_object, obj_desc);
@@ -205,6 +211,7 @@ acpi_ex_acquire_mutex_object(u16 timeout,
 	obj_desc->mutex.owner_thread = NULL;	/* Used only for AML Acquire() */
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -226,6 +233,7 @@ acpi_ex_acquire_mutex(union acpi_operand_object *time_desc,
 		      union acpi_operand_object *obj_desc,
 		      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE_PTR(ex_acquire_mutex, obj_desc);
@@ -290,6 +298,7 @@ acpi_ex_acquire_mutex(union acpi_operand_object *time_desc,
 			  obj_desc->mutex.acquisition_depth));
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -316,6 +325,7 @@ acpi_ex_acquire_mutex(union acpi_operand_object *time_desc,
 
 acpi_status acpi_ex_release_mutex_object(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ex_release_mutex_object);
@@ -354,6 +364,7 @@ acpi_status acpi_ex_release_mutex_object(union acpi_operand_object *obj_desc)
 
 	obj_desc->mutex.thread_id = 0;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -373,6 +384,7 @@ acpi_status
 acpi_ex_release_mutex(union acpi_operand_object *obj_desc,
 		      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 previous_sync_level;
 	struct acpi_thread_state *owner_thread;
 	acpi_status status = AE_OK;
@@ -472,6 +484,7 @@ acpi_ex_release_mutex(union acpi_operand_object *obj_desc,
 			  obj_desc->mutex.acquisition_depth));
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -494,6 +507,7 @@ acpi_ex_release_mutex(union acpi_operand_object *obj_desc,
 
 void acpi_ex_release_all_mutexes(struct acpi_thread_state *thread)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *next = thread->acquired_mutex_list;
 	union acpi_operand_object *obj_desc;
 
@@ -537,4 +551,5 @@ void acpi_ex_release_all_mutexes(struct acpi_thread_state *thread)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

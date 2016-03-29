@@ -71,6 +71,7 @@ void ae_do_object_overrides(void);
 
 acpi_status __init acpi_initialize_subsystem(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_initialize_subsystem);
@@ -125,6 +126,7 @@ acpi_status __init acpi_initialize_subsystem(void)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_initialize_subsystem)
@@ -143,6 +145,7 @@ ACPI_EXPORT_SYMBOL_INIT(acpi_initialize_subsystem)
  ******************************************************************************/
 acpi_status __init acpi_enable_subsystem(u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(acpi_enable_subsystem);
@@ -238,6 +241,7 @@ acpi_status __init acpi_enable_subsystem(u32 flags)
 #endif				/* !ACPI_REDUCED_HARDWARE */
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_enable_subsystem)
@@ -256,6 +260,7 @@ ACPI_EXPORT_SYMBOL_INIT(acpi_enable_subsystem)
  ******************************************************************************/
 acpi_status __init acpi_initialize_objects(u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(acpi_initialize_objects);
@@ -339,6 +344,7 @@ acpi_status __init acpi_initialize_objects(u32 flags)
 
 	acpi_gbl_startup_flags |= ACPI_INITIALIZED_OK;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_initialize_objects)

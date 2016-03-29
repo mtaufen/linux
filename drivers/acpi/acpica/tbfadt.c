@@ -194,6 +194,7 @@ acpi_tb_init_generic_address(struct acpi_generic_address *generic_address,
 			     u8 byte_width,
 			     u64 address, char *register_name, u8 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 bit_width;
 
 	/*
@@ -230,6 +231,7 @@ acpi_tb_init_generic_address(struct acpi_generic_address *generic_address,
 	generic_address->bit_width = bit_width;
 	generic_address->bit_offset = 0;
 	generic_address->access_width = 0;	/* Access width ANY */
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -262,11 +264,13 @@ acpi_tb_init_generic_address(struct acpi_generic_address *generic_address,
 static u64
 acpi_tb_select_address(char *register_name, u32 address32, u64 address64)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!address64) {
 
 		/* 64-bit address is zero, use 32-bit address */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((u64)address32);
 	}
 
@@ -285,12 +289,15 @@ acpi_tb_select_address(char *register_name, u32 address32, u64 address64)
 		/* 32-bit address override */
 
 		if (acpi_gbl_use32_bit_fadt_addresses) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return ((u64)address32);
 		}
 	}
 
 	/* Default is to use the 64-bit address */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (address64);
 }
 
@@ -309,6 +316,7 @@ acpi_tb_select_address(char *register_name, u32 address32, u64 address64)
 
 void acpi_tb_parse_fadt(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length;
 	struct acpi_table_header *table;
 
@@ -325,6 +333,7 @@ void acpi_tb_parse_fadt(void)
 	    acpi_os_map_memory(acpi_gbl_root_table_list.
 			       tables[acpi_gbl_fadt_index].address, length);
 	if (!table) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -363,6 +372,7 @@ void acpi_tb_parse_fadt(void)
 						    &acpi_gbl_xfacs_index);
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -383,6 +393,7 @@ void acpi_tb_parse_fadt(void)
 
 void acpi_tb_create_local_fadt(struct acpi_table_header *table, u32 length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	/*
 	 * Check if the FADT is larger than the largest table that we expect
 	 * (the ACPI 5.0 version). If so, truncate the table, and issue
@@ -419,6 +430,7 @@ void acpi_tb_create_local_fadt(struct acpi_table_header *table, u32 length)
 	/* Initialize the global ACPI register structures */
 
 	acpi_tb_setup_fadt_registers();
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -467,6 +479,7 @@ void acpi_tb_create_local_fadt(struct acpi_table_header *table, u32 length)
 
 static void acpi_tb_convert_fadt(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *name;
 	struct acpi_generic_address *address64;
 	u32 address32;
@@ -510,6 +523,7 @@ static void acpi_tb_convert_fadt(void)
 	/* If Hardware Reduced flag is set, we are all done */
 
 	if (acpi_gbl_reduced_hardware) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -655,6 +669,7 @@ static void acpi_tb_convert_fadt(void)
 			}
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -672,6 +687,7 @@ static void acpi_tb_convert_fadt(void)
 
 static void acpi_tb_setup_fadt_registers(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_generic_address *target64;
 	struct acpi_generic_address *source64;
 	u8 pm1_register_byte_width;
@@ -749,4 +765,5 @@ static void acpi_tb_setup_fadt_registers(void)
 						     "PmRegisters", 0);
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

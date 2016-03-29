@@ -105,6 +105,7 @@ acpi_hw_set_firmware_waking_vector(struct acpi_table_facs *facs,
 				   acpi_physical_address physical_address,
 				   acpi_physical_address physical_address64)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(acpi_hw_set_firmware_waking_vector);
 
 
@@ -134,6 +135,7 @@ acpi_hw_set_firmware_waking_vector(struct acpi_table_facs *facs,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -155,6 +157,7 @@ acpi_status
 acpi_set_firmware_waking_vector(acpi_physical_address physical_address,
 				acpi_physical_address physical_address64)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE(acpi_set_firmware_waking_vector);
 
@@ -165,6 +168,7 @@ acpi_set_firmware_waking_vector(acpi_physical_address physical_address,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_set_firmware_waking_vector)
@@ -183,6 +187,7 @@ ACPI_EXPORT_SYMBOL(acpi_set_firmware_waking_vector)
  ******************************************************************************/
 acpi_status acpi_enter_sleep_state_s4bios(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 in_value;
 	acpi_status status;
 
@@ -232,6 +237,7 @@ acpi_status acpi_enter_sleep_state_s4bios(void)
 	} while (!in_value);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enter_sleep_state_s4bios)
@@ -251,6 +257,7 @@ ACPI_EXPORT_SYMBOL(acpi_enter_sleep_state_s4bios)
  ******************************************************************************/
 static acpi_status acpi_hw_sleep_dispatch(u8 sleep_state, u32 function_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_sleep_functions *sleep_functions =
 	    &acpi_sleep_dispatch[function_id];
@@ -271,6 +278,7 @@ static acpi_status acpi_hw_sleep_dispatch(u8 sleep_state, u32 function_id)
 		status = sleep_functions->legacy_function(sleep_state);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 
 #else
@@ -279,6 +287,7 @@ static acpi_status acpi_hw_sleep_dispatch(u8 sleep_state, u32 function_id)
 	 * we know that only the extended sleep registers are available
 	 */
 	status = sleep_functions->extended_function(sleep_state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 
 #endif				/* !ACPI_REDUCED_HARDWARE */
@@ -301,6 +310,7 @@ static acpi_status acpi_hw_sleep_dispatch(u8 sleep_state, u32 function_id)
 
 acpi_status acpi_enter_sleep_state_prep(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_object_list arg_list;
 	union acpi_object arg;
@@ -360,6 +370,7 @@ acpi_status acpi_enter_sleep_state_prep(u8 sleep_state)
 	 */
 	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, sst_value);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enter_sleep_state_prep)
@@ -378,6 +389,7 @@ ACPI_EXPORT_SYMBOL(acpi_enter_sleep_state_prep)
  ******************************************************************************/
 acpi_status acpi_enter_sleep_state(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_enter_sleep_state);
@@ -391,6 +403,7 @@ acpi_status acpi_enter_sleep_state(u8 sleep_state)
 
 	status = acpi_hw_sleep_dispatch(sleep_state, ACPI_SLEEP_FUNCTION_ID);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enter_sleep_state)
@@ -411,6 +424,7 @@ ACPI_EXPORT_SYMBOL(acpi_enter_sleep_state)
  ******************************************************************************/
 acpi_status acpi_leave_sleep_state_prep(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_leave_sleep_state_prep);
@@ -418,6 +432,7 @@ acpi_status acpi_leave_sleep_state_prep(u8 sleep_state)
 	status =
 	    acpi_hw_sleep_dispatch(sleep_state, ACPI_WAKE_PREP_FUNCTION_ID);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_leave_sleep_state_prep)
@@ -436,12 +451,14 @@ ACPI_EXPORT_SYMBOL(acpi_leave_sleep_state_prep)
  ******************************************************************************/
 acpi_status acpi_leave_sleep_state(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_leave_sleep_state);
 
 	status = acpi_hw_sleep_dispatch(sleep_state, ACPI_WAKE_FUNCTION_ID);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_leave_sleep_state)

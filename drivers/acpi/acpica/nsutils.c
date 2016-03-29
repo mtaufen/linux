@@ -71,11 +71,13 @@ void
 acpi_ns_print_node_pathname(struct acpi_namespace_node *node,
 			    const char *message)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_buffer buffer;
 	acpi_status status;
 
 	if (!node) {
 		acpi_os_printf("[NULL NAME]");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -92,6 +94,7 @@ acpi_ns_print_node_pathname(struct acpi_namespace_node *node,
 		acpi_os_printf("[%s] (Node %p)", (char *)buffer.pointer, node);
 		ACPI_FREE(buffer.pointer);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -108,6 +111,7 @@ acpi_ns_print_node_pathname(struct acpi_namespace_node *node,
 
 acpi_object_type acpi_ns_get_type(struct acpi_namespace_node * node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ns_get_type);
 
 	if (!node) {
@@ -116,6 +120,7 @@ acpi_object_type acpi_ns_get_type(struct acpi_namespace_node * node)
 	}
 
 	return_UINT8(node->type);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -133,6 +138,7 @@ acpi_object_type acpi_ns_get_type(struct acpi_namespace_node * node)
 
 u32 acpi_ns_local(acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ns_local);
 
 	if (!acpi_ut_valid_object_type(type)) {
@@ -144,6 +150,7 @@ u32 acpi_ns_local(acpi_object_type type)
 	}
 
 	return_UINT32(acpi_gbl_ns_properties[type] & ACPI_NS_LOCAL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -162,6 +169,7 @@ u32 acpi_ns_local(acpi_object_type type)
 
 void acpi_ns_get_internal_name_length(struct acpi_namestring_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const char *next_external_char;
 	u32 i;
 
@@ -216,6 +224,7 @@ void acpi_ns_get_internal_name_length(struct acpi_namestring_info *info)
 	    4 + info->num_carats;
 
 	info->next_external_char = next_external_char;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -233,6 +242,7 @@ void acpi_ns_get_internal_name_length(struct acpi_namestring_info *info)
 
 acpi_status acpi_ns_build_internal_name(struct acpi_namestring_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 num_segments = info->num_segments;
 	char *internal_name = info->internal_name;
 	const char *external_name = info->next_external_char;
@@ -325,6 +335,7 @@ acpi_status acpi_ns_build_internal_name(struct acpi_namestring_info *info)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -345,6 +356,7 @@ acpi_status acpi_ns_build_internal_name(struct acpi_namestring_info *info)
 acpi_status
 acpi_ns_internalize_name(const char *external_name, char **converted_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *internal_name;
 	struct acpi_namestring_info info;
 	acpi_status status;
@@ -378,6 +390,7 @@ acpi_ns_internalize_name(const char *external_name, char **converted_name)
 
 	*converted_name = internal_name;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -402,6 +415,7 @@ acpi_ns_externalize_name(u32 internal_name_length,
 			 const char *internal_name,
 			 u32 * converted_name_length, char **converted_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 names_index = 0;
 	u32 num_segments = 0;
 	u32 required_length;
@@ -537,6 +551,7 @@ acpi_ns_externalize_name(u32 internal_name_length,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -561,21 +576,25 @@ acpi_ns_externalize_name(u32 internal_name_length,
 
 struct acpi_namespace_node *acpi_ns_validate_handle(acpi_handle handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
 	/* Parameter validation */
 
 	if ((!handle) || (handle == ACPI_ROOT_OBJECT)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (acpi_gbl_root_node);
 	}
 
 	/* We can at least attempt to verify the handle */
 
 	if (ACPI_GET_DESCRIPTOR_TYPE(handle) != ACPI_DESC_TYPE_NAMED) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (ACPI_CAST_PTR(struct acpi_namespace_node, handle));
 }
 
@@ -593,6 +612,7 @@ struct acpi_namespace_node *acpi_ns_validate_handle(acpi_handle handle)
 
 void acpi_ns_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ns_terminate);
@@ -632,6 +652,7 @@ void acpi_ns_terminate(void)
 
 	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Namespace freed\n"));
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -647,6 +668,7 @@ void acpi_ns_terminate(void)
 
 u32 acpi_ns_opens_scope(acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	if (type > ACPI_TYPE_LOCAL_MAX) {
@@ -654,9 +676,11 @@ u32 acpi_ns_opens_scope(acpi_object_type type)
 		/* type code out of range  */
 
 		ACPI_WARNING((AE_INFO, "Invalid Object Type 0x%X", type));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (ACPI_NS_NORMAL);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (((u32)acpi_gbl_ns_properties[type]) & ACPI_NS_NEWSCOPE);
 }
 
@@ -687,6 +711,7 @@ acpi_ns_get_node(struct acpi_namespace_node *prefix_node,
 		 const char *pathname,
 		 u32 flags, struct acpi_namespace_node **return_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state scope_info;
 	acpi_status status;
 	char *internal_path;
@@ -745,4 +770,5 @@ acpi_ns_get_node(struct acpi_namespace_node *prefix_node,
 cleanup:
 	ACPI_FREE(internal_path);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

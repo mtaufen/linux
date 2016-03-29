@@ -67,6 +67,7 @@ ACPI_MODULE_NAME("utbuffer")
  ******************************************************************************/
 void acpi_ut_dump_buffer(u8 *buffer, u32 count, u32 display, u32 base_offset)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i = 0;
 	u32 j;
 	u32 temp32;
@@ -74,6 +75,7 @@ void acpi_ut_dump_buffer(u8 *buffer, u32 count, u32 display, u32 base_offset)
 
 	if (!buffer) {
 		acpi_os_printf("Null Buffer Pointer in DumpBuffer!\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -147,6 +149,8 @@ void acpi_ut_dump_buffer(u8 *buffer, u32 count, u32 display, u32 base_offset)
 		for (j = 0; j < 16; j++) {
 			if (i + j >= count) {
 				acpi_os_printf("\n");
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return;
 			}
 
@@ -172,6 +176,7 @@ void acpi_ut_dump_buffer(u8 *buffer, u32 count, u32 display, u32 base_offset)
 		i += 16;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -197,15 +202,18 @@ void acpi_ut_dump_buffer(u8 *buffer, u32 count, u32 display, u32 base_offset)
 void
 acpi_ut_debug_dump_buffer(u8 *buffer, u32 count, u32 display, u32 component_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Only dump the buffer if tracing is enabled */
 
 	if (!((ACPI_LV_TABLES & acpi_dbg_level) &&
 	      (component_id & acpi_dbg_layer))) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	acpi_ut_dump_buffer(buffer, count, display, 0);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifdef ACPI_APPLICATION
@@ -233,6 +241,7 @@ void
 acpi_ut_dump_buffer_to_file(ACPI_FILE file,
 			    u8 *buffer, u32 count, u32 display, u32 base_offset)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i = 0;
 	u32 j;
 	u32 temp32;
@@ -241,6 +250,7 @@ acpi_ut_dump_buffer_to_file(ACPI_FILE file,
 	if (!buffer) {
 		acpi_ut_file_printf(file,
 				    "Null Buffer Pointer in DumpBuffer!\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -315,6 +325,8 @@ acpi_ut_dump_buffer_to_file(ACPI_FILE file,
 		for (j = 0; j < 16; j++) {
 			if (i + j >= count) {
 				acpi_ut_file_printf(file, "\n");
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return;
 			}
 
@@ -332,6 +344,7 @@ acpi_ut_dump_buffer_to_file(ACPI_FILE file,
 		i += 16;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 #endif

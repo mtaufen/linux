@@ -69,6 +69,7 @@ acpi_status
 acpi_ds_exec_begin_control_op(struct acpi_walk_state *walk_state,
 			      union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_generic_state *control_state;
 
@@ -145,6 +146,7 @@ acpi_ds_exec_begin_control_op(struct acpi_walk_state *walk_state,
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -166,6 +168,7 @@ acpi_status
 acpi_ds_exec_end_control_op(struct acpi_walk_state * walk_state,
 			    union acpi_parse_object * op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_generic_state *control_state;
 
@@ -263,6 +266,8 @@ acpi_ds_exec_end_control_op(struct acpi_walk_state * walk_state,
 			    acpi_ds_create_operands(walk_state,
 						    op->common.value.arg);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -275,6 +280,8 @@ acpi_ds_exec_end_control_op(struct acpi_walk_state * walk_state,
 			    acpi_ex_resolve_to_value(&walk_state->operands[0],
 						     walk_state);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -313,6 +320,9 @@ acpi_ds_exec_end_control_op(struct acpi_walk_state * walk_state,
 							     obj_desc[0],
 							     walk_state);
 				if (ACPI_FAILURE(status)) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (status);
 				}
 			}
@@ -374,6 +384,8 @@ acpi_ds_exec_end_control_op(struct acpi_walk_state * walk_state,
 		/* No while found? */
 
 		if (!walk_state->control_state) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_NO_WHILE);
 		}
 
@@ -400,5 +412,6 @@ acpi_ds_exec_end_control_op(struct acpi_walk_state * walk_state,
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }

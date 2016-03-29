@@ -102,6 +102,7 @@ acpi_ns_check_return_value(struct acpi_namespace_node *node,
 			   acpi_status return_status,
 			   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	const union acpi_predefined_info *predefined;
 
@@ -109,6 +110,7 @@ acpi_ns_check_return_value(struct acpi_namespace_node *node,
 
 	predefined = info->predefined;
 	if (!predefined) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -117,6 +119,7 @@ acpi_ns_check_return_value(struct acpi_namespace_node *node,
 	 * validate the return object
 	 */
 	if ((return_status != AE_OK) && (return_status != AE_CTRL_RETURN_VALUE)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -136,6 +139,7 @@ acpi_ns_check_return_value(struct acpi_namespace_node *node,
 	if (acpi_gbl_disable_auto_repair ||
 	    (!predefined->info.expected_btypes) ||
 	    (predefined->info.expected_btypes == ACPI_RTYPE_ALL)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -197,6 +201,7 @@ exit:
 		node->flags |= ANOBJ_EVALUATED;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -224,6 +229,7 @@ acpi_ns_check_object_type(struct acpi_evaluate_info *info,
 			  union acpi_operand_object **return_object_ptr,
 			  u32 expected_btypes, u32 package_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	acpi_status status = AE_OK;
 	char type_buffer[96];	/* Room for 10 types */
@@ -238,6 +244,7 @@ acpi_ns_check_object_type(struct acpi_evaluate_info *info,
 				      return_object->node.name.ascii,
 				      acpi_ut_get_type_name(return_object->node.
 							    type)));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
@@ -260,6 +267,7 @@ acpi_ns_check_object_type(struct acpi_evaluate_info *info,
 
 	if ((info->return_btype & expected_btypes) == ACPI_RTYPE_REFERENCE) {
 		status = acpi_ns_check_reference(info, return_object);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -268,6 +276,7 @@ acpi_ns_check_object_type(struct acpi_evaluate_info *info,
 	status = acpi_ns_simple_repair(info, expected_btypes,
 				       package_index, return_object_ptr);
 	if (ACPI_SUCCESS(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);	/* Successful repair */
 	}
 
@@ -297,6 +306,7 @@ type_error_exit:
 				      (return_object), type_buffer));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_AML_OPERAND_TYPE);
 }
 
@@ -320,6 +330,7 @@ static acpi_status
 acpi_ns_check_reference(struct acpi_evaluate_info *info,
 			union acpi_operand_object *return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/*
 	 * Check the reference object for the correct reference type (opcode).
@@ -327,6 +338,7 @@ acpi_ns_check_reference(struct acpi_evaluate_info *info,
 	 * a reference to a named object (reference class: NAME)
 	 */
 	if (return_object->reference.class == ACPI_REFCLASS_NAME) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -335,6 +347,7 @@ acpi_ns_check_reference(struct acpi_evaluate_info *info,
 			      acpi_ut_get_reference_name(return_object),
 			      return_object->reference.class));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_AML_OPERAND_TYPE);
 }
 
@@ -354,10 +367,12 @@ acpi_ns_check_reference(struct acpi_evaluate_info *info,
 
 static u32 acpi_ns_get_bitmapped_type(union acpi_operand_object *return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 return_btype;
 
 	if (!return_object) {
-		return (ACPI_RTYPE_NONE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (ACPI_RTYPE_NONE);
 	}
 
 	/* Map acpi_object_type to internal bitmapped type */
@@ -396,5 +411,6 @@ static u32 acpi_ns_get_bitmapped_type(union acpi_operand_object *return_object)
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (return_btype);
 }

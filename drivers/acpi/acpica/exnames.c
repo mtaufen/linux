@@ -72,6 +72,7 @@ static acpi_status acpi_ex_name_segment(u8 **in_aml_address, char *name_string);
 
 static char *acpi_ex_allocate_name_string(u32 prefix_count, u32 num_name_segs)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *temp_ptr;
 	char *name_string;
 	u32 size_needed;
@@ -138,6 +139,7 @@ static char *acpi_ex_allocate_name_string(u32 prefix_count, u32 num_name_segs)
 	*temp_ptr = 0;
 
 	return_PTR(name_string);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -156,6 +158,7 @@ static char *acpi_ex_allocate_name_string(u32 prefix_count, u32 num_name_segs)
 
 static acpi_status acpi_ex_name_segment(u8 ** in_aml_address, char *name_string)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *aml_address = (void *)*in_aml_address;
 	acpi_status status = AE_OK;
 	u32 index;
@@ -221,6 +224,7 @@ static acpi_status acpi_ex_name_segment(u8 ** in_aml_address, char *name_string)
 
 	*in_aml_address = ACPI_CAST_PTR(u8, aml_address);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -245,6 +249,7 @@ acpi_ex_get_name_string(acpi_object_type data_type,
 			u8 * in_aml_address,
 			char **out_name_string, u32 * out_name_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u8 *aml_address = in_aml_address;
 	char *name_string = NULL;
@@ -432,4 +437,5 @@ acpi_ex_get_name_string(acpi_object_type data_type,
 	*out_name_length = (u32) (aml_address - in_aml_address);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

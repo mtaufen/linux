@@ -94,6 +94,7 @@ acpi_rs_validate_parameters(acpi_handle device_handle,
 			    struct acpi_buffer *buffer,
 			    struct acpi_namespace_node **return_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -129,6 +130,7 @@ acpi_rs_validate_parameters(acpi_handle device_handle,
 
 	*return_node = node;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -158,6 +160,7 @@ acpi_status
 acpi_get_irq_routing_table(acpi_handle device_handle,
 			   struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -172,6 +175,7 @@ acpi_get_irq_routing_table(acpi_handle device_handle,
 
 	status = acpi_rs_get_prt_method_data(node, ret_buffer);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_irq_routing_table)
@@ -203,6 +207,7 @@ acpi_status
 acpi_get_current_resources(acpi_handle device_handle,
 			   struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -217,6 +222,7 @@ acpi_get_current_resources(acpi_handle device_handle,
 
 	status = acpi_rs_get_crs_method_data(node, ret_buffer);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_current_resources)
@@ -245,6 +251,7 @@ acpi_status
 acpi_get_possible_resources(acpi_handle device_handle,
 			    struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -259,6 +266,7 @@ acpi_get_possible_resources(acpi_handle device_handle,
 
 	status = acpi_rs_get_prs_method_data(node, ret_buffer);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_possible_resources)
@@ -284,6 +292,7 @@ acpi_status
 acpi_set_current_resources(acpi_handle device_handle,
 			   struct acpi_buffer *in_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -304,6 +313,7 @@ acpi_set_current_resources(acpi_handle device_handle,
 
 	status = acpi_rs_set_srs_method_data(node, in_buffer);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_set_current_resources)
@@ -330,6 +340,7 @@ acpi_status
 acpi_get_event_resources(acpi_handle device_handle,
 			 struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -344,6 +355,7 @@ acpi_get_event_resources(acpi_handle device_handle,
 
 	status = acpi_rs_get_aei_method_data(node, ret_buffer);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_event_resources)
@@ -368,11 +380,13 @@ acpi_status
 acpi_resource_to_address64(struct acpi_resource *resource,
 			   struct acpi_resource_address64 *out)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_resource_address16 *address16;
 	struct acpi_resource_address32 *address32;
 
 	if (!resource || !out) {
-		return (AE_BAD_PARAMETER);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_BAD_PARAMETER);
 	}
 
 	/* Convert 16 or 32 address descriptor to 64 */
@@ -404,9 +418,11 @@ acpi_resource_to_address64(struct acpi_resource *resource,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -436,12 +452,14 @@ acpi_get_vendor_resource(acpi_handle device_handle,
 			 struct acpi_vendor_uuid * uuid,
 			 struct acpi_buffer * ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_vendor_walk_info info;
 	acpi_status status;
 
 	/* Other parameters are validated by acpi_walk_resources */
 
 	if (!uuid || !ret_buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -455,9 +473,11 @@ acpi_get_vendor_resource(acpi_handle device_handle,
 	    acpi_walk_resources(device_handle, name,
 				acpi_rs_match_vendor_resource, &info);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (info.status);
 }
 
@@ -477,6 +497,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_vendor_resource)
 static acpi_status
 acpi_rs_match_vendor_resource(struct acpi_resource *resource, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_vendor_walk_info *info = context;
 	struct acpi_resource_vendor_typed *vendor;
 	struct acpi_buffer *buffer;
@@ -485,6 +506,7 @@ acpi_rs_match_vendor_resource(struct acpi_resource *resource, void *context)
 	/* Ignore all descriptors except Vendor */
 
 	if (resource->type != ACPI_RESOURCE_TYPE_VENDOR) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -500,6 +522,7 @@ acpi_rs_match_vendor_resource(struct acpi_resource *resource, void *context)
 	if ((vendor->byte_length < (ACPI_UUID_LENGTH + 1)) ||
 	    (vendor->uuid_subtype != info->uuid->subtype) ||
 	    (memcmp(vendor->uuid, info->uuid->data, ACPI_UUID_LENGTH))) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -508,6 +531,7 @@ acpi_rs_match_vendor_resource(struct acpi_resource *resource, void *context)
 	buffer = info->buffer;
 	status = acpi_ut_initialize_buffer(buffer, resource->length);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -519,6 +543,7 @@ acpi_rs_match_vendor_resource(struct acpi_resource *resource, void *context)
 	/* Found the desired descriptor, terminate resource walk */
 
 	info->status = AE_OK;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_CTRL_TERMINATE);
 }
 
@@ -543,6 +568,7 @@ acpi_walk_resource_buffer(struct acpi_buffer * buffer,
 			  acpi_walk_resource_callback user_function,
 			  void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_resource *resource;
 	struct acpi_resource *resource_end;
@@ -603,6 +629,7 @@ acpi_walk_resource_buffer(struct acpi_buffer * buffer,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_walk_resource_buffer)
@@ -631,6 +658,7 @@ acpi_walk_resources(acpi_handle device_handle,
 		    char *name,
 		    acpi_walk_resource_callback user_function, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_buffer buffer;
 
@@ -658,6 +686,7 @@ acpi_walk_resources(acpi_handle device_handle,
 	status = acpi_walk_resource_buffer(&buffer, user_function, context);
 	ACPI_FREE(buffer.pointer);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_walk_resources)

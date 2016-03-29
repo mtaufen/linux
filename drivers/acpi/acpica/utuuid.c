@@ -82,6 +82,7 @@ const u8 acpi_gbl_map_to_uuid_offset[UUID_BUFFER_LENGTH] = {
 
 void acpi_ut_convert_string_to_uuid(char *in_string, u8 *uuid_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	for (i = 0; i < UUID_BUFFER_LENGTH; i++) {
@@ -94,5 +95,6 @@ void acpi_ut_convert_string_to_uuid(char *in_string, u8 *uuid_buffer)
 					      [acpi_gbl_map_to_uuid_offset[i] +
 					       1]);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif

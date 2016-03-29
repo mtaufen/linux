@@ -61,6 +61,7 @@ ACPI_MODULE_NAME("nsalloc")
  ******************************************************************************/
 struct acpi_namespace_node *acpi_ns_create_node(u32 name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 #ifdef ACPI_DBG_TRACK_ALLOCATIONS
 	u32 temp;
@@ -86,6 +87,7 @@ struct acpi_namespace_node *acpi_ns_create_node(u32 name)
 	node->name.integer = name;
 	ACPI_SET_DESCRIPTOR_TYPE(node, ACPI_DESC_TYPE_NAMED);
 	return_PTR(node);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -105,6 +107,7 @@ struct acpi_namespace_node *acpi_ns_create_node(u32 name)
 
 void acpi_ns_delete_node(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *next_desc;
 
@@ -137,6 +140,7 @@ void acpi_ns_delete_node(struct acpi_namespace_node *node)
 	/* Special case for the statically allocated root node */
 
 	if (node == acpi_gbl_root_node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -147,6 +151,7 @@ void acpi_ns_delete_node(struct acpi_namespace_node *node)
 	ACPI_MEM_TRACKING(acpi_gbl_ns_node_list->total_freed++);
 	ACPI_DEBUG_PRINT((ACPI_DB_ALLOCATIONS, "Node %p, Remaining %X\n",
 			  node, acpi_gbl_current_node_count));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -163,6 +168,7 @@ void acpi_ns_delete_node(struct acpi_namespace_node *node)
 
 void acpi_ns_remove_node(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *parent_node;
 	struct acpi_namespace_node *prev_node;
 	struct acpi_namespace_node *next_node;
@@ -198,6 +204,7 @@ void acpi_ns_remove_node(struct acpi_namespace_node *node)
 
 	acpi_ns_delete_node(node);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -224,6 +231,7 @@ void acpi_ns_install_node(struct acpi_walk_state *walk_state, struct acpi_namesp
 			  struct acpi_namespace_node *node,	/* New Child */
 			  acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_owner_id owner_id = 0;
 	struct acpi_namespace_node *child_node;
 
@@ -281,6 +289,7 @@ void acpi_ns_install_node(struct acpi_walk_state *walk_state, struct acpi_namesp
 			  parent_node));
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -298,6 +307,7 @@ void acpi_ns_install_node(struct acpi_walk_state *walk_state, struct acpi_namesp
 
 void acpi_ns_delete_children(struct acpi_namespace_node *parent_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *next_node;
 	struct acpi_namespace_node *node_to_delete;
 
@@ -332,6 +342,7 @@ void acpi_ns_delete_children(struct acpi_namespace_node *parent_node)
 
 	parent_node->child = NULL;
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -349,6 +360,7 @@ void acpi_ns_delete_children(struct acpi_namespace_node *parent_node)
 
 void acpi_ns_delete_namespace_subtree(struct acpi_namespace_node *parent_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *child_node = NULL;
 	u32 level = 1;
 	acpi_status status;
@@ -417,6 +429,7 @@ void acpi_ns_delete_namespace_subtree(struct acpi_namespace_node *parent_node)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -437,6 +450,7 @@ void acpi_ns_delete_namespace_subtree(struct acpi_namespace_node *parent_node)
 
 void acpi_ns_delete_namespace_by_owner(acpi_owner_id owner_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *child_node;
 	struct acpi_namespace_node *deletion_node;
 	struct acpi_namespace_node *parent_node;
@@ -523,4 +537,5 @@ void acpi_ns_delete_namespace_by_owner(acpi_owner_id owner_id)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

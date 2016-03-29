@@ -64,6 +64,7 @@ ACPI_MODULE_NAME("evxfevnt")
  ******************************************************************************/
 acpi_status acpi_enable(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	int retry;
 
@@ -112,6 +113,7 @@ acpi_status acpi_enable(void)
 
 	ACPI_ERROR((AE_INFO, "Hardware did not enter ACPI mode"));
 	return_ACPI_STATUS(AE_NO_HARDWARE_RESPONSE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enable)
@@ -129,6 +131,7 @@ ACPI_EXPORT_SYMBOL(acpi_enable)
  ******************************************************************************/
 acpi_status acpi_disable(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(acpi_disable);
@@ -157,6 +160,7 @@ acpi_status acpi_disable(void)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_disable)
@@ -175,6 +179,7 @@ ACPI_EXPORT_SYMBOL(acpi_disable)
  ******************************************************************************/
 acpi_status acpi_enable_event(u32 event, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u32 value;
 
@@ -214,6 +219,7 @@ acpi_status acpi_enable_event(u32 event, u32 flags)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_enable_event)
@@ -232,6 +238,7 @@ ACPI_EXPORT_SYMBOL(acpi_enable_event)
  ******************************************************************************/
 acpi_status acpi_disable_event(u32 event, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u32 value;
 
@@ -269,6 +276,7 @@ acpi_status acpi_disable_event(u32 event, u32 flags)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_disable_event)
@@ -286,6 +294,7 @@ ACPI_EXPORT_SYMBOL(acpi_disable_event)
  ******************************************************************************/
 acpi_status acpi_clear_event(u32 event)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(acpi_clear_event);
@@ -305,6 +314,7 @@ acpi_status acpi_clear_event(u32 event)
 				    status_register_id, ACPI_CLEAR_STATUS);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_clear_event)
@@ -324,6 +334,7 @@ ACPI_EXPORT_SYMBOL(acpi_clear_event)
  ******************************************************************************/
 acpi_status acpi_get_event_status(u32 event, acpi_event_status * event_status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_event_status local_event_status = 0;
 	u32 in_byte;
@@ -375,6 +386,7 @@ acpi_status acpi_get_event_status(u32 event, acpi_event_status * event_status)
 
 	(*event_status) = local_event_status;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_event_status)

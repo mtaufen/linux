@@ -88,6 +88,7 @@ static u32
 acpi_ex_generate_access(u32 field_bit_offset,
 			u32 field_bit_length, u32 region_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 field_byte_length;
 	u32 field_byte_offset;
 	u32 field_byte_end_offset;
@@ -207,6 +208,7 @@ acpi_ex_generate_access(u32 field_bit_offset,
 			  "Cannot access field in one operation, using width 8\n"));
 
 	return_VALUE(8);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif				/* ACPI_UNDER_DEVELOPMENT */
 
@@ -229,6 +231,7 @@ static u32
 acpi_ex_decode_field_access(union acpi_operand_object *obj_desc,
 			    u8 field_flags, u32 * return_byte_alignment)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 access;
 	u32 byte_alignment;
 	u32 bit_length;
@@ -300,6 +303,7 @@ acpi_ex_decode_field_access(union acpi_operand_object *obj_desc,
 
 	*return_byte_alignment = byte_alignment;
 	return_UINT32(bit_length);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -329,6 +333,7 @@ acpi_ex_prep_common_field_object(union acpi_operand_object *obj_desc,
 				 u8 field_attribute,
 				 u32 field_bit_position, u32 field_bit_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 access_bit_width;
 	u32 byte_alignment;
 	u32 nearest_byte_address;
@@ -394,6 +399,7 @@ acpi_ex_prep_common_field_object(union acpi_operand_object *obj_desc,
 	     ACPI_MUL_8(obj_desc->common_field.base_byte_offset));
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -411,6 +417,7 @@ acpi_ex_prep_common_field_object(union acpi_operand_object *obj_desc,
 
 acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *second_desc = NULL;
 	acpi_status status;
@@ -634,4 +641,5 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

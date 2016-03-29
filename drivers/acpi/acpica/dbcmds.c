@@ -88,6 +88,7 @@ static char *acpi_db_trace_method_name = NULL;
 
 struct acpi_namespace_node *acpi_db_convert_to_node(char *in_string)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_size address;
 
@@ -99,6 +100,8 @@ struct acpi_namespace_node *acpi_db_convert_to_node(char *in_string)
 		node = ACPI_TO_POINTER(address);
 		if (!acpi_os_readable(node, sizeof(struct acpi_namespace_node))) {
 			acpi_os_printf("Address %p is invalid", node);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (NULL);
 		}
 
@@ -108,6 +111,8 @@ struct acpi_namespace_node *acpi_db_convert_to_node(char *in_string)
 			acpi_os_printf
 			    ("Address %p is not a valid namespace node [%s]\n",
 			     node, acpi_ut_get_descriptor_name(node));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (NULL);
 		}
 	} else {
@@ -124,6 +129,7 @@ struct acpi_namespace_node *acpi_db_convert_to_node(char *in_string)
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (node);
 }
 
@@ -142,6 +148,7 @@ struct acpi_namespace_node *acpi_db_convert_to_node(char *in_string)
 
 acpi_status acpi_db_sleep(char *object_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 sleep_state;
 	u32 i;
 
@@ -165,6 +172,7 @@ acpi_status acpi_db_sleep(char *object_arg)
 	sleep_state = (u8)strtoul(object_arg, NULL, 0);
 	acpi_db_do_one_sleep_state(sleep_state);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -181,6 +189,7 @@ acpi_status acpi_db_sleep(char *object_arg)
 
 static void acpi_db_do_one_sleep_state(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 sleep_type_a;
 	u8 sleep_type_b;
@@ -190,6 +199,7 @@ static void acpi_db_do_one_sleep_state(u8 sleep_state)
 	if (sleep_state > ACPI_S_STATES_MAX) {
 		acpi_os_printf("Sleep state %d out of range (%d max)\n",
 			       sleep_state, ACPI_S_STATES_MAX);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -204,6 +214,7 @@ static void acpi_db_do_one_sleep_state(u8 sleep_state)
 		acpi_os_printf("Could not evaluate [%s] method, %s\n",
 			       acpi_gbl_sleep_state_names[sleep_state],
 			       acpi_format_exception(status));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -240,11 +251,13 @@ static void acpi_db_do_one_sleep_state(u8 sleep_state)
 		goto error_exit;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 
 error_exit:
 	ACPI_EXCEPTION((AE_INFO, status, "During invocation of sleep state S%d",
 			sleep_state));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -261,6 +274,7 @@ error_exit:
 
 void acpi_db_display_locks(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	for (i = 0; i < ACPI_MAX_MUTEX; i++) {
@@ -268,6 +282,7 @@ void acpi_db_display_locks(void)
 			       acpi_gbl_mutex_info[i].thread_id ==
 			       ACPI_MUTEX_NOT_ACQUIRED ? "Locked" : "Unlocked");
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -285,6 +300,7 @@ void acpi_db_display_locks(void)
 
 void acpi_db_display_table_info(char *table_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	struct acpi_table_desc *table_desc;
 	acpi_status status;
@@ -337,6 +353,8 @@ void acpi_db_display_table_info(char *table_arg)
 
 		status = acpi_tb_validate_table(table_desc);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -352,6 +370,7 @@ void acpi_db_display_table_info(char *table_arg)
 				   table_desc->signature.ascii));
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -370,6 +389,7 @@ void acpi_db_display_table_info(char *table_arg)
 
 void acpi_db_unload_acpi_table(char *object_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
@@ -377,6 +397,7 @@ void acpi_db_unload_acpi_table(char *object_name)
 
 	node = acpi_db_convert_to_node(object_name);
 	if (!node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -388,6 +409,7 @@ void acpi_db_unload_acpi_table(char *object_name)
 		acpi_os_printf("%s, while unloading parent table of [%s]\n",
 			       acpi_format_exception(status), object_name);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -406,6 +428,7 @@ void acpi_db_unload_acpi_table(char *object_name)
 
 void acpi_db_send_notify(char *name, u32 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
@@ -413,6 +436,7 @@ void acpi_db_send_notify(char *name, u32 value)
 
 	node = acpi_db_convert_to_node(name);
 	if (!node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -429,6 +453,7 @@ void acpi_db_send_notify(char *name, u32 value)
 			       acpi_ut_get_node_name(node),
 			       acpi_ut_get_type_name(node->type));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -446,6 +471,7 @@ void acpi_db_send_notify(char *name, u32 value)
 
 void acpi_db_display_interfaces(char *action_arg, char *interface_name_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_interface_info *next_interface;
 	char *sub_string;
 	acpi_status status;
@@ -466,6 +492,7 @@ void acpi_db_display_interfaces(char *action_arg, char *interface_name_arg)
 		}
 
 		acpi_os_release_mutex(acpi_gbl_osi_mutex);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -473,6 +500,7 @@ void acpi_db_display_interfaces(char *action_arg, char *interface_name_arg)
 
 	if (!interface_name_arg) {
 		acpi_os_printf("Missing Interface Name argument\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -490,6 +518,7 @@ void acpi_db_display_interfaces(char *action_arg, char *interface_name_arg)
 				       acpi_format_exception(status),
 				       interface_name_arg);
 		}
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -503,12 +532,14 @@ void acpi_db_display_interfaces(char *action_arg, char *interface_name_arg)
 				       acpi_format_exception(status),
 				       interface_name_arg);
 		}
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	/* Invalid action_arg */
 
 	acpi_os_printf("Invalid action argument: %s\n", action_arg);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -526,6 +557,7 @@ void acpi_db_display_interfaces(char *action_arg, char *interface_name_arg)
 
 void acpi_db_display_template(char *buffer_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 	struct acpi_buffer return_buffer;
@@ -535,6 +567,7 @@ void acpi_db_display_template(char *buffer_arg)
 	node = acpi_db_convert_to_node(buffer_arg);
 	if (!node || (node == acpi_gbl_root_node)) {
 		acpi_os_printf("Invalid argument: %s\n", buffer_arg);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -544,6 +577,7 @@ void acpi_db_display_template(char *buffer_arg)
 		acpi_os_printf
 		    ("Not a Buffer object, cannot be a template: %s\n",
 		     buffer_arg);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -576,6 +610,7 @@ dump_buffer:
 				  DB_BYTE_DISPLAY, ACPI_UINT32_MAX);
 
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -601,6 +636,7 @@ acpi_dm_compare_aml_resources(u8 *aml1_buffer,
 			      u8 *aml2_buffer,
 			      acpi_rsdesc_size aml2_buffer_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *aml1;
 	u8 *aml2;
 	u8 *aml1_end;
@@ -665,6 +701,8 @@ acpi_dm_compare_aml_resources(u8 *aml1_buffer,
 		/* Exit on end_tag descriptor */
 
 		if (resource_type == ACPI_RESOURCE_NAME_END_TAG) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -675,6 +713,7 @@ acpi_dm_compare_aml_resources(u8 *aml1_buffer,
 		aml1 += aml1_length;
 		aml2 += aml2_length;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -694,6 +733,7 @@ acpi_dm_compare_aml_resources(u8 *aml1_buffer,
 static acpi_status
 acpi_dm_test_resource_conversion(struct acpi_namespace_node *node, char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_buffer return_buffer;
 	struct acpi_buffer resource_buffer;
@@ -712,6 +752,7 @@ acpi_dm_test_resource_conversion(struct acpi_namespace_node *node, char *name)
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could not obtain %s: %s\n",
 			       name, acpi_format_exception(status));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -749,6 +790,7 @@ exit2:
 	ACPI_FREE(resource_buffer.pointer);
 exit1:
 	ACPI_FREE(return_buffer.pointer);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -768,7 +810,9 @@ exit1:
 static acpi_status
 acpi_db_resource_callback(struct acpi_resource *resource, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -788,6 +832,7 @@ static acpi_status
 acpi_db_device_resources(acpi_handle obj_handle,
 			 u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	struct acpi_namespace_node *prt_node = NULL;
 	struct acpi_namespace_node *crs_node = NULL;
@@ -800,6 +845,7 @@ acpi_db_device_resources(acpi_handle obj_handle,
 	node = ACPI_CAST_PTR(struct acpi_namespace_node, obj_handle);
 	parent_path = acpi_ns_get_normalized_pathname(node, TRUE);
 	if (!parent_path) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -995,6 +1041,7 @@ get_aei:
 
 cleanup:
 	ACPI_FREE(parent_path);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -1014,6 +1061,7 @@ cleanup:
 
 void acpi_db_display_resources(char *object_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 
 	acpi_db_set_output_destination(ACPI_DB_REDIRECTABLE_OUTPUT);
@@ -1044,6 +1092,7 @@ void acpi_db_display_resources(char *object_arg)
 	}
 
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #if (!ACPI_REDUCED_HARDWARE)
@@ -1063,6 +1112,7 @@ void acpi_db_display_resources(char *object_arg)
 
 void acpi_db_generate_gpe(char *gpe_arg, char *block_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 block_number = 0;
 	u32 gpe_number;
 	struct acpi_gpe_event_info *gpe_event_info;
@@ -1085,10 +1135,12 @@ void acpi_db_generate_gpe(char *gpe_arg, char *block_arg)
 				       gpe_number);
 	if (!gpe_event_info) {
 		acpi_os_printf("Invalid GPE\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	(void)acpi_ev_gpe_dispatch(NULL, gpe_event_info, gpe_number);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -1105,7 +1157,9 @@ void acpi_db_generate_gpe(char *gpe_arg, char *block_arg)
 
 void acpi_db_generate_sci(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_ev_sci_dispatch();
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */
@@ -1127,6 +1181,7 @@ void acpi_db_generate_sci(void)
 
 void acpi_db_trace(char *enable_arg, char *method_arg, char *once_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 debug_level = 0;
 	u32 debug_layer = 0;
 	u32 flags = 0;
@@ -1145,6 +1200,8 @@ void acpi_db_trace(char *enable_arg, char *method_arg, char *once_arg)
 		if (!acpi_db_trace_method_name) {
 			acpi_os_printf("Failed to allocate method name (%s)\n",
 				       method_arg);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -1179,4 +1236,5 @@ void acpi_db_trace(char *enable_arg, char *method_arg, char *once_arg)
 
 	(void)acpi_debug_trace(acpi_db_trace_method_name,
 			       debug_level, debug_layer, flags);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

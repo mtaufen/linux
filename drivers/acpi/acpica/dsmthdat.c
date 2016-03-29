@@ -90,6 +90,7 @@ acpi_ds_method_data_get_type(u16 opcode,
 
 void acpi_ds_method_data_init(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_TRACE(ds_method_data_init);
@@ -120,6 +121,7 @@ void acpi_ds_method_data_init(struct acpi_walk_state *walk_state)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -137,6 +139,7 @@ void acpi_ds_method_data_init(struct acpi_walk_state *walk_state)
 
 void acpi_ds_method_data_delete_all(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 index;
 
 	ACPI_FUNCTION_TRACE(ds_method_data_delete_all);
@@ -172,6 +175,7 @@ void acpi_ds_method_data_delete_all(struct acpi_walk_state *walk_state)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -195,6 +199,7 @@ acpi_ds_method_data_init_args(union acpi_operand_object **params,
 			      u32 max_param_count,
 			      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 index = 0;
 
@@ -227,6 +232,7 @@ acpi_ds_method_data_init_args(union acpi_operand_object **params,
 
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "%u args passed to method\n", index));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -251,6 +257,7 @@ acpi_ds_method_data_get_node(u8 type,
 			     struct acpi_walk_state *walk_state,
 			     struct acpi_namespace_node **node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ds_method_data_get_node);
 
 	/*
@@ -292,6 +299,7 @@ acpi_ds_method_data_get_node(u8 type,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -317,6 +325,7 @@ acpi_ds_method_data_set_value(u8 type,
 			      union acpi_operand_object *object,
 			      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
@@ -346,6 +355,7 @@ acpi_ds_method_data_set_value(u8 type,
 
 	node->object = object;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -371,6 +381,7 @@ acpi_ds_method_data_get_value(u8 type,
 			      struct acpi_walk_state *walk_state,
 			      union acpi_operand_object **dest_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *object;
@@ -453,6 +464,7 @@ acpi_ds_method_data_get_value(u8 type,
 	acpi_ut_add_reference(object);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -475,6 +487,7 @@ static void
 acpi_ds_method_data_delete_value(u8 type,
 				 u32 index, struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *object;
@@ -510,6 +523,7 @@ acpi_ds_method_data_delete_value(u8 type,
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -536,6 +550,7 @@ acpi_ds_store_object_to_local(u8 type,
 			      union acpi_operand_object *obj_desc,
 			      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *current_obj_desc;
@@ -665,6 +680,7 @@ acpi_ds_store_object_to_local(u8 type,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifdef ACPI_OBSOLETE_FUNCTIONS
@@ -686,6 +702,7 @@ acpi_object_type
 acpi_ds_method_data_get_type(u16 opcode,
 			     u32 index, struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *object;
@@ -712,5 +729,6 @@ acpi_ds_method_data_get_type(u16 opcode,
 	/* Get the object type */
 
 	return_VALUE(object->type);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif

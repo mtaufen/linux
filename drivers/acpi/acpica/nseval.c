@@ -83,6 +83,7 @@ acpi_ns_exec_module_code(union acpi_operand_object *method_obj,
 
 acpi_status acpi_ns_evaluate(struct acpi_evaluate_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ns_evaluate);
@@ -322,6 +323,7 @@ cleanup:
 	ACPI_FREE(info->full_pathname);
 	info->full_pathname = NULL;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -340,6 +342,7 @@ cleanup:
 
 void acpi_ns_exec_module_code_list(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *prev;
 	union acpi_operand_object *next;
 	struct acpi_evaluate_info *info;
@@ -385,6 +388,7 @@ void acpi_ns_exec_module_code_list(void)
 	ACPI_FREE(info);
 	acpi_gbl_module_code_list = NULL;
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -407,6 +411,7 @@ static void
 acpi_ns_exec_module_code(union acpi_operand_object *method_obj,
 			 struct acpi_evaluate_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *parent_obj;
 	struct acpi_namespace_node *parent_node;
 	acpi_object_type type;
@@ -493,4 +498,5 @@ exit:
 		acpi_ut_remove_reference(parent_obj);
 	}
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

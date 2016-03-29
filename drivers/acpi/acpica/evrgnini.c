@@ -72,6 +72,7 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
 				   u32 function,
 				   void *handler_context, void **region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *region_desc =
 	    (union acpi_operand_object *)handle;
 	struct acpi_mem_space_context *local_region_context;
@@ -112,6 +113,7 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
 
 	*region_context = local_region_context;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -134,6 +136,7 @@ acpi_ev_io_space_region_setup(acpi_handle handle,
 			      u32 function,
 			      void *handler_context, void **region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ev_io_space_region_setup);
 
 	if (function == ACPI_REGION_DEACTIVATE) {
@@ -143,6 +146,7 @@ acpi_ev_io_space_region_setup(acpi_handle handle,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -167,6 +171,7 @@ acpi_ev_pci_config_region_setup(acpi_handle handle,
 				u32 function,
 				void *handler_context, void **region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u64 pci_value;
 	struct acpi_pci_id *pci_id = *region_context;
@@ -331,6 +336,7 @@ acpi_ev_pci_config_region_setup(acpi_handle handle,
 
 	*region_context = pci_id;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -348,6 +354,7 @@ acpi_ev_pci_config_region_setup(acpi_handle handle,
 
 static u8 acpi_ev_is_pci_root_bridge(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_pnp_device_id *hid;
 	struct acpi_pnp_device_id_list *cid;
@@ -358,6 +365,7 @@ static u8 acpi_ev_is_pci_root_bridge(struct acpi_namespace_node *node)
 
 	status = acpi_ut_execute_HID(node, &hid);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -365,6 +373,7 @@ static u8 acpi_ev_is_pci_root_bridge(struct acpi_namespace_node *node)
 	ACPI_FREE(hid);
 
 	if (match) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
@@ -372,6 +381,7 @@ static u8 acpi_ev_is_pci_root_bridge(struct acpi_namespace_node *node)
 
 	status = acpi_ut_execute_CID(node, &cid);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -380,11 +390,14 @@ static u8 acpi_ev_is_pci_root_bridge(struct acpi_namespace_node *node)
 	for (i = 0; i < cid->count; i++) {
 		if (acpi_ut_is_pci_root_bridge(cid->ids[i].string)) {
 			ACPI_FREE(cid);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (TRUE);
 		}
 	}
 
 	ACPI_FREE(cid);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -410,9 +423,11 @@ acpi_ev_pci_bar_region_setup(acpi_handle handle,
 			     u32 function,
 			     void *handler_context, void **region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ev_pci_bar_region_setup);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -437,9 +452,11 @@ acpi_ev_cmos_region_setup(acpi_handle handle,
 			  u32 function,
 			  void *handler_context, void **region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ev_cmos_region_setup);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -462,6 +479,7 @@ acpi_ev_default_region_setup(acpi_handle handle,
 			     u32 function,
 			     void *handler_context, void **region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ev_default_region_setup);
 
 	if (function == ACPI_REGION_DEACTIVATE) {
@@ -471,6 +489,7 @@ acpi_ev_default_region_setup(acpi_handle handle,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -502,6 +521,7 @@ acpi_status
 acpi_ev_initialize_region(union acpi_operand_object *region_obj,
 			  u8 acpi_ns_locked)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *handler_obj;
 	union acpi_operand_object *obj_desc;
 	acpi_adr_space_type space_id;
@@ -627,4 +647,5 @@ acpi_ev_initialize_region(union acpi_operand_object *region_obj,
 			  region_obj));
 
 	return_ACPI_STATUS(AE_NOT_EXIST);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -66,6 +66,7 @@ static u32 acpi_ev_global_lock_handler(void *context);
 
 acpi_status acpi_ev_init_global_lock_handler(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ev_init_global_lock_handler);
@@ -104,6 +105,7 @@ acpi_status acpi_ev_init_global_lock_handler(void)
 	acpi_gbl_global_lock_pending = FALSE;
 	acpi_gbl_global_lock_present = TRUE;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -120,6 +122,7 @@ acpi_status acpi_ev_init_global_lock_handler(void)
 
 acpi_status acpi_ev_remove_global_lock_handler(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ev_remove_global_lock_handler);
@@ -130,6 +133,7 @@ acpi_status acpi_ev_remove_global_lock_handler(void)
 
 	acpi_os_delete_lock(acpi_gbl_global_lock_pending_lock);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -148,6 +152,7 @@ acpi_status acpi_ev_remove_global_lock_handler(void)
 
 static u32 acpi_ev_global_lock_handler(void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_cpu_flags flags;
 
@@ -176,6 +181,7 @@ static u32 acpi_ev_global_lock_handler(void *context)
 cleanup_and_exit:
 
 	acpi_os_release_lock(acpi_gbl_global_lock_pending_lock, flags);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (ACPI_INTERRUPT_HANDLED);
 }
 
@@ -203,6 +209,7 @@ cleanup_and_exit:
 
 acpi_status acpi_ev_acquire_global_lock(u16 timeout)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_cpu_flags flags;
 	acpi_status status;
 	u8 acquired = FALSE;
@@ -283,6 +290,7 @@ acpi_status acpi_ev_acquire_global_lock(u16 timeout)
 	acpi_os_release_lock(acpi_gbl_global_lock_pending_lock, flags);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -299,6 +307,7 @@ acpi_status acpi_ev_acquire_global_lock(u16 timeout)
 
 acpi_status acpi_ev_release_global_lock(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 pending = FALSE;
 	acpi_status status = AE_OK;
 
@@ -339,6 +348,7 @@ acpi_status acpi_ev_release_global_lock(void)
 
 	acpi_os_release_mutex(acpi_gbl_global_lock_mutex->mutex.os_mutex);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

@@ -61,6 +61,7 @@ ACPI_MODULE_NAME("utmisc")
  ******************************************************************************/
 u8 acpi_ut_is_pci_root_bridge(char *id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/*
 	 * Check if this is a PCI root bridge.
@@ -69,9 +70,11 @@ u8 acpi_ut_is_pci_root_bridge(char *id)
 	if (!(strcmp(id,
 		     PCI_ROOT_HID_STRING)) ||
 	    !(strcmp(id, PCI_EXPRESS_ROOT_HID_STRING))) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -92,6 +95,7 @@ u8 acpi_ut_is_pci_root_bridge(char *id)
 
 u8 acpi_ut_is_aml_table(struct acpi_table_header *table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* These are the only tables that contain executable AML */
 
@@ -99,9 +103,11 @@ u8 acpi_ut_is_aml_table(struct acpi_table_header *table)
 	    ACPI_COMPARE_NAME(table->signature, ACPI_SIG_PSDT) ||
 	    ACPI_COMPARE_NAME(table->signature, ACPI_SIG_SSDT) ||
 	    ACPI_COMPARE_NAME(table->signature, ACPI_SIG_OSDT)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 #endif
@@ -120,6 +126,7 @@ u8 acpi_ut_is_aml_table(struct acpi_table_header *table)
 
 u32 acpi_ut_dword_byte_swap(u32 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union {
 		u32 value;
 		u8 bytes[4];
@@ -138,6 +145,7 @@ u32 acpi_ut_dword_byte_swap(u32 value)
 	out.bytes[2] = in.bytes[1];
 	out.bytes[3] = in.bytes[0];
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (out.value);
 }
 
@@ -158,6 +166,7 @@ u32 acpi_ut_dword_byte_swap(u32 value)
 
 void acpi_ut_set_integer_width(u8 revision)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (revision < 2) {
 
@@ -173,6 +182,7 @@ void acpi_ut_set_integer_width(u8 revision)
 		acpi_gbl_integer_nybble_width = 16;
 		acpi_gbl_integer_byte_width = 8;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -194,6 +204,7 @@ acpi_ut_create_update_state_and_push(union acpi_operand_object *object,
 				     u16 action,
 				     union acpi_generic_state **state_list)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -201,15 +212,18 @@ acpi_ut_create_update_state_and_push(union acpi_operand_object *object,
 	/* Ignore null objects; these are expected */
 
 	if (!object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	state = acpi_ut_create_update_state(object, action);
 	if (!state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
 	acpi_ut_push_generic_state(state_list, state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -233,6 +247,7 @@ acpi_ut_walk_package_tree(union acpi_operand_object *source_object,
 			  void *target_object,
 			  acpi_pkg_callback walk_callback, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_generic_state *state_list = NULL;
 	union acpi_generic_state *state;
@@ -340,6 +355,7 @@ acpi_ut_walk_package_tree(union acpi_operand_object *source_object,
 	/* We should never get here */
 
 	return_ACPI_STATUS(AE_AML_INTERNAL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifdef ACPI_DEBUG_OUTPUT
@@ -363,6 +379,7 @@ acpi_ut_display_init_pathname(u8 type,
 			      struct acpi_namespace_node *obj_handle,
 			      char *path)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_buffer buffer;
 
@@ -371,6 +388,7 @@ acpi_ut_display_init_pathname(u8 type,
 	/* Only print the path if the appropriate debug level is enabled */
 
 	if (!(acpi_dbg_level & ACPI_LV_INIT_NAMES)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -379,7 +397,8 @@ acpi_ut_display_init_pathname(u8 type,
 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
 	status = acpi_ns_handle_to_pathname(obj_handle, &buffer, TRUE);
 	if (ACPI_FAILURE(status)) {
-		return;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return;
 	}
 
 	/* Print what we're doing */
@@ -409,5 +428,6 @@ acpi_ut_display_init_pathname(u8 type,
 	acpi_os_printf("\n");
 
 	ACPI_FREE(buffer.pointer);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif

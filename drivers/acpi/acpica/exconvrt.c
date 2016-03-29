@@ -72,6 +72,7 @@ acpi_status
 acpi_ex_convert_to_integer(union acpi_operand_object *obj_desc,
 			   union acpi_operand_object **result_desc, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_desc;
 	u8 *pointer;
 	u64 result;
@@ -180,6 +181,7 @@ acpi_ex_convert_to_integer(union acpi_operand_object *obj_desc,
 	(void)acpi_ex_truncate_for32bit_table(return_desc);
 	*result_desc = return_desc;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -200,6 +202,7 @@ acpi_status
 acpi_ex_convert_to_buffer(union acpi_operand_object *obj_desc,
 			  union acpi_operand_object **result_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_desc;
 	u8 *new_buf;
 
@@ -265,6 +268,7 @@ acpi_ex_convert_to_buffer(union acpi_operand_object *obj_desc,
 	return_desc->common.flags |= AOPOBJ_DATA_VALID;
 	*result_desc = return_desc;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -285,6 +289,7 @@ acpi_ex_convert_to_buffer(union acpi_operand_object *obj_desc,
 static u32
 acpi_ex_convert_to_ascii(u64 integer, u16 base, u8 *string, u8 data_width)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u64 digit;
 	u32 i;
 	u32 j;
@@ -361,6 +366,7 @@ acpi_ex_convert_to_ascii(u64 integer, u16 base, u8 *string, u8 data_width)
 		break;
 
 	default:
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (0);
 	}
 
@@ -376,6 +382,7 @@ acpi_ex_convert_to_ascii(u64 integer, u16 base, u8 *string, u8 data_width)
 	}
 
 	string[k] = 0;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((u32) k);
 }
 
@@ -398,6 +405,7 @@ acpi_status
 acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			  union acpi_operand_object ** result_desc, u32 type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_desc;
 	u8 *new_buf;
 	u32 i;
@@ -553,6 +561,7 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 
 	*result_desc = return_desc;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -576,6 +585,7 @@ acpi_ex_convert_to_target_type(acpi_object_type destination_type,
 			       union acpi_operand_object **result_desc,
 			       struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ex_convert_to_target_type);
@@ -690,4 +700,5 @@ acpi_ex_convert_to_target_type(acpi_object_type destination_type,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -68,6 +68,7 @@ acpi_tb_init_table_descriptor(struct acpi_table_desc *table_desc,
 			      acpi_physical_address address,
 			      u8 flags, struct acpi_table_header *table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/*
 	 * Initialize the table descriptor. Set the pointer to NULL, since the
@@ -78,6 +79,7 @@ acpi_tb_init_table_descriptor(struct acpi_table_desc *table_desc,
 	table_desc->length = table->length;
 	table_desc->flags = flags;
 	ACPI_MOVE_32_TO_32(table_desc->signature.ascii, table->signature);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -101,6 +103,7 @@ acpi_tb_acquire_table(struct acpi_table_desc *table_desc,
 		      struct acpi_table_header **table_ptr,
 		      u32 *table_length, u8 *table_flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_header *table = NULL;
 
 	switch (table_desc->flags & ACPI_TABLE_ORIGIN_MASK) {
@@ -126,6 +129,7 @@ acpi_tb_acquire_table(struct acpi_table_desc *table_desc,
 	/* Table is not valid yet */
 
 	if (!table) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -134,6 +138,7 @@ acpi_tb_acquire_table(struct acpi_table_desc *table_desc,
 	*table_ptr = table;
 	*table_length = table_desc->length;
 	*table_flags = table_desc->flags;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -155,6 +160,7 @@ void
 acpi_tb_release_table(struct acpi_table_header *table,
 		      u32 table_length, u8 table_flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	switch (table_flags & ACPI_TABLE_ORIGIN_MASK) {
 	case ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL:
@@ -168,6 +174,7 @@ acpi_tb_release_table(struct acpi_table_header *table,
 
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -191,6 +198,7 @@ acpi_status
 acpi_tb_acquire_temp_table(struct acpi_table_desc *table_desc,
 			   acpi_physical_address address, u8 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_header *table_header;
 
 	switch (flags & ACPI_TABLE_ORIGIN_MASK) {
@@ -202,6 +210,8 @@ acpi_tb_acquire_temp_table(struct acpi_table_desc *table_desc,
 		    acpi_os_map_memory(address,
 				       sizeof(struct acpi_table_header));
 		if (!table_header) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -209,6 +219,7 @@ acpi_tb_acquire_temp_table(struct acpi_table_desc *table_desc,
 					      table_header);
 		acpi_os_unmap_memory(table_header,
 				     sizeof(struct acpi_table_header));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 
 	case ACPI_TABLE_ORIGIN_INTERNAL_VIRTUAL:
@@ -217,11 +228,14 @@ acpi_tb_acquire_temp_table(struct acpi_table_desc *table_desc,
 		table_header = ACPI_CAST_PTR(struct acpi_table_header,
 					     ACPI_PHYSADDR_TO_PTR(address));
 		if (!table_header) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
 		acpi_tb_init_table_descriptor(table_desc, address, flags,
 					      table_header);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 
 	default:
@@ -231,6 +245,7 @@ acpi_tb_acquire_temp_table(struct acpi_table_desc *table_desc,
 
 	/* Table is not valid yet */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_NO_MEMORY);
 }
 
@@ -248,6 +263,7 @@ acpi_tb_acquire_temp_table(struct acpi_table_desc *table_desc,
 
 void acpi_tb_release_temp_table(struct acpi_table_desc *table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/*
 	 * Note that the .Address is maintained by the callers of
@@ -255,6 +271,7 @@ void acpi_tb_release_temp_table(struct acpi_table_desc *table_desc)
 	 * where .Address will be freed.
 	 */
 	acpi_tb_invalidate_table(table_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -272,6 +289,7 @@ void acpi_tb_release_temp_table(struct acpi_table_desc *table_desc)
 
 acpi_status acpi_tb_validate_table(struct acpi_table_desc *table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(tb_validate_table);
@@ -288,6 +306,7 @@ acpi_status acpi_tb_validate_table(struct acpi_table_desc *table_desc)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -305,6 +324,7 @@ acpi_status acpi_tb_validate_table(struct acpi_table_desc *table_desc)
 
 void acpi_tb_invalidate_table(struct acpi_table_desc *table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE(tb_invalidate_table);
 
@@ -319,6 +339,7 @@ void acpi_tb_invalidate_table(struct acpi_table_desc *table_desc)
 	table_desc->pointer = NULL;
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -336,6 +357,7 @@ void acpi_tb_invalidate_table(struct acpi_table_desc *table_desc)
 
 acpi_status acpi_tb_validate_temp_table(struct acpi_table_desc *table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!table_desc->pointer && !acpi_gbl_verify_table_checksum) {
 		/*
@@ -350,6 +372,7 @@ acpi_status acpi_tb_validate_temp_table(struct acpi_table_desc *table_desc)
 		table_desc->length = sizeof(struct acpi_table_header);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_tb_validate_table(table_desc));
 }
 
@@ -370,6 +393,7 @@ acpi_status acpi_tb_validate_temp_table(struct acpi_table_desc *table_desc)
 acpi_status
 acpi_tb_verify_temp_table(struct acpi_table_desc * table_desc, char *signature)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(tb_verify_temp_table);
@@ -417,6 +441,7 @@ acpi_tb_verify_temp_table(struct acpi_table_desc * table_desc, char *signature)
 invalidate_and_exit:
 	acpi_tb_invalidate_table(table_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -433,6 +458,7 @@ invalidate_and_exit:
 
 acpi_status acpi_tb_resize_root_table_list(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_desc *tables;
 	u32 table_count;
 
@@ -481,6 +507,7 @@ acpi_status acpi_tb_resize_root_table_list(void)
 	acpi_gbl_root_table_list.flags |= ACPI_ROOT_ORIGIN_ALLOCATED;
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -500,6 +527,7 @@ acpi_status
 acpi_tb_get_next_table_descriptor(u32 *table_index,
 				  struct acpi_table_desc **table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 
@@ -509,6 +537,8 @@ acpi_tb_get_next_table_descriptor(u32 *table_index,
 	    acpi_gbl_root_table_list.max_table_count) {
 		status = acpi_tb_resize_root_table_list();
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	}
@@ -523,6 +553,7 @@ acpi_tb_get_next_table_descriptor(u32 *table_index,
 		*table_desc = &acpi_gbl_root_table_list.tables[i];
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -540,6 +571,7 @@ acpi_tb_get_next_table_descriptor(u32 *table_index,
 
 void acpi_tb_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_TRACE(tb_terminate);
@@ -568,6 +600,7 @@ void acpi_tb_terminate(void)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -584,6 +617,7 @@ void acpi_tb_terminate(void)
 
 acpi_status acpi_tb_delete_namespace_by_owner(u32 table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_owner_id owner_id;
 	acpi_status status;
 
@@ -626,6 +660,7 @@ acpi_status acpi_tb_delete_namespace_by_owner(u32 table_index)
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_INTERPRETER);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -642,6 +677,7 @@ acpi_status acpi_tb_delete_namespace_by_owner(u32 table_index)
 
 acpi_status acpi_tb_allocate_owner_id(u32 table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_BAD_PARAMETER;
 
 	ACPI_FUNCTION_TRACE(tb_allocate_owner_id);
@@ -656,6 +692,7 @@ acpi_status acpi_tb_allocate_owner_id(u32 table_index)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -672,6 +709,7 @@ acpi_status acpi_tb_allocate_owner_id(u32 table_index)
 
 acpi_status acpi_tb_release_owner_id(u32 table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_BAD_PARAMETER;
 
 	ACPI_FUNCTION_TRACE(tb_release_owner_id);
@@ -686,6 +724,7 @@ acpi_status acpi_tb_release_owner_id(u32 table_index)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -703,6 +742,7 @@ acpi_status acpi_tb_release_owner_id(u32 table_index)
 
 acpi_status acpi_tb_get_owner_id(u32 table_index, acpi_owner_id * owner_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_BAD_PARAMETER;
 
 	ACPI_FUNCTION_TRACE(tb_get_owner_id);
@@ -716,6 +756,7 @@ acpi_status acpi_tb_get_owner_id(u32 table_index, acpi_owner_id * owner_id)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -730,6 +771,7 @@ acpi_status acpi_tb_get_owner_id(u32 table_index, acpi_owner_id * owner_id)
 
 u8 acpi_tb_is_table_loaded(u32 table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 is_loaded = FALSE;
 
 	(void)acpi_ut_acquire_mutex(ACPI_MTX_TABLES);
@@ -740,6 +782,7 @@ u8 acpi_tb_is_table_loaded(u32 table_index)
 	}
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (is_loaded);
 }
 
@@ -758,6 +801,7 @@ u8 acpi_tb_is_table_loaded(u32 table_index)
 
 void acpi_tb_set_table_loaded_flag(u32 table_index, u8 is_loaded)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	(void)acpi_ut_acquire_mutex(ACPI_MTX_TABLES);
 	if (table_index < acpi_gbl_root_table_list.current_table_count) {
@@ -771,4 +815,5 @@ void acpi_tb_set_table_loaded_flag(u32 table_index, u8 is_loaded)
 	}
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

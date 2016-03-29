@@ -79,6 +79,7 @@ static acpi_status
 acpi_ds_init_one_object(acpi_handle obj_handle,
 			u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_init_walk_info *info =
 	    (struct acpi_init_walk_info *)context;
 	struct acpi_namespace_node *node =
@@ -93,6 +94,7 @@ acpi_ds_init_one_object(acpi_handle obj_handle,
 	 * was just loaded
 	 */
 	if (node->owner_id != info->owner_id) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -169,6 +171,7 @@ acpi_ds_init_one_object(acpi_handle obj_handle,
 	 * We ignore errors from above, and always return OK, since
 	 * we don't want to abort the walk on a single error.
 	 */
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -190,6 +193,7 @@ acpi_status
 acpi_ds_initialize_objects(u32 table_index,
 			   struct acpi_namespace_node * start_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_init_walk_info info;
 	struct acpi_table_header *table;
@@ -260,4 +264,5 @@ acpi_ds_initialize_objects(u32 table_index,
 			  info.method_count, info.op_region_count));
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

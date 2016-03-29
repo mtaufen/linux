@@ -73,9 +73,11 @@ static const char *acpi_ut_trim_function_name(const char *function_name);
 
 void acpi_ut_init_stack_ptr_trace(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size current_sp;
 
 	acpi_gbl_entry_stack_pointer = &current_sp;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -92,6 +94,7 @@ void acpi_ut_init_stack_ptr_trace(void)
 
 void acpi_ut_track_stack_ptr(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size current_sp;
 
 	if (&current_sp < acpi_gbl_lowest_stack_pointer) {
@@ -101,6 +104,7 @@ void acpi_ut_track_stack_ptr(void)
 	if (acpi_gbl_nesting_level > acpi_gbl_deepest_nesting) {
 		acpi_gbl_deepest_nesting = acpi_gbl_nesting_level;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -119,6 +123,7 @@ void acpi_ut_track_stack_ptr(void)
 
 static const char *acpi_ut_trim_function_name(const char *function_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* All Function names are longer than 4 chars, check is safe */
 
@@ -126,6 +131,7 @@ static const char *acpi_ut_trim_function_name(const char *function_name)
 
 		/* This is the case where the original source has not been modified */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (function_name + 4);
 	}
 
@@ -133,9 +139,11 @@ static const char *acpi_ut_trim_function_name(const char *function_name)
 
 		/* This is the case where the source has been 'linuxized' */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (function_name + 5);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (function_name);
 }
 
@@ -165,12 +173,14 @@ acpi_debug_print(u32 requested_debug_level,
 		 const char *module_name,
 		 u32 component_id, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_thread_id thread_id;
 	va_list args;
 
 	/* Check if debug output enabled */
 
 	if (!ACPI_IS_DEBUG_ENABLED(requested_debug_level, component_id)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -214,6 +224,7 @@ acpi_debug_print(u32 requested_debug_level,
 	va_start(args, format);
 	acpi_os_vprintf(format, args);
 	va_end(args);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_debug_print)
@@ -243,17 +254,20 @@ acpi_debug_print_raw(u32 requested_debug_level,
 		     const char *module_name,
 		     u32 component_id, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list args;
 
 	/* Check if debug output enabled */
 
 	if (!ACPI_IS_DEBUG_ENABLED(requested_debug_level, component_id)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	va_start(args, format);
 	acpi_os_vprintf(format, args);
 	va_end(args);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_debug_print_raw)
@@ -278,6 +292,7 @@ acpi_ut_trace(u32 line_number,
 	      const char *function_name,
 	      const char *module_name, u32 component_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_gbl_nesting_level++;
 	acpi_ut_track_stack_ptr();
@@ -289,6 +304,7 @@ acpi_ut_trace(u32 line_number,
 				 line_number, function_name, module_name,
 				 component_id, "%s\n", acpi_gbl_fn_entry_str);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_ut_trace)
@@ -314,6 +330,7 @@ acpi_ut_trace_ptr(u32 line_number,
 		  const char *function_name,
 		  const char *module_name, u32 component_id, void *pointer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_gbl_nesting_level++;
 	acpi_ut_track_stack_ptr();
@@ -326,6 +343,7 @@ acpi_ut_trace_ptr(u32 line_number,
 				 component_id, "%s %p\n", acpi_gbl_fn_entry_str,
 				 pointer);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -350,6 +368,7 @@ acpi_ut_trace_str(u32 line_number,
 		  const char *function_name,
 		  const char *module_name, u32 component_id, char *string)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_gbl_nesting_level++;
 	acpi_ut_track_stack_ptr();
@@ -362,6 +381,7 @@ acpi_ut_trace_str(u32 line_number,
 				 component_id, "%s %s\n", acpi_gbl_fn_entry_str,
 				 string);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -386,6 +406,7 @@ acpi_ut_trace_u32(u32 line_number,
 		  const char *function_name,
 		  const char *module_name, u32 component_id, u32 integer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_gbl_nesting_level++;
 	acpi_ut_track_stack_ptr();
@@ -398,6 +419,7 @@ acpi_ut_trace_u32(u32 line_number,
 				 component_id, "%s %08X\n",
 				 acpi_gbl_fn_entry_str, integer);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -421,6 +443,7 @@ acpi_ut_exit(u32 line_number,
 	     const char *function_name,
 	     const char *module_name, u32 component_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Check if enabled up-front for performance */
 
@@ -433,6 +456,7 @@ acpi_ut_exit(u32 line_number,
 	if (acpi_gbl_nesting_level) {
 		acpi_gbl_nesting_level--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_ut_exit)
@@ -459,6 +483,7 @@ acpi_ut_status_exit(u32 line_number,
 		    const char *module_name,
 		    u32 component_id, acpi_status status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Check if enabled up-front for performance */
 
@@ -482,6 +507,7 @@ acpi_ut_status_exit(u32 line_number,
 	if (acpi_gbl_nesting_level) {
 		acpi_gbl_nesting_level--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_ut_status_exit)
@@ -507,6 +533,7 @@ acpi_ut_value_exit(u32 line_number,
 		   const char *function_name,
 		   const char *module_name, u32 component_id, u64 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Check if enabled up-front for performance */
 
@@ -521,6 +548,7 @@ acpi_ut_value_exit(u32 line_number,
 	if (acpi_gbl_nesting_level) {
 		acpi_gbl_nesting_level--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_ut_value_exit)
@@ -546,6 +574,7 @@ acpi_ut_ptr_exit(u32 line_number,
 		 const char *function_name,
 		 const char *module_name, u32 component_id, u8 *ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Check if enabled up-front for performance */
 
@@ -559,6 +588,7 @@ acpi_ut_ptr_exit(u32 line_number,
 	if (acpi_gbl_nesting_level) {
 		acpi_gbl_nesting_level--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -580,6 +610,7 @@ acpi_ut_ptr_exit(u32 line_number,
 void
 acpi_trace_point(acpi_trace_event_type type, u8 begin, u8 *aml, char *pathname)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
@@ -588,6 +619,7 @@ acpi_trace_point(acpi_trace_event_type type, u8 begin, u8 *aml, char *pathname)
 #ifdef ACPI_USE_SYSTEM_TRACER
 	acpi_os_trace_point(type, begin, aml, pathname);
 #endif
+printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_trace_point)
@@ -607,11 +639,13 @@ ACPI_EXPORT_SYMBOL(acpi_trace_point)
  ******************************************************************************/
 void ACPI_INTERNAL_VAR_XFACE acpi_log_error(const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list args;
 
 	va_start(args, format);
 	(void)acpi_ut_file_vprintf(ACPI_FILE_ERR, format, args);
 	va_end(args);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_log_error)

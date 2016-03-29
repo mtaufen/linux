@@ -90,6 +90,7 @@ acpi_status
 acpi_ut_short_divide(u64 dividend,
 		     u32 divisor, u64 *out_quotient, u32 *out_remainder)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union uint64_overlay dividend_ovl;
 	union uint64_overlay quotient;
 	u32 remainder32;
@@ -125,6 +126,7 @@ acpi_ut_short_divide(u64 dividend,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -146,6 +148,7 @@ acpi_status
 acpi_ut_divide(u64 in_dividend,
 	       u64 in_divisor, u64 *out_quotient, u64 *out_remainder)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union uint64_overlay dividend;
 	union uint64_overlay divisor;
 	union uint64_overlay quotient;
@@ -255,6 +258,7 @@ acpi_ut_divide(u64 in_dividend,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #else
@@ -276,6 +280,7 @@ acpi_status
 acpi_ut_short_divide(u64 in_dividend,
 		     u32 divisor, u64 *out_quotient, u32 *out_remainder)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE(ut_short_divide);
 
@@ -296,12 +301,14 @@ acpi_ut_short_divide(u64 in_dividend,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 acpi_status
 acpi_ut_divide(u64 in_dividend,
 	       u64 in_divisor, u64 *out_quotient, u64 *out_remainder)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ut_divide);
 
 	/* Always check for a zero divisor */
@@ -321,6 +328,7 @@ acpi_ut_divide(u64 in_dividend,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif

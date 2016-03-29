@@ -63,6 +63,7 @@ ACPI_MODULE_NAME("utownerid")
  ******************************************************************************/
 acpi_status acpi_ut_allocate_owner_id(acpi_owner_id * owner_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 j;
 	u32 k;
@@ -151,6 +152,7 @@ acpi_status acpi_ut_allocate_owner_id(acpi_owner_id * owner_id)
 exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_CACHES);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -169,6 +171,7 @@ exit:
 
 void acpi_ut_release_owner_id(acpi_owner_id * owner_id_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_owner_id owner_id = *owner_id_ptr;
 	acpi_status status;
 	u32 index;
@@ -215,4 +218,5 @@ void acpi_ut_release_owner_id(acpi_owner_id * owner_id_ptr)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_CACHES);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

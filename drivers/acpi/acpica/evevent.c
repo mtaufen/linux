@@ -67,6 +67,7 @@ static u32 acpi_ev_fixed_event_dispatch(u32 event);
 
 acpi_status acpi_ev_initialize_events(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ev_initialize_events);
@@ -97,6 +98,7 @@ acpi_status acpi_ev_initialize_events(void)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -113,6 +115,7 @@ acpi_status acpi_ev_initialize_events(void)
 
 acpi_status acpi_ev_install_xrupt_handlers(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ev_install_xrupt_handlers);
@@ -143,6 +146,7 @@ acpi_status acpi_ev_install_xrupt_handlers(void)
 
 	acpi_gbl_events_initialized = TRUE;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -159,6 +163,7 @@ acpi_status acpi_ev_install_xrupt_handlers(void)
 
 static acpi_status acpi_ev_fixed_event_initialize(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	acpi_status status;
 
@@ -178,11 +183,14 @@ static acpi_status acpi_ev_fixed_event_initialize(void)
 						    [i].enable_register_id,
 						    ACPI_DISABLE_EVENT);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -200,6 +208,7 @@ static acpi_status acpi_ev_fixed_event_initialize(void)
 
 u32 acpi_ev_fixed_event_detect(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 int_status = ACPI_INTERRUPT_NOT_HANDLED;
 	u32 fixed_status;
 	u32 fixed_enable;
@@ -244,6 +253,7 @@ u32 acpi_ev_fixed_event_detect(void)
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (int_status);
 }
 
@@ -264,6 +274,7 @@ u32 acpi_ev_fixed_event_detect(void)
 
 static u32 acpi_ev_fixed_event_dispatch(u32 event)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
@@ -285,11 +296,13 @@ static u32 acpi_ev_fixed_event_dispatch(u32 event)
 			    "No installed handler for fixed event - %s (%u), disabling",
 			    acpi_ut_get_event_name(event), event));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (ACPI_INTERRUPT_NOT_HANDLED);
 	}
 
 	/* Invoke the Fixed Event handler */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((acpi_gbl_fixed_event_handlers[event].
 		 handler) (acpi_gbl_fixed_event_handlers[event].context));
 }

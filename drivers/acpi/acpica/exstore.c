@@ -87,6 +87,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
 	      union acpi_operand_object *dest_desc,
 	      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *ref_desc = dest_desc;
 
@@ -207,6 +208,7 @@ acpi_ex_store(union acpi_operand_object *source_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -228,6 +230,7 @@ acpi_ex_store_object_to_index(union acpi_operand_object *source_desc,
 			      union acpi_operand_object *index_desc,
 			      struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *new_desc;
@@ -359,6 +362,7 @@ acpi_ex_store_object_to_index(union acpi_operand_object *source_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -397,6 +401,7 @@ acpi_ex_store_object_to_node(union acpi_operand_object *source_desc,
 			     struct acpi_walk_state *walk_state,
 			     u8 implicit_conversion)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *target_desc;
 	union acpi_operand_object *new_desc;
@@ -572,6 +577,7 @@ acpi_ex_store_object_to_node(union acpi_operand_object *source_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -594,6 +600,7 @@ acpi_ex_store_direct_to_node(union acpi_operand_object *source_desc,
 			     struct acpi_namespace_node *node,
 			     struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *new_desc;
 
@@ -619,4 +626,5 @@ acpi_ex_store_direct_to_node(union acpi_operand_object *source_desc,
 	status = acpi_ns_attach_object(node, new_desc, new_desc->common.type);
 	acpi_ut_remove_reference(new_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

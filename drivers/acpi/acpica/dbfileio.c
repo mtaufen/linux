@@ -68,6 +68,7 @@ ACPI_MODULE_NAME("dbfileio")
  ******************************************************************************/
 void acpi_db_close_debug_file(void)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 #ifdef ACPI_APPLICATION
 
@@ -79,6 +80,7 @@ void acpi_db_close_debug_file(void)
 			       acpi_gbl_db_debug_filename);
 	}
 #endif
+printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -95,6 +97,7 @@ void acpi_db_close_debug_file(void)
 
 void acpi_db_open_debug_file(char *name)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 #ifdef ACPI_APPLICATION
 
@@ -102,6 +105,7 @@ void acpi_db_open_debug_file(char *name)
 	acpi_gbl_debug_file = fopen(name, "w+");
 	if (!acpi_gbl_debug_file) {
 		acpi_os_printf("Could not open debug file %s\n", name);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -111,6 +115,7 @@ void acpi_db_open_debug_file(char *name)
 	acpi_gbl_db_output_to_file = TRUE;
 
 #endif
+printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 
@@ -128,6 +133,7 @@ void acpi_db_open_debug_file(char *name)
 
 acpi_status acpi_db_load_tables(struct acpi_new_table_desc *list_head)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_new_table_desc *table_list_head;
 	struct acpi_table_header *table;
@@ -149,6 +155,8 @@ acpi_status acpi_db_load_tables(struct acpi_new_table_desc *list_head)
 					       acpi_format_exception(status));
 			}
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -159,5 +167,6 @@ acpi_status acpi_db_load_tables(struct acpi_new_table_desc *list_head)
 		table_list_head = table_list_head->next;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

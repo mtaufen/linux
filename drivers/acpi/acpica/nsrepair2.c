@@ -186,6 +186,7 @@ acpi_ns_complex_repairs(struct acpi_evaluate_info *info,
 			acpi_status validate_status,
 			union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_repair_info *predefined;
 	acpi_status status;
 
@@ -193,10 +194,12 @@ acpi_ns_complex_repairs(struct acpi_evaluate_info *info,
 
 	predefined = acpi_ns_match_complex_repair(node);
 	if (!predefined) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (validate_status);
 	}
 
 	status = predefined->repair_function(info, return_object_ptr);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -216,6 +219,7 @@ static const struct acpi_repair_info *acpi_ns_match_complex_repair(struct
 								   acpi_namespace_node
 								   *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_repair_info *this_name;
 
 	/* Search info table for a repairable predefined method/object name */
@@ -223,12 +227,15 @@ static const struct acpi_repair_info *acpi_ns_match_complex_repair(struct
 	this_name = acpi_ns_repairable_names;
 	while (this_name->repair_function) {
 		if (ACPI_COMPARE_NAME(node->name.ascii, this_name->name)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (this_name);
 		}
 
 		this_name++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);		/* Not found */
 }
 
@@ -251,6 +258,7 @@ static acpi_status
 acpi_ns_repair_ALR(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	acpi_status status;
 
@@ -258,6 +266,7 @@ acpi_ns_repair_ALR(struct acpi_evaluate_info *info,
 					   ACPI_SORT_ASCENDING,
 					   "AmbientIlluminance");
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -282,6 +291,7 @@ static acpi_status
 acpi_ns_repair_FDE(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object *buffer_object;
 	u8 *byte_buffer;
@@ -296,6 +306,8 @@ acpi_ns_repair_FDE(struct acpi_evaluate_info *info,
 		/* This is the expected type. Length should be (at least) 5 DWORDs */
 
 		if (return_object->buffer.length >= ACPI_FDE_DWORD_BUFFER_SIZE) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -309,6 +321,8 @@ acpi_ns_repair_FDE(struct acpi_evaluate_info *info,
 					      return_object->buffer.length,
 					      ACPI_FDE_DWORD_BUFFER_SIZE));
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_OPERAND_TYPE);
 		}
 
@@ -317,6 +331,8 @@ acpi_ns_repair_FDE(struct acpi_evaluate_info *info,
 		buffer_object =
 		    acpi_ut_create_buffer_object(ACPI_FDE_DWORD_BUFFER_SIZE);
 		if (!buffer_object) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -339,6 +355,7 @@ acpi_ns_repair_FDE(struct acpi_evaluate_info *info,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
@@ -348,6 +365,7 @@ acpi_ns_repair_FDE(struct acpi_evaluate_info *info,
 	*return_object_ptr = buffer_object;
 
 	info->return_flags |= ACPI_OBJECT_REPAIRED;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -371,6 +389,7 @@ static acpi_status
 acpi_ns_repair_CID(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object **element_ptr;
@@ -382,12 +401,14 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
 
 	if (return_object->common.type == ACPI_TYPE_STRING) {
 		status = acpi_ns_repair_HID(info, return_object_ptr);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	/* Exit if not a Package */
 
 	if (return_object->common.type != ACPI_TYPE_PACKAGE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -400,6 +421,8 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
 
 		status = acpi_ns_repair_HID(info, element_ptr);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -418,6 +441,7 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
 		element_ptr++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -443,6 +467,7 @@ static acpi_status
 acpi_ns_repair_CST(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object **outer_elements;
 	u32 outer_element_count;
@@ -503,9 +528,11 @@ remove_element:
 	status = acpi_ns_check_sorted_list(info, return_object, 1, 4, 1,
 					   ACPI_SORT_ASCENDING, "C-State Type");
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -528,6 +555,7 @@ static acpi_status
 acpi_ns_repair_HID(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object *new_string;
 	char *source;
@@ -538,6 +566,7 @@ acpi_ns_repair_HID(struct acpi_evaluate_info *info,
 	/* We only care about string _HID objects (not integers) */
 
 	if (return_object->common.type != ACPI_TYPE_STRING) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -549,6 +578,7 @@ acpi_ns_repair_HID(struct acpi_evaluate_info *info,
 		/* Return AE_OK anyway, let driver handle it */
 
 		info->return_flags |= ACPI_OBJECT_REPAIRED;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -556,6 +586,7 @@ acpi_ns_repair_HID(struct acpi_evaluate_info *info,
 
 	new_string = acpi_ut_create_string_object(return_object->string.length);
 	if (!new_string) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -589,6 +620,7 @@ acpi_ns_repair_HID(struct acpi_evaluate_info *info,
 
 	acpi_ut_remove_reference(return_object);
 	*return_object_ptr = new_string;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -611,6 +643,7 @@ static acpi_status
 acpi_ns_repair_PRT(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *package_object = *return_object_ptr;
 	union acpi_operand_object **top_object_list;
 	union acpi_operand_object **sub_object_list;
@@ -656,6 +689,7 @@ acpi_ns_repair_PRT(struct acpi_evaluate_info *info,
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -680,6 +714,7 @@ static acpi_status
 acpi_ns_repair_PSS(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object **outer_elements;
 	u32 outer_element_count;
@@ -699,6 +734,7 @@ acpi_ns_repair_PSS(struct acpi_evaluate_info *info,
 					   ACPI_SORT_DESCENDING,
 					   "CpuFrequency");
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -726,6 +762,7 @@ acpi_ns_repair_PSS(struct acpi_evaluate_info *info,
 		outer_elements++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -748,6 +785,7 @@ static acpi_status
 acpi_ns_repair_TSS(struct acpi_evaluate_info *info,
 		   union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	acpi_status status;
 	struct acpi_namespace_node *node;
@@ -763,6 +801,7 @@ acpi_ns_repair_TSS(struct acpi_evaluate_info *info,
 	status = acpi_ns_get_node(info->node, "^_PSS",
 				  ACPI_NS_NO_UPSEARCH, &node);
 	if (ACPI_SUCCESS(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -770,6 +809,7 @@ acpi_ns_repair_TSS(struct acpi_evaluate_info *info,
 					   ACPI_SORT_DESCENDING,
 					   "PowerDissipation");
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -801,6 +841,7 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 			  u32 sort_index,
 			  u8 sort_direction, char *sort_key_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 outer_element_count;
 	union acpi_operand_object **outer_elements;
 	union acpi_operand_object **elements;
@@ -813,6 +854,7 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 	/* The top-level object must be a package */
 
 	if (return_object->common.type != ACPI_TYPE_PACKAGE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
@@ -823,6 +865,7 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 	 */
 	outer_element_count = return_object->package.count;
 	if (!outer_element_count || start_index >= outer_element_count) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_PACKAGE_LIMIT);
 	}
 
@@ -841,12 +884,16 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 		/* Each element of the top-level package must also be a package */
 
 		if ((*outer_elements)->common.type != ACPI_TYPE_PACKAGE) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_OPERAND_TYPE);
 		}
 
 		/* Each subpackage must have the minimum length */
 
 		if ((*outer_elements)->package.count < expected_count) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_PACKAGE_LIMIT);
 		}
 
@@ -854,6 +901,8 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 		obj_desc = elements[sort_index];
 
 		if (obj_desc->common.type != ACPI_TYPE_INTEGER) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_OPERAND_TYPE);
 		}
 
@@ -875,6 +924,8 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 			ACPI_DEBUG_PRINT((ACPI_DB_REPAIR,
 					  "%s: Repaired unsorted list - now sorted by %s\n",
 					  info->full_pathname, sort_key_name));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -882,6 +933,7 @@ acpi_ns_check_sorted_list(struct acpi_evaluate_info *info,
 		outer_elements++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -907,6 +959,7 @@ static void
 acpi_ns_sort_list(union acpi_operand_object **elements,
 		  u32 count, u32 index, u8 sort_direction)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc1;
 	union acpi_operand_object *obj_desc2;
 	union acpi_operand_object *temp_obj;
@@ -932,6 +985,7 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
 			}
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -950,6 +1004,7 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
 static void
 acpi_ns_remove_element(union acpi_operand_object *obj_desc, u32 index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **source;
 	union acpi_operand_object **dest;
 	u32 count;
@@ -982,4 +1037,5 @@ acpi_ns_remove_element(union acpi_operand_object *obj_desc, u32 index)
 
 	*dest = NULL;
 	obj_desc->package.count = new_count;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

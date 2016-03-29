@@ -73,6 +73,7 @@ acpi_status
 acpi_ns_attach_object(struct acpi_namespace_node *node,
 		      union acpi_operand_object *object, acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *last_obj_desc;
 	acpi_object_type object_type = ACPI_TYPE_ANY;
@@ -185,6 +186,7 @@ acpi_ns_attach_object(struct acpi_namespace_node *node,
 	node->object = obj_desc;
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -203,6 +205,7 @@ acpi_ns_attach_object(struct acpi_namespace_node *node,
 
 void acpi_ns_detach_object(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 
 	ACPI_FUNCTION_TRACE(ns_detach_object);
@@ -260,6 +263,7 @@ void acpi_ns_detach_object(struct acpi_namespace_node *node)
 
 	acpi_ut_remove_reference(obj_desc);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -279,6 +283,7 @@ union acpi_operand_object *acpi_ns_get_attached_object(struct
 						       acpi_namespace_node
 						       *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE_PTR(ns_get_attached_object, node);
 
 	if (!node) {
@@ -295,6 +300,7 @@ union acpi_operand_object *acpi_ns_get_attached_object(struct
 	}
 
 	return_PTR(node->object);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -314,6 +320,7 @@ union acpi_operand_object *acpi_ns_get_secondary_object(union
 							acpi_operand_object
 							*obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE_PTR(ns_get_secondary_object, obj_desc);
 
 	if ((!obj_desc) ||
@@ -325,6 +332,7 @@ union acpi_operand_object *acpi_ns_get_secondary_object(union
 	}
 
 	return_PTR(obj_desc->common.next_object);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -345,6 +353,7 @@ acpi_status
 acpi_ns_attach_data(struct acpi_namespace_node *node,
 		    acpi_object_handler handler, void *data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *prev_obj_desc;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *data_desc;
@@ -356,6 +365,8 @@ acpi_ns_attach_data(struct acpi_namespace_node *node,
 	while (obj_desc) {
 		if ((obj_desc->common.type == ACPI_TYPE_LOCAL_DATA) &&
 		    (obj_desc->data.handler == handler)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_ALREADY_EXISTS);
 		}
 
@@ -367,6 +378,7 @@ acpi_ns_attach_data(struct acpi_namespace_node *node,
 
 	data_desc = acpi_ut_create_internal_object(ACPI_TYPE_LOCAL_DATA);
 	if (!data_desc) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -381,6 +393,7 @@ acpi_ns_attach_data(struct acpi_namespace_node *node,
 		node->object = data_desc;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -402,6 +415,7 @@ acpi_status
 acpi_ns_detach_data(struct acpi_namespace_node * node,
 		    acpi_object_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *prev_obj_desc;
 
@@ -418,6 +432,8 @@ acpi_ns_detach_data(struct acpi_namespace_node * node,
 			}
 
 			acpi_ut_remove_reference(obj_desc);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -425,6 +441,7 @@ acpi_ns_detach_data(struct acpi_namespace_node * node,
 		obj_desc = obj_desc->common.next_object;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_NOT_FOUND);
 }
 
@@ -447,6 +464,7 @@ acpi_status
 acpi_ns_get_attached_data(struct acpi_namespace_node * node,
 			  acpi_object_handler handler, void **data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 
 	obj_desc = node->object;
@@ -454,11 +472,14 @@ acpi_ns_get_attached_data(struct acpi_namespace_node * node,
 		if ((obj_desc->common.type == ACPI_TYPE_LOCAL_DATA) &&
 		    (obj_desc->data.handler == handler)) {
 			*data = obj_desc->data.pointer;
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
 		obj_desc = obj_desc->common.next_object;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_NOT_FOUND);
 }

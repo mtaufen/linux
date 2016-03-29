@@ -73,6 +73,7 @@ acpi_ut_evaluate_object(struct acpi_namespace_node *prefix_node,
 			u32 expected_return_btypes,
 			union acpi_operand_object **return_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_evaluate_info *info;
 	acpi_status status;
 	u32 return_btype;
@@ -184,6 +185,7 @@ acpi_ut_evaluate_object(struct acpi_namespace_node *prefix_node,
 cleanup:
 	ACPI_FREE(info);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -208,6 +210,7 @@ acpi_ut_evaluate_numeric_object(char *object_name,
 				struct acpi_namespace_node *device_node,
 				u64 *value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -227,6 +230,7 @@ acpi_ut_evaluate_numeric_object(char *object_name,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -249,6 +253,7 @@ acpi_ut_evaluate_numeric_object(char *object_name,
 acpi_status
 acpi_ut_execute_STA(struct acpi_namespace_node *device_node, u32 * flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -282,6 +287,7 @@ acpi_ut_execute_STA(struct acpi_namespace_node *device_node, u32 * flags)
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -307,6 +313,7 @@ acpi_ut_execute_power_methods(struct acpi_namespace_node *device_node,
 			      const char **method_names,
 			      u8 method_count, u8 *out_values)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 	acpi_status final_status = AE_NOT_FOUND;
@@ -346,4 +353,5 @@ acpi_ut_execute_power_methods(struct acpi_namespace_node *device_node,
 	}
 
 	return_ACPI_STATUS(final_status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

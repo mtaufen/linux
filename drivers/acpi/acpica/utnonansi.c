@@ -64,11 +64,13 @@ ACPI_MODULE_NAME("utnonansi")
  ******************************************************************************/
 void acpi_ut_strlwr(char *src_string)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *string;
 
 	ACPI_FUNCTION_ENTRY();
 
 	if (!src_string) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -77,6 +79,7 @@ void acpi_ut_strlwr(char *src_string)
 	for (string = src_string; *string; string++) {
 		*string = (char)tolower((int)*string);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -93,11 +96,13 @@ void acpi_ut_strlwr(char *src_string)
 
 void acpi_ut_strupr(char *src_string)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *string;
 
 	ACPI_FUNCTION_ENTRY();
 
 	if (!src_string) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -106,6 +111,7 @@ void acpi_ut_strupr(char *src_string)
 	for (string = src_string; *string; string++) {
 		*string = (char)toupper((int)*string);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -125,6 +131,7 @@ void acpi_ut_strupr(char *src_string)
 
 int acpi_ut_stricmp(char *string1, char *string2)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	int c1;
 	int c2;
 
@@ -137,6 +144,7 @@ int acpi_ut_stricmp(char *string1, char *string2)
 	}
 	while ((c1 == c2) && (c1));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (c1 - c2);
 }
 
@@ -161,6 +169,7 @@ int acpi_ut_stricmp(char *string1, char *string2)
 
 acpi_status acpi_ut_strtoul64(char *string, u32 base, u64 *ret_integer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 this_digit = 0;
 	u64 return_value = 0;
 	u64 quotient;
@@ -316,6 +325,7 @@ error_exit:
 	} else {
 		return_ACPI_STATUS(AE_BAD_HEX_CONSTANT);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #if defined (ACPI_DEBUGGER) || defined (ACPI_APPLICATION)
@@ -341,23 +351,29 @@ error_exit:
 
 u8 acpi_ut_safe_strcpy(char *dest, acpi_size dest_size, char *source)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (strlen(source) >= dest_size) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
 	strcpy(dest, source);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
 u8 acpi_ut_safe_strcat(char *dest, acpi_size dest_size, char *source)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if ((strlen(dest) + strlen(source)) >= dest_size) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
 	strcat(dest, source);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -366,15 +382,18 @@ acpi_ut_safe_strncat(char *dest,
 		     acpi_size dest_size,
 		     char *source, acpi_size max_transfer_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size actual_transfer_length;
 
 	actual_transfer_length = ACPI_MIN(max_transfer_length, strlen(source));
 
 	if ((strlen(dest) + actual_transfer_length) >= dest_size) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
 	strncat(dest, source, max_transfer_length);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 #endif

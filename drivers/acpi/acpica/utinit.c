@@ -77,6 +77,7 @@ static void acpi_ut_free_gpe_lists(void);
 
 static void acpi_ut_free_gpe_lists(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_block_info *gpe_block;
 	struct acpi_gpe_block_info *next_gpe_block;
 	struct acpi_gpe_xrupt_info *gpe_xrupt_info;
@@ -99,6 +100,7 @@ static void acpi_ut_free_gpe_lists(void)
 		ACPI_FREE(gpe_xrupt_info);
 		gpe_xrupt_info = next_gpe_xrupt_info;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif				/* !ACPI_REDUCED_HARDWARE */
 
@@ -118,6 +120,7 @@ static void acpi_ut_free_gpe_lists(void)
 
 acpi_status acpi_ut_init_globals(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 
@@ -241,6 +244,7 @@ acpi_status acpi_ut_init_globals(void)
 #endif
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -257,11 +261,13 @@ acpi_status acpi_ut_init_globals(void)
 
 static void acpi_ut_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ut_terminate);
 
 	acpi_ut_free_gpe_lists();
 	acpi_ut_delete_address_lists();
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -279,6 +285,7 @@ static void acpi_ut_terminate(void)
 
 void acpi_ut_subsystem_shutdown(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ut_subsystem_shutdown);
 
 	/* Just exit if subsystem is already shutdown */
@@ -321,4 +328,5 @@ void acpi_ut_subsystem_shutdown(void)
 
 	(void)acpi_ut_delete_caches();
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

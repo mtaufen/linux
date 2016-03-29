@@ -66,6 +66,7 @@ static u32 ACPI_SYSTEM_XFACE acpi_ev_sci_xrupt_handler(void *context);
 
 u32 acpi_ev_sci_dispatch(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_sci_handler_info *sci_handler;
 	acpi_cpu_flags flags;
 	u32 int_status = ACPI_INTERRUPT_NOT_HANDLED;
@@ -75,6 +76,7 @@ u32 acpi_ev_sci_dispatch(void)
 	/* Are there any host-installed SCI handlers? */
 
 	if (!acpi_gbl_sci_handler_list) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (int_status);
 	}
 
@@ -93,6 +95,7 @@ u32 acpi_ev_sci_dispatch(void)
 	}
 
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (int_status);
 }
 
@@ -111,6 +114,7 @@ u32 acpi_ev_sci_dispatch(void)
 
 static u32 ACPI_SYSTEM_XFACE acpi_ev_sci_xrupt_handler(void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_xrupt_info *gpe_xrupt_list = context;
 	u32 interrupt_handled = ACPI_INTERRUPT_NOT_HANDLED;
 
@@ -139,6 +143,7 @@ static u32 ACPI_SYSTEM_XFACE acpi_ev_sci_xrupt_handler(void *context)
 
 	acpi_sci_count++;
 	return_UINT32(interrupt_handled);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -155,6 +160,7 @@ static u32 ACPI_SYSTEM_XFACE acpi_ev_sci_xrupt_handler(void *context)
 
 u32 ACPI_SYSTEM_XFACE acpi_ev_gpe_xrupt_handler(void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_xrupt_info *gpe_xrupt_list = context;
 	u32 interrupt_handled = ACPI_INTERRUPT_NOT_HANDLED;
 
@@ -169,6 +175,7 @@ u32 ACPI_SYSTEM_XFACE acpi_ev_gpe_xrupt_handler(void *context)
 
 	interrupt_handled |= acpi_ev_gpe_detect(gpe_xrupt_list);
 	return_UINT32(interrupt_handled);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -185,6 +192,7 @@ u32 ACPI_SYSTEM_XFACE acpi_ev_gpe_xrupt_handler(void *context)
 
 u32 acpi_ev_install_sci_handler(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ev_install_sci_handler);
@@ -194,6 +202,7 @@ u32 acpi_ev_install_sci_handler(void)
 					      acpi_ev_sci_xrupt_handler,
 					      acpi_gbl_gpe_xrupt_list_head);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -217,6 +226,7 @@ u32 acpi_ev_install_sci_handler(void)
 
 acpi_status acpi_ev_remove_all_sci_handlers(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_sci_handler_info *sci_handler;
 	acpi_cpu_flags flags;
 	acpi_status status;
@@ -230,6 +240,7 @@ acpi_status acpi_ev_remove_all_sci_handlers(void)
 					     acpi_ev_sci_xrupt_handler);
 
 	if (!acpi_gbl_sci_handler_list) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -245,6 +256,7 @@ acpi_status acpi_ev_remove_all_sci_handlers(void)
 
 	acpi_os_release_lock(acpi_gbl_gpe_lock, flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

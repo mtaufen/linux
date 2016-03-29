@@ -63,6 +63,7 @@ ACPI_MODULE_NAME("nsarguments")
  ******************************************************************************/
 void acpi_ns_check_argument_types(struct acpi_evaluate_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 arg_type_list;
 	u8 arg_count;
 	u8 arg_type;
@@ -72,6 +73,7 @@ void acpi_ns_check_argument_types(struct acpi_evaluate_info *info)
 	/* If not a predefined name, cannot typecheck args */
 
 	if (!info->predefined) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -95,6 +97,7 @@ void acpi_ns_check_argument_types(struct acpi_evaluate_info *info)
 					      acpi_ut_get_type_name(arg_type)));
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -118,10 +121,12 @@ acpi_ns_check_acpi_compliance(char *pathname,
 			      struct acpi_namespace_node *node,
 			      const union acpi_predefined_info *predefined)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 aml_param_count;
 	u32 required_param_count;
 
 	if (!predefined) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -158,6 +163,7 @@ acpi_ns_check_acpi_compliance(char *pathname,
 									  type)));
 		}
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -188,6 +194,7 @@ acpi_ns_check_acpi_compliance(char *pathname,
 					    aml_param_count,
 					    required_param_count));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -212,6 +219,7 @@ acpi_ns_check_argument_count(char *pathname,
 			     u32 user_param_count,
 			     const union acpi_predefined_info *predefined)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 aml_param_count;
 	u32 required_param_count;
 
@@ -230,6 +238,8 @@ acpi_ns_check_argument_count(char *pathname,
 						      (node->type)));
 			}
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -263,6 +273,7 @@ acpi_ns_check_argument_count(char *pathname,
 					      aml_param_count));
 		}
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -291,4 +302,5 @@ acpi_ns_check_argument_count(char *pathname,
 				      "Caller passed %u, ACPI requires %u",
 				      user_param_count, required_param_count));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -100,6 +100,7 @@ static struct acpi_db_argument_info acpi_db_stat_types[] = {
 
 static void acpi_db_list_info(struct acpi_memory_list *list)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 #ifdef ACPI_DBG_TRACK_ALLOCATIONS
 	u32 outstanding;
 #endif
@@ -140,6 +141,7 @@ static void acpi_db_list_info(struct acpi_memory_list *list)
 		     list->total_size);
 	}
 #endif
+printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 
@@ -159,9 +161,11 @@ static void acpi_db_list_info(struct acpi_memory_list *list)
 
 static void acpi_db_enumerate_object(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (!obj_desc) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -231,6 +235,7 @@ static void acpi_db_enumerate_object(union acpi_operand_object *obj_desc)
 
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -251,6 +256,7 @@ acpi_db_classify_one_object(acpi_handle obj_handle,
 			    u32 nesting_level,
 			    void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *obj_desc;
 	u32 type;
@@ -269,7 +275,8 @@ acpi_db_classify_one_object(acpi_handle obj_handle,
 		acpi_gbl_node_type_count[type]++;
 	}
 
-	return (AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+		return (AE_OK);
 
 #ifdef ACPI_FUTURE_IMPLEMENTATION
 
@@ -312,6 +319,7 @@ acpi_db_classify_one_object(acpi_handle obj_handle,
 
 static void acpi_db_count_namespace_objects(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	acpi_gbl_num_nodes = 0;
@@ -327,6 +335,7 @@ static void acpi_db_count_namespace_objects(void)
 				     ACPI_UINT32_MAX, FALSE,
 				     acpi_db_classify_one_object, NULL, NULL,
 				     NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -343,6 +352,7 @@ static void acpi_db_count_namespace_objects(void)
 
 acpi_status acpi_db_display_statistics(char *type_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 temp;
 
@@ -350,7 +360,8 @@ acpi_status acpi_db_display_statistics(char *type_arg)
 	temp = acpi_db_match_argument(type_arg, acpi_db_stat_types);
 	if (temp == ACPI_TYPE_NOT_FOUND) {
 		acpi_os_printf("Invalid or unsupported argument\n");
-		return (AE_OK);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_OK);
 	}
 
 	switch (temp) {
@@ -543,5 +554,6 @@ acpi_status acpi_db_display_statistics(char *type_arg)
 	}
 
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

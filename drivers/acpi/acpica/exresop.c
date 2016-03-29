@@ -74,12 +74,14 @@ static acpi_status
 acpi_ex_check_object_type(acpi_object_type type_needed,
 			  acpi_object_type this_type, void *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	if (type_needed == ACPI_TYPE_ANY) {
 
 		/* All types OK, so we don't perform any typechecks */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -92,6 +94,8 @@ acpi_ex_check_object_type(acpi_object_type type_needed,
 		if ((this_type == ACPI_TYPE_INTEGER) &&
 		    (((union acpi_operand_object *)object)->common.flags &
 		     AOPOBJ_AML_CONSTANT)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 	}
@@ -102,9 +106,11 @@ acpi_ex_check_object_type(acpi_object_type type_needed,
 			    acpi_ut_get_type_name(type_needed),
 			    acpi_ut_get_type_name(this_type), object));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -134,6 +140,7 @@ acpi_ex_resolve_operands(u16 opcode,
 			 union acpi_operand_object ** stack_ptr,
 			 struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status = AE_OK;
 	u8 object_type;
@@ -705,4 +712,5 @@ next_operand:
 			   walk_state->num_operands);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

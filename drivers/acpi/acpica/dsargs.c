@@ -78,6 +78,7 @@ acpi_ds_execute_arguments(struct acpi_namespace_node *node,
 			  struct acpi_namespace_node *scope_node,
 			  u32 aml_length, u8 *aml_start)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *op;
 	struct acpi_walk_state *walk_state;
@@ -161,6 +162,7 @@ acpi_ds_execute_arguments(struct acpi_namespace_node *node,
 cleanup:
 	acpi_ps_delete_parse_tree(op);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -179,6 +181,7 @@ cleanup:
 acpi_status
 acpi_ds_get_buffer_field_arguments(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *extra_desc;
 	struct acpi_namespace_node *node;
 	acpi_status status;
@@ -206,6 +209,7 @@ acpi_ds_get_buffer_field_arguments(union acpi_operand_object *obj_desc)
 					   extra_desc->extra.aml_length,
 					   extra_desc->extra.aml_start);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -224,6 +228,7 @@ acpi_ds_get_buffer_field_arguments(union acpi_operand_object *obj_desc)
 acpi_status
 acpi_ds_get_bank_field_arguments(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *extra_desc;
 	struct acpi_namespace_node *node;
 	acpi_status status;
@@ -258,6 +263,7 @@ acpi_ds_get_bank_field_arguments(union acpi_operand_object *obj_desc)
 					   obj_desc->region.address,
 					   obj_desc->region.length, node);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -275,6 +281,7 @@ acpi_ds_get_bank_field_arguments(union acpi_operand_object *obj_desc)
 
 acpi_status acpi_ds_get_buffer_arguments(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
@@ -302,6 +309,7 @@ acpi_status acpi_ds_get_buffer_arguments(union acpi_operand_object *obj_desc)
 					   obj_desc->buffer.aml_length,
 					   obj_desc->buffer.aml_start);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -319,6 +327,7 @@ acpi_status acpi_ds_get_buffer_arguments(union acpi_operand_object *obj_desc)
 
 acpi_status acpi_ds_get_package_arguments(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
@@ -346,6 +355,7 @@ acpi_status acpi_ds_get_package_arguments(union acpi_operand_object *obj_desc)
 					   obj_desc->package.aml_length,
 					   obj_desc->package.aml_start);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -363,6 +373,7 @@ acpi_status acpi_ds_get_package_arguments(union acpi_operand_object *obj_desc)
 
 acpi_status acpi_ds_get_region_arguments(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 	union acpi_operand_object *extra_desc;
@@ -403,4 +414,5 @@ acpi_status acpi_ds_get_region_arguments(union acpi_operand_object *obj_desc)
 					   obj_desc->region.address,
 					   obj_desc->region.length, node);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

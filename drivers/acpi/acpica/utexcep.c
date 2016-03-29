@@ -65,6 +65,7 @@ ACPI_MODULE_NAME("utexcep")
  ******************************************************************************/
 const char *acpi_format_exception(acpi_status status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_exception_info *exception;
 
 	ACPI_FUNCTION_ENTRY();
@@ -77,9 +78,11 @@ const char *acpi_format_exception(acpi_status status)
 		ACPI_ERROR((AE_INFO,
 			    "Unknown exception code: 0x%8.8X", status));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("UNKNOWN_STATUS_CODE");
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (exception->name);
 }
 
@@ -100,6 +103,7 @@ ACPI_EXPORT_SYMBOL(acpi_format_exception)
  ******************************************************************************/
 const struct acpi_exception_info *acpi_ut_validate_exception(acpi_status status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 sub_status;
 	const struct acpi_exception_info *exception = NULL;
 
@@ -152,8 +156,10 @@ const struct acpi_exception_info *acpi_ut_validate_exception(acpi_status status)
 	}
 
 	if (!exception || !exception->name) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (exception);
 }

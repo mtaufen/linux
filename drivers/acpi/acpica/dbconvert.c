@@ -63,11 +63,13 @@ ACPI_MODULE_NAME("dbconvert")
  ******************************************************************************/
 acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 value;
 
 	/* Digit must be ascii [0-9a-fA-F] */
 
 	if (!isxdigit(hex_char)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_HEX_CONSTANT);
 	}
 
@@ -78,6 +80,7 @@ acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
 	}
 
 	*return_value = value;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -97,6 +100,7 @@ acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
 
 static acpi_status acpi_db_hex_byte_to_binary(char *hex_byte, u8 *return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 local0;
 	u8 local1;
 	acpi_status status;
@@ -105,6 +109,7 @@ static acpi_status acpi_db_hex_byte_to_binary(char *hex_byte, u8 *return_value)
 
 	status = acpi_db_hex_char_to_value(hex_byte[0], &local0);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -112,10 +117,12 @@ static acpi_status acpi_db_hex_byte_to_binary(char *hex_byte, u8 *return_value)
 
 	status = acpi_db_hex_char_to_value(hex_byte[1], &local1);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	*return_value = (u8)((local0 << 4) | local1);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -136,6 +143,7 @@ static acpi_status acpi_db_hex_byte_to_binary(char *hex_byte, u8 *return_value)
 static acpi_status
 acpi_db_convert_to_buffer(char *string, union acpi_object *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 j;
 	u32 length;
@@ -155,6 +163,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
 
 	buffer = ACPI_ALLOCATE(length);
 	if (!buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -164,6 +173,8 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
 		status = acpi_db_hex_byte_to_binary(&string[i], &buffer[j]);
 		if (ACPI_FAILURE(status)) {
 			ACPI_FREE(buffer);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -177,6 +188,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
 	object->type = ACPI_TYPE_BUFFER;
 	object->buffer.pointer = buffer;
 	object->buffer.length = length;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -196,6 +208,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
 
 acpi_status acpi_db_convert_to_package(char *string, union acpi_object * object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *this;
 	char *next;
 	u32 i;
@@ -220,6 +233,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object * object)
 		if (ACPI_FAILURE(status)) {
 			acpi_db_delete_objects(i + 1, elements);
 			ACPI_FREE(elements);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -229,6 +244,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object * object)
 	object->type = ACPI_TYPE_PACKAGE;
 	object->package.count = i;
 	object->package.elements = elements;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -254,6 +270,7 @@ acpi_status
 acpi_db_convert_to_object(acpi_object_type type,
 			  char *string, union acpi_object * object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	switch (type) {
@@ -281,6 +298,7 @@ acpi_db_convert_to_object(acpi_object_type type,
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -298,11 +316,13 @@ acpi_db_convert_to_object(acpi_object_type type,
 
 u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 *buffer;
 	u32 dword;
 
 	buffer = ACPI_ALLOCATE_ZEROED(ACPI_PLD_BUFFER_SIZE);
 	if (!buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -361,6 +381,7 @@ u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
 		ACPI_MOVE_32_TO_32(&buffer[4], &dword);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (ACPI_CAST_PTR(u8, buffer));
 }
 
@@ -380,6 +401,7 @@ u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
 
 void acpi_db_dump_pld_buffer(union acpi_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_object *buffer_desc;
 	struct acpi_pld_info *pld_info;
 	u8 *new_buffer;
@@ -388,11 +410,13 @@ void acpi_db_dump_pld_buffer(union acpi_object *obj_desc)
 	/* Object must be of type Package with at least one Buffer element */
 
 	if (obj_desc->type != ACPI_TYPE_PACKAGE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	buffer_desc = &obj_desc->package.elements[0];
 	if (buffer_desc->type != ACPI_TYPE_BUFFER) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -401,6 +425,7 @@ void acpi_db_dump_pld_buffer(union acpi_object *obj_desc)
 	status = acpi_decode_pld_buffer(buffer_desc->buffer.pointer,
 					buffer_desc->buffer.length, &pld_info);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -408,6 +433,7 @@ void acpi_db_dump_pld_buffer(union acpi_object *obj_desc)
 
 	new_buffer = acpi_db_encode_pld_buffer(pld_info);
 	if (!new_buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -481,4 +507,5 @@ void acpi_db_dump_pld_buffer(union acpi_object *obj_desc)
 
 	ACPI_FREE(pld_info);
 	ACPI_FREE(new_buffer);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

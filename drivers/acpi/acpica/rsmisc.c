@@ -72,6 +72,7 @@ acpi_rs_convert_aml_to_resource(struct acpi_resource *resource,
 				union aml_resource *aml,
 				struct acpi_rsconvert_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_rs_length aml_resource_length;
 	void *source;
 	void *destination;
@@ -449,6 +450,7 @@ exit:
 		    ACPI_ROUND_UP_TO_NATIVE_WORD(resource->length);
 	}
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -471,6 +473,7 @@ acpi_rs_convert_resource_to_aml(struct acpi_resource *resource,
 				union aml_resource *aml,
 				struct acpi_rsconvert_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *source = NULL;
 	void *destination;
 	char *target;
@@ -783,6 +786,7 @@ acpi_rs_convert_resource_to_aml(struct acpi_resource *resource,
 
 exit:
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #if 0

@@ -79,6 +79,7 @@ acpi_install_address_space_handler(acpi_handle device,
 				   acpi_adr_space_handler handler,
 				   acpi_adr_space_setup setup, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
@@ -119,6 +120,7 @@ acpi_install_address_space_handler(acpi_handle device,
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_address_space_handler)
@@ -141,6 +143,7 @@ acpi_remove_address_space_handler(acpi_handle device,
 				  acpi_adr_space_type space_id,
 				  acpi_adr_space_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *handler_obj;
 	union acpi_operand_object *region_obj;
@@ -258,6 +261,7 @@ acpi_remove_address_space_handler(acpi_handle device,
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_address_space_handler)

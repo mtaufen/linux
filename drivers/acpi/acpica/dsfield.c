@@ -93,10 +93,12 @@ acpi_ds_create_external_region(acpi_status lookup_status,
 			       struct acpi_walk_state *walk_state,
 			       struct acpi_namespace_node **node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 
 	if (lookup_status != AE_NOT_FOUND) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (lookup_status);
 	}
 
@@ -111,6 +113,7 @@ acpi_ds_create_external_region(acpi_status lookup_status,
 				ACPI_IMODE_LOAD_PASS1, ACPI_NS_SEARCH_PARENT,
 				walk_state, node);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -118,11 +121,13 @@ acpi_ds_create_external_region(acpi_status lookup_status,
 
 	obj_desc = acpi_ut_create_internal_object(ACPI_TYPE_REGION);
 	if (!obj_desc) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
 	obj_desc->region.node = *node;
 	status = acpi_ns_attach_object(*node, obj_desc, ACPI_TYPE_REGION);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 #endif
@@ -150,6 +155,7 @@ acpi_status
 acpi_ds_create_buffer_field(union acpi_parse_object *op,
 			    struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *arg;
 	struct acpi_namespace_node *node;
 	acpi_status status;
@@ -265,6 +271,7 @@ cleanup:
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -287,6 +294,7 @@ acpi_ds_get_field_names(struct acpi_create_field_info *info,
 			struct acpi_walk_state *walk_state,
 			union acpi_parse_object *arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u64 position;
 	union acpi_parse_object *child;
@@ -453,6 +461,7 @@ acpi_ds_get_field_names(struct acpi_create_field_info *info,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -474,6 +483,7 @@ acpi_ds_create_field(union acpi_parse_object *op,
 		     struct acpi_namespace_node *region_node,
 		     struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *arg;
 	struct acpi_create_field_info info;
@@ -517,6 +527,7 @@ acpi_ds_create_field(union acpi_parse_object *op,
 
 	status = acpi_ds_get_field_names(&info, walk_state, arg->common.next);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -538,6 +549,7 @@ acpi_status
 acpi_ds_init_field_objects(union acpi_parse_object *op,
 			   struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *arg = NULL;
 	struct acpi_namespace_node *node;
@@ -636,6 +648,7 @@ acpi_ds_init_field_objects(union acpi_parse_object *op,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -657,6 +670,7 @@ acpi_ds_create_bank_field(union acpi_parse_object *op,
 			  struct acpi_namespace_node *region_node,
 			  struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *arg;
 	struct acpi_create_field_info info;
@@ -727,6 +741,7 @@ acpi_ds_create_bank_field(union acpi_parse_object *op,
 
 	status = acpi_ds_get_field_names(&info, walk_state, arg->common.next);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -748,6 +763,7 @@ acpi_ds_create_index_field(union acpi_parse_object *op,
 			   struct acpi_namespace_node *region_node,
 			   struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *arg;
 	struct acpi_create_field_info info;
@@ -792,4 +808,5 @@ acpi_ds_create_index_field(union acpi_parse_object *op,
 
 	status = acpi_ds_get_field_names(&info, walk_state, arg->common.next);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

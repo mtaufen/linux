@@ -74,6 +74,7 @@ static acpi_status acpi_ns_delete_subtree(acpi_handle start_handle);
 acpi_status
 acpi_ns_load_table(u32 table_index, struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ns_load_table);
@@ -167,6 +168,7 @@ unlock:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifdef ACPI_OBSOLETE_FUNCTIONS
@@ -185,6 +187,7 @@ unlock:
 
 acpi_status acpi_ns_load_namespace(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_load_name_space);
@@ -215,6 +218,7 @@ acpi_status acpi_ns_load_namespace(void)
 			      acpi_gbl_root_node));
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 
@@ -237,6 +241,7 @@ acpi_status acpi_ns_load_namespace(void)
 
 static acpi_status acpi_ns_delete_subtree(acpi_handle start_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_handle child_handle;
 	acpi_handle parent_handle;
@@ -303,6 +308,7 @@ static acpi_status acpi_ns_delete_subtree(acpi_handle start_handle)
 
 	acpi_ns_remove_node(child_handle);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -321,6 +327,7 @@ static acpi_status acpi_ns_delete_subtree(acpi_handle start_handle)
 
 acpi_status acpi_ns_unload_namespace(acpi_handle handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ns_unload_name_space);
@@ -339,6 +346,7 @@ acpi_status acpi_ns_unload_namespace(acpi_handle handle)
 
 	status = acpi_ns_delete_subtree(handle);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 #endif

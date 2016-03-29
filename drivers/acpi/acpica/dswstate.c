@@ -72,6 +72,7 @@ acpi_status
 acpi_ds_result_pop(union acpi_operand_object **object,
 		   struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 index;
 	union acpi_generic_state *state;
 	acpi_status status;
@@ -84,11 +85,13 @@ acpi_ds_result_pop(union acpi_operand_object **object,
 
 	if (state && !walk_state->result_count) {
 		ACPI_ERROR((AE_INFO, "No results on result stack"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	}
 
 	if (!state && walk_state->result_count) {
 		ACPI_ERROR((AE_INFO, "No result state for result stack"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	}
 
@@ -97,6 +100,7 @@ acpi_ds_result_pop(union acpi_operand_object **object,
 	if (!state) {
 		ACPI_ERROR((AE_INFO, "Result stack is empty! State=%p",
 			    walk_state));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_NO_RETURN_VALUE);
 	}
 
@@ -110,6 +114,7 @@ acpi_ds_result_pop(union acpi_operand_object **object,
 		ACPI_ERROR((AE_INFO,
 			    "No result objects on result stack, State=%p",
 			    walk_state));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_NO_RETURN_VALUE);
 	}
 
@@ -117,6 +122,8 @@ acpi_ds_result_pop(union acpi_operand_object **object,
 	if (index == 0) {
 		status = acpi_ds_result_stack_pop(walk_state);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	}
@@ -126,6 +133,7 @@ acpi_ds_result_pop(union acpi_operand_object **object,
 			  acpi_ut_get_object_type_name(*object),
 			  index, walk_state, walk_state->result_count));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -146,6 +154,7 @@ acpi_status
 acpi_ds_result_push(union acpi_operand_object * object,
 		    struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 	acpi_status status;
 	u32 index;
@@ -154,6 +163,7 @@ acpi_ds_result_push(union acpi_operand_object * object,
 
 	if (walk_state->result_count > walk_state->result_size) {
 		ACPI_ERROR((AE_INFO, "Result stack is full"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	} else if (walk_state->result_count == walk_state->result_size) {
 
@@ -163,18 +173,22 @@ acpi_ds_result_push(union acpi_operand_object * object,
 		if (ACPI_FAILURE(status)) {
 			ACPI_ERROR((AE_INFO,
 				    "Failed to extend the result stack"));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	}
 
 	if (!(walk_state->result_count < walk_state->result_size)) {
 		ACPI_ERROR((AE_INFO, "No free elements in result stack"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	}
 
 	state = walk_state->results;
 	if (!state) {
 		ACPI_ERROR((AE_INFO, "No result stack frame during push"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	}
 
@@ -182,6 +196,7 @@ acpi_ds_result_push(union acpi_operand_object * object,
 		ACPI_ERROR((AE_INFO,
 			    "Null Object! Obj=%p State=%p Num=%u",
 			    object, walk_state, walk_state->result_count));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -199,6 +214,7 @@ acpi_ds_result_push(union acpi_operand_object * object,
 			  walk_state->result_count,
 			  walk_state->current_result));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -216,6 +232,7 @@ acpi_ds_result_push(union acpi_operand_object * object,
 
 static acpi_status acpi_ds_result_stack_push(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_NAME(ds_result_stack_push);
@@ -226,11 +243,13 @@ static acpi_status acpi_ds_result_stack_push(struct acpi_walk_state *walk_state)
 	    ACPI_RESULTS_OBJ_NUM_MAX) {
 		ACPI_ERROR((AE_INFO, "Result stack overflow: State=%p Num=%u",
 			    walk_state, walk_state->result_size));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_STACK_OVERFLOW);
 	}
 
 	state = acpi_ut_create_generic_state();
 	if (!state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -244,6 +263,7 @@ static acpi_status acpi_ds_result_stack_push(struct acpi_walk_state *walk_state)
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "Results=%p State=%p\n",
 			  state, walk_state));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -261,6 +281,7 @@ static acpi_status acpi_ds_result_stack_push(struct acpi_walk_state *walk_state)
 
 static acpi_status acpi_ds_result_stack_pop(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_NAME(ds_result_stack_pop);
@@ -271,11 +292,13 @@ static acpi_status acpi_ds_result_stack_pop(struct acpi_walk_state *walk_state)
 		ACPI_DEBUG_PRINT((ACPI_DB_EXEC,
 				  "Result stack underflow - State=%p\n",
 				  walk_state));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_NO_OPERAND);
 	}
 
 	if (walk_state->result_size < ACPI_RESULTS_FRAME_OBJ_NUM) {
 		ACPI_ERROR((AE_INFO, "Insufficient result stack size"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	}
 
@@ -290,6 +313,7 @@ static acpi_status acpi_ds_result_stack_pop(struct acpi_walk_state *walk_state)
 			  "Result=%p RemainingResults=%X State=%p\n",
 			  state, walk_state->result_count, walk_state));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -309,6 +333,7 @@ static acpi_status acpi_ds_result_stack_pop(struct acpi_walk_state *walk_state)
 acpi_status
 acpi_ds_obj_stack_push(void *object, struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ds_obj_stack_push);
 
 	/* Check for stack overflow */
@@ -317,6 +342,7 @@ acpi_ds_obj_stack_push(void *object, struct acpi_walk_state * walk_state)
 		ACPI_ERROR((AE_INFO,
 			    "Object stack overflow! Obj=%p State=%p #Ops=%u",
 			    object, walk_state, walk_state->num_operands));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_STACK_OVERFLOW);
 	}
 
@@ -336,6 +362,7 @@ acpi_ds_obj_stack_push(void *object, struct acpi_walk_state * walk_state)
 						       object), walk_state,
 			  walk_state->num_operands));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -356,6 +383,7 @@ acpi_ds_obj_stack_push(void *object, struct acpi_walk_state * walk_state)
 acpi_status
 acpi_ds_obj_stack_pop(u32 pop_count, struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_NAME(ds_obj_stack_pop);
@@ -369,6 +397,8 @@ acpi_ds_obj_stack_pop(u32 pop_count, struct acpi_walk_state * walk_state)
 				    "Object stack underflow! Count=%X State=%p #Ops=%u",
 				    pop_count, walk_state,
 				    walk_state->num_operands));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_STACK_UNDERFLOW);
 		}
 
@@ -381,6 +411,7 @@ acpi_ds_obj_stack_pop(u32 pop_count, struct acpi_walk_state * walk_state)
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "Count=%X State=%p #Ops=%u\n",
 			  pop_count, walk_state, walk_state->num_operands));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -402,17 +433,21 @@ void
 acpi_ds_obj_stack_pop_and_delete(u32 pop_count,
 				 struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	s32 i;
 	union acpi_operand_object *obj_desc;
 
 	ACPI_FUNCTION_NAME(ds_obj_stack_pop_and_delete);
 
 	if (pop_count == 0) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	for (i = (s32) pop_count - 1; i >= 0; i--) {
 		if (walk_state->num_operands == 0) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -428,6 +463,7 @@ acpi_ds_obj_stack_pop_and_delete(u32 pop_count,
 
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "Count=%X State=%p #Ops=%X\n",
 			  pop_count, walk_state, walk_state->num_operands));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -446,15 +482,18 @@ acpi_ds_obj_stack_pop_and_delete(u32 pop_count,
 struct acpi_walk_state *acpi_ds_get_current_walk_state(struct acpi_thread_state
 						       *thread)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ds_get_current_walk_state);
 
 	if (!thread) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
 	ACPI_DEBUG_PRINT((ACPI_DB_PARSE, "Current WalkState %p\n",
 			  thread->walk_state_list));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (thread->walk_state_list);
 }
 
@@ -475,12 +514,14 @@ void
 acpi_ds_push_walk_state(struct acpi_walk_state *walk_state,
 			struct acpi_thread_state *thread)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ds_push_walk_state);
 
 	walk_state->next = thread->walk_state_list;
 	thread->walk_state_list = walk_state;
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -499,6 +540,7 @@ acpi_ds_push_walk_state(struct acpi_walk_state *walk_state,
 
 struct acpi_walk_state *acpi_ds_pop_walk_state(struct acpi_thread_state *thread)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_state *walk_state;
 
 	ACPI_FUNCTION_TRACE(ds_pop_walk_state);
@@ -519,6 +561,7 @@ struct acpi_walk_state *acpi_ds_pop_walk_state(struct acpi_thread_state *thread)
 	}
 
 	return_PTR(walk_state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -545,6 +588,7 @@ struct acpi_walk_state *acpi_ds_create_walk_state(acpi_owner_id owner_id,
 						  struct acpi_thread_state
 						  *thread)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_state *walk_state;
 
 	ACPI_FUNCTION_TRACE(ds_create_walk_state);
@@ -575,6 +619,7 @@ struct acpi_walk_state *acpi_ds_create_walk_state(acpi_owner_id owner_id,
 	}
 
 	return_PTR(walk_state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -603,6 +648,7 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
 		      u32 aml_length,
 		      struct acpi_evaluate_info *info, u8 pass_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_parse_state *parser_state = &walk_state->parser_state;
 	union acpi_parse_object *extra_op;
@@ -687,6 +733,7 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
 
 	status = acpi_ds_init_callbacks(walk_state, pass_number);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -703,6 +750,7 @@ acpi_ds_init_aml_walk(struct acpi_walk_state *walk_state,
 
 void acpi_ds_delete_walk_state(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_TRACE_PTR(ds_delete_walk_state, walk_state);
@@ -754,4 +802,5 @@ void acpi_ds_delete_walk_state(struct acpi_walk_state *walk_state)
 
 	ACPI_FREE(walk_state);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

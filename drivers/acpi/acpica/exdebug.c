@@ -74,6 +74,7 @@ void
 acpi_ex_do_debug_object(union acpi_operand_object *source_desc,
 			u32 level, u32 index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 timer;
 	union acpi_operand_object *object_desc;
@@ -339,5 +340,6 @@ acpi_ex_do_debug_object(union acpi_operand_object *source_desc,
 
 	ACPI_DEBUG_PRINT_RAW((ACPI_DB_EXEC, "\n"));
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif

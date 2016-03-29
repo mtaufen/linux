@@ -88,6 +88,7 @@ ACPI_MODULE_NAME("exoparg2")
  ******************************************************************************/
 acpi_status acpi_ex_opcode_2A_0T_0R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	struct acpi_namespace_node *node;
 	u32 value;
@@ -138,6 +139,7 @@ acpi_status acpi_ex_opcode_2A_0T_0R(struct acpi_walk_state *walk_state)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -155,6 +157,7 @@ acpi_status acpi_ex_opcode_2A_0T_0R(struct acpi_walk_state *walk_state)
 
 acpi_status acpi_ex_opcode_2A_2T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *return_desc1 = NULL;
 	union acpi_operand_object *return_desc2 = NULL;
@@ -237,6 +240,7 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -254,6 +258,7 @@ cleanup:
 
 acpi_status acpi_ex_opcode_2A_1T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *return_desc = NULL;
 	u64 index;
@@ -479,6 +484,7 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -495,6 +501,7 @@ cleanup:
 
 acpi_status acpi_ex_opcode_2A_0T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *return_desc = NULL;
 	acpi_status status = AE_OK;
@@ -585,4 +592,5 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

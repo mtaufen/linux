@@ -92,6 +92,7 @@ acpi_install_notify_handler(acpi_handle device,
 			    u32 handler_type,
 			    acpi_notify_handler handler, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    ACPI_CAST_PTR(struct acpi_namespace_node, device);
 	union acpi_operand_object *obj_desc;
@@ -221,6 +222,7 @@ acpi_install_notify_handler(acpi_handle device,
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_notify_handler)
@@ -245,6 +247,7 @@ acpi_status
 acpi_remove_notify_handler(acpi_handle device,
 			   u32 handler_type, acpi_notify_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    ACPI_CAST_PTR(struct acpi_namespace_node, device);
 	union acpi_operand_object *obj_desc;
@@ -360,6 +363,7 @@ acpi_remove_notify_handler(acpi_handle device,
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_notify_handler)
@@ -379,6 +383,7 @@ ACPI_EXPORT_SYMBOL(acpi_remove_notify_handler)
 #ifdef ACPI_FUTURE_USAGE
 acpi_status acpi_install_exception_handler(acpi_exception_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_install_exception_handler);
@@ -402,6 +407,7 @@ acpi_status acpi_install_exception_handler(acpi_exception_handler handler)
 cleanup:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_exception_handler)
@@ -422,6 +428,7 @@ ACPI_EXPORT_SYMBOL(acpi_install_exception_handler)
  ******************************************************************************/
 acpi_status acpi_install_sci_handler(acpi_sci_handler address, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_sci_handler_info *new_sci_handler;
 	struct acpi_sci_handler_info *sci_handler;
 	acpi_cpu_flags flags;
@@ -479,6 +486,7 @@ exit:
 		ACPI_FREE(new_sci_handler);
 	}
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_sci_handler)
@@ -496,6 +504,7 @@ ACPI_EXPORT_SYMBOL(acpi_install_sci_handler)
  ******************************************************************************/
 acpi_status acpi_remove_sci_handler(acpi_sci_handler address)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_sci_handler_info *prev_sci_handler;
 	struct acpi_sci_handler_info *next_sci_handler;
 	acpi_cpu_flags flags;
@@ -545,6 +554,7 @@ acpi_status acpi_remove_sci_handler(acpi_sci_handler address)
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_sci_handler)
@@ -567,6 +577,7 @@ ACPI_EXPORT_SYMBOL(acpi_remove_sci_handler)
 acpi_status
 acpi_install_global_event_handler(acpi_gbl_event_handler handler, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_install_global_event_handler);
@@ -595,6 +606,7 @@ acpi_install_global_event_handler(acpi_gbl_event_handler handler, void *context)
 cleanup:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_global_event_handler)
@@ -618,6 +630,7 @@ acpi_status
 acpi_install_fixed_event_handler(u32 event,
 				 acpi_event_handler handler, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_install_fixed_event_handler);
@@ -667,6 +680,7 @@ acpi_install_fixed_event_handler(u32 event,
 cleanup:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_fixed_event_handler)
@@ -686,6 +700,7 @@ ACPI_EXPORT_SYMBOL(acpi_install_fixed_event_handler)
 acpi_status
 acpi_remove_fixed_event_handler(u32 event, acpi_event_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(acpi_remove_fixed_event_handler);
@@ -722,6 +737,7 @@ acpi_remove_fixed_event_handler(u32 event, acpi_event_handler handler)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_fixed_event_handler)
@@ -753,6 +769,7 @@ acpi_ev_install_gpe_handler(acpi_handle gpe_device,
 			    u8 is_raw_handler,
 			    acpi_gpe_handler address, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_event_info *gpe_event_info;
 	struct acpi_gpe_handler_info *handler;
 	acpi_status status;
@@ -875,6 +892,7 @@ acpi_install_gpe_handler(acpi_handle gpe_device,
 			 u32 gpe_number,
 			 u32 type, acpi_gpe_handler address, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_install_gpe_handler);
@@ -883,6 +901,7 @@ acpi_install_gpe_handler(acpi_handle gpe_device,
 					     FALSE, address, context);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_gpe_handler)
@@ -909,6 +928,7 @@ acpi_install_gpe_raw_handler(acpi_handle gpe_device,
 			     u32 gpe_number,
 			     u32 type, acpi_gpe_handler address, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_install_gpe_raw_handler);
@@ -917,6 +937,7 @@ acpi_install_gpe_raw_handler(acpi_handle gpe_device,
 					     TRUE, address, context);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_gpe_raw_handler)
@@ -939,6 +960,7 @@ acpi_status
 acpi_remove_gpe_handler(acpi_handle gpe_device,
 			u32 gpe_number, acpi_gpe_handler address)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_event_info *gpe_event_info;
 	struct acpi_gpe_handler_info *handler;
 	acpi_status status;
@@ -1025,6 +1047,7 @@ unlock_and_exit:
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_gpe_handler)
@@ -1050,9 +1073,11 @@ ACPI_EXPORT_SYMBOL(acpi_remove_gpe_handler)
  ******************************************************************************/
 acpi_status acpi_acquire_global_lock(u16 timeout, u32 *handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	if (!handle) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -1072,6 +1097,7 @@ acpi_status acpi_acquire_global_lock(u16 timeout, u32 *handle)
 	}
 
 	acpi_ex_exit_interpreter();
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -1090,13 +1116,16 @@ ACPI_EXPORT_SYMBOL(acpi_acquire_global_lock)
  ******************************************************************************/
 acpi_status acpi_release_global_lock(u32 handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	if (!handle || (handle != acpi_gbl_global_lock_handle)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NOT_ACQUIRED);
 	}
 
 	status = acpi_ex_release_mutex_object(acpi_gbl_global_lock_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 

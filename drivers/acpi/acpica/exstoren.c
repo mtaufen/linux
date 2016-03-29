@@ -69,6 +69,7 @@ acpi_ex_resolve_object(union acpi_operand_object **source_desc_ptr,
 		       acpi_object_type target_type,
 		       struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *source_desc = *source_desc_ptr;
 	acpi_status status = AE_OK;
 
@@ -150,6 +151,7 @@ acpi_ex_resolve_object(union acpi_operand_object **source_desc_ptr,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -193,6 +195,7 @@ acpi_ex_store_object_to_object(union acpi_operand_object *source_desc,
 			       union acpi_operand_object **new_desc,
 			       struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *actual_src_desc;
 	acpi_status status = AE_OK;
 
@@ -292,4 +295,5 @@ acpi_ex_store_object_to_object(union acpi_operand_object *source_desc,
 
 	*new_desc = dest_desc;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

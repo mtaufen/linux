@@ -66,6 +66,7 @@ static acpi_status acpi_ps_get_aml_opcode(struct acpi_walk_state *walk_state);
 
 static acpi_status acpi_ps_get_aml_opcode(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 aml_offset;
 
 	ACPI_FUNCTION_TRACE_PTR(ps_get_aml_opcode, walk_state);
@@ -152,6 +153,7 @@ static acpi_status acpi_ps_get_aml_opcode(struct acpi_walk_state *walk_state)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -175,6 +177,7 @@ acpi_ps_build_named_op(struct acpi_walk_state *walk_state,
 		       union acpi_parse_object *unnamed_op,
 		       union acpi_parse_object **op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_parse_object *arg = NULL;
 
@@ -260,6 +263,7 @@ acpi_ps_build_named_op(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -280,6 +284,7 @@ acpi_status
 acpi_ps_create_op(struct acpi_walk_state *walk_state,
 		  u8 *aml_op_start, union acpi_parse_object **new_op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_parse_object *op;
 	union acpi_parse_object *named_op = NULL;
@@ -368,6 +373,7 @@ acpi_ps_create_op(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -388,6 +394,7 @@ acpi_status
 acpi_ps_complete_op(struct acpi_walk_state *walk_state,
 		    union acpi_parse_object **op, acpi_status status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status2;
 
 	ACPI_FUNCTION_TRACE_PTR(ps_complete_op, walk_state);
@@ -541,6 +548,7 @@ acpi_ps_complete_op(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -562,6 +570,7 @@ acpi_status
 acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
 			  union acpi_parse_object *op, acpi_status status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status2;
 
 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
@@ -651,4 +660,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
 	} while (op);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

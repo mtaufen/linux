@@ -70,17 +70,20 @@ struct acpi_namespace_node *acpi_ns_get_next_node(struct acpi_namespace_node
 						  struct acpi_namespace_node
 						  *child_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	if (!child_node) {
 
 		/* It's really the parent's _scope_ that we want */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (parent_node->child);
 	}
 
 	/* Otherwise just return the next peer */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (child_node->peer);
 }
 
@@ -111,6 +114,7 @@ struct acpi_namespace_node *acpi_ns_get_next_node_typed(acpi_object_type type,
 							acpi_namespace_node
 							*child_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *next_node = NULL;
 
 	ACPI_FUNCTION_ENTRY();
@@ -124,6 +128,7 @@ struct acpi_namespace_node *acpi_ns_get_next_node_typed(acpi_object_type type,
 
 		/* next_node is NULL if we are at the end-of-list */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (next_node);
 	}
 
@@ -134,6 +139,8 @@ struct acpi_namespace_node *acpi_ns_get_next_node_typed(acpi_object_type type,
 		/* If type matches, we are done */
 
 		if (next_node->type == type) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (next_node);
 		}
 
@@ -144,6 +151,7 @@ struct acpi_namespace_node *acpi_ns_get_next_node_typed(acpi_object_type type,
 
 	/* Not found */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);
 }
 
@@ -189,6 +197,7 @@ acpi_ns_walk_namespace(acpi_object_type type,
 		       acpi_walk_callback ascending_callback,
 		       void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_status mutex_status;
 	struct acpi_namespace_node *child_node;
@@ -355,4 +364,5 @@ acpi_ns_walk_namespace(acpi_object_type type,
 	/* Complete walk, not terminated by user function */
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

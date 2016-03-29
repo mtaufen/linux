@@ -65,6 +65,7 @@ ACPI_MODULE_NAME("nsaccess")
  ******************************************************************************/
 acpi_status acpi_ns_root_initialize(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	const struct acpi_predefined_names *init_val = NULL;
 	struct acpi_namespace_node *new_node;
@@ -251,6 +252,7 @@ unlock_and_exit:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -285,6 +287,7 @@ acpi_ns_lookup(union acpi_generic_state *scope_info,
 	       struct acpi_walk_state *walk_state,
 	       struct acpi_namespace_node **return_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	char *path = pathname;
 	struct acpi_namespace_node *prefix_node;
@@ -677,4 +680,5 @@ acpi_ns_lookup(union acpi_generic_state *scope_info,
 
 	*return_node = this_node;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

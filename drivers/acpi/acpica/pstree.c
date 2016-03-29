@@ -69,6 +69,7 @@ union acpi_parse_object *acpi_ps_get_child(union acpi_parse_object *op);
 
 union acpi_parse_object *acpi_ps_get_arg(union acpi_parse_object *op, u32 argn)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *arg = NULL;
 	const struct acpi_opcode_info *op_info;
 
@@ -87,6 +88,7 @@ union acpi_parse_object *acpi_ps_get_arg(union acpi_parse_object *op, u32 argn)
 
 		/* Invalid opcode or ASCII character */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -96,6 +98,7 @@ union acpi_parse_object *acpi_ps_get_arg(union acpi_parse_object *op, u32 argn)
 
 		/* Has no linked argument objects */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -107,6 +110,7 @@ union acpi_parse_object *acpi_ps_get_arg(union acpi_parse_object *op, u32 argn)
 		arg = arg->common.next;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (arg);
 }
 
@@ -126,12 +130,14 @@ union acpi_parse_object *acpi_ps_get_arg(union acpi_parse_object *op, u32 argn)
 void
 acpi_ps_append_arg(union acpi_parse_object *op, union acpi_parse_object *arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *prev_arg;
 	const struct acpi_opcode_info *op_info;
 
 	ACPI_FUNCTION_ENTRY();
 
 	if (!op) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -144,6 +150,7 @@ acpi_ps_append_arg(union acpi_parse_object *op, union acpi_parse_object *arg)
 
 		ACPI_ERROR((AE_INFO, "Invalid AML Opcode: 0x%2.2X",
 			    op->common.aml_opcode));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -153,6 +160,7 @@ acpi_ps_append_arg(union acpi_parse_object *op, union acpi_parse_object *arg)
 
 		/* Has no linked argument objects */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -181,6 +189,7 @@ acpi_ps_append_arg(union acpi_parse_object *op, union acpi_parse_object *arg)
 
 		op->common.arg_list_length++;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -200,6 +209,7 @@ acpi_ps_append_arg(union acpi_parse_object *op, union acpi_parse_object *arg)
 union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 						union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *next = NULL;
 	union acpi_parse_object *parent;
 	union acpi_parse_object *arg;
@@ -207,6 +217,7 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 	ACPI_FUNCTION_ENTRY();
 
 	if (!op) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -214,6 +225,7 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 
 	next = acpi_ps_get_arg(op, 0);
 	if (next) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (next);
 	}
 
@@ -221,6 +233,7 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 
 	next = op->common.next;
 	if (next) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (next);
 	}
 
@@ -238,6 +251,8 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 
 			/* Reached parent of origin, end search */
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (NULL);
 		}
 
@@ -245,6 +260,8 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 
 			/* Found sibling of parent */
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (parent->common.next);
 		}
 
@@ -252,6 +269,7 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 		parent = parent->common.parent;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (next);
 }
 
@@ -270,6 +288,7 @@ union acpi_parse_object *acpi_ps_get_depth_next(union acpi_parse_object *origin,
 
 union acpi_parse_object *acpi_ps_get_child(union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *child = NULL;
 
 	ACPI_FUNCTION_ENTRY();
@@ -313,6 +332,7 @@ union acpi_parse_object *acpi_ps_get_child(union acpi_parse_object *op)
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (child);
 }
 #endif

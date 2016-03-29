@@ -123,6 +123,7 @@ static const struct acpi_port_info acpi_protected_ports[] = {
 static acpi_status
 acpi_hw_validate_io_request(acpi_io_address address, u32 bit_width)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 byte_width;
 	acpi_io_address last_address;
@@ -135,6 +136,7 @@ acpi_hw_validate_io_request(acpi_io_address address, u32 bit_width)
 	if ((bit_width != 8) && (bit_width != 16) && (bit_width != 32)) {
 		ACPI_ERROR((AE_INFO,
 			    "Bad BitWidth parameter: %8.8X", bit_width));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -199,6 +201,7 @@ acpi_hw_validate_io_request(acpi_io_address address, u32 bit_width)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -219,6 +222,7 @@ acpi_hw_validate_io_request(acpi_io_address address, u32 bit_width)
 
 acpi_status acpi_hw_read_port(acpi_io_address address, u32 *value, u32 width)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 one_byte;
 	u32 i;
@@ -234,10 +238,12 @@ acpi_status acpi_hw_read_port(acpi_io_address address, u32 *value, u32 width)
 	status = acpi_hw_validate_io_request(address, width);
 	if (ACPI_SUCCESS(status)) {
 		status = acpi_os_read_port(address, value, width);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	if (status != AE_AML_ILLEGAL_ADDRESS) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -253,6 +259,8 @@ acpi_status acpi_hw_read_port(acpi_io_address address, u32 *value, u32 width)
 		if (acpi_hw_validate_io_request(address, 8) == AE_OK) {
 			status = acpi_os_read_port(address, &one_byte, 8);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -262,6 +270,7 @@ acpi_status acpi_hw_read_port(acpi_io_address address, u32 *value, u32 width)
 		address++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -283,6 +292,7 @@ acpi_status acpi_hw_read_port(acpi_io_address address, u32 *value, u32 width)
 
 acpi_status acpi_hw_write_port(acpi_io_address address, u32 value, u32 width)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 
@@ -297,10 +307,12 @@ acpi_status acpi_hw_write_port(acpi_io_address address, u32 value, u32 width)
 	status = acpi_hw_validate_io_request(address, width);
 	if (ACPI_SUCCESS(status)) {
 		status = acpi_os_write_port(address, value, width);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	if (status != AE_AML_ILLEGAL_ADDRESS) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -317,6 +329,8 @@ acpi_status acpi_hw_write_port(acpi_io_address address, u32 value, u32 width)
 			status =
 			    acpi_os_write_port(address, (value >> i) & 0xFF, 8);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 		}
@@ -324,5 +338,6 @@ acpi_status acpi_hw_write_port(acpi_io_address address, u32 value, u32 width)
 		address++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

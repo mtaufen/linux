@@ -81,6 +81,7 @@ acpi_status
 acpi_ns_check_package(struct acpi_evaluate_info *info,
 		      union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	const union acpi_predefined_info *package;
 	union acpi_operand_object **elements;
@@ -118,6 +119,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 	 */
 	if (!count) {
 		if (package->ret_info.type == ACPI_PTYPE1_VAR) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -125,7 +128,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 				      info->node_flags,
 				      "Return Package has no elements (empty)"));
 
-		return (AE_AML_OPERAND_VALUE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_AML_OPERAND_VALUE);
 	}
 
 	/*
@@ -177,6 +181,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 							   package->ret_info.
 							   object_type1, i);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 			elements++;
@@ -210,6 +216,9 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 							      object_type[i],
 							      i);
 				if (ACPI_FAILURE(status)) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (status);
 				}
 			} else {
@@ -222,6 +231,9 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 							      tail_object_type,
 							      i);
 				if (ACPI_FAILURE(status)) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (status);
 				}
 			}
@@ -237,6 +249,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 		    acpi_ns_check_object_type(info, elements,
 					      ACPI_RTYPE_INTEGER, 0);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -257,6 +271,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 		    acpi_ns_check_object_type(info, elements,
 					      ACPI_RTYPE_INTEGER, 0);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -302,6 +318,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 			    acpi_ns_wrap_with_package(info, return_object,
 						      return_object_ptr);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -339,6 +357,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 							   package->ret_info.
 							   object_type1, 0);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -349,6 +369,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 						      info->full_pathname,
 						      info->node_flags,
 						      "Invalid length for UUID Buffer"));
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_AML_OPERAND_VALUE);
 			}
 
@@ -356,6 +378,8 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 							   package->ret_info.
 							   object_type2, 0);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -373,9 +397,11 @@ acpi_ns_check_package(struct acpi_evaluate_info *info,
 				      "Invalid internal return type in table entry: %X",
 				      package->ret_info.type));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_INTERNAL);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 
 package_too_small:
@@ -386,6 +412,7 @@ package_too_small:
 			      "Return Package is too small - found %u elements, expected %u",
 			      count, expected_count));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_AML_OPERAND_VALUE);
 }
 
@@ -410,6 +437,7 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 			   const union acpi_predefined_info *package,
 			   union acpi_operand_object **elements, u32 count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *sub_package;
 	union acpi_operand_object **sub_elements;
 	acpi_status status;
@@ -434,6 +462,8 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 		status = acpi_ns_check_object_type(info, &sub_package,
 						   ACPI_RTYPE_PACKAGE, i);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -464,6 +494,8 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 							   package->ret_info.
 							   count2, 0);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 			break;
@@ -492,6 +524,8 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 							   package->ret_info.
 							   count1, 0);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 			break;
@@ -522,6 +556,9 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 							      object_type[j],
 							      j);
 				if (ACPI_FAILURE(status)) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (status);
 				}
 			}
@@ -545,6 +582,8 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 							   sub_package->package.
 							   count, 0, 0, 0);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 			break;
@@ -558,6 +597,8 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 							   ACPI_RTYPE_INTEGER,
 							   0);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 
@@ -595,18 +636,23 @@ acpi_ns_check_package_list(struct acpi_evaluate_info *info,
 							   (expected_count - 1),
 							   0, 0, 1);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 			break;
 
 		default:	/* Should not get here, type was validated by caller */
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_INTERNAL);
 		}
 
 		elements++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 
 package_too_small:
@@ -617,6 +663,7 @@ package_too_small:
 			      "Return SubPackage[%u] is too small - found %u elements, expected %u",
 			      i, sub_package->package.count, expected_count));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_AML_OPERAND_VALUE);
 }
 
@@ -646,6 +693,7 @@ acpi_ns_check_package_elements(struct acpi_evaluate_info *info,
 			       u32 count1,
 			       u8 type2, u32 count2, u32 start_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **this_element = elements;
 	acpi_status status;
 	u32 i;
@@ -659,6 +707,8 @@ acpi_ns_check_package_elements(struct acpi_evaluate_info *info,
 		status = acpi_ns_check_object_type(info, this_element,
 						   type1, i + start_index);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		this_element++;
@@ -669,10 +719,13 @@ acpi_ns_check_package_elements(struct acpi_evaluate_info *info,
 						   type2,
 						   (i + count1 + start_index));
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		this_element++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

@@ -62,6 +62,7 @@ ACPI_MODULE_NAME("dswscope")
  ***************************************************************************/
 void acpi_ds_scope_stack_clear(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope_info;
 
 	ACPI_FUNCTION_NAME(ds_scope_stack_clear);
@@ -80,6 +81,7 @@ void acpi_ds_scope_stack_clear(struct acpi_walk_state *walk_state)
 
 		acpi_ut_delete_generic_state(scope_info);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /****************************************************************************
@@ -102,6 +104,7 @@ acpi_ds_scope_stack_push(struct acpi_namespace_node *node,
 			 acpi_object_type type,
 			 struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope_info;
 	union acpi_generic_state *old_scope_info;
 
@@ -161,6 +164,7 @@ acpi_ds_scope_stack_push(struct acpi_namespace_node *node,
 
 	acpi_ut_push_generic_state(&walk_state->scope_info, scope_info);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /****************************************************************************
@@ -177,6 +181,7 @@ acpi_ds_scope_stack_push(struct acpi_namespace_node *node,
 
 acpi_status acpi_ds_scope_stack_pop(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope_info;
 	union acpi_generic_state *new_scope_info;
 
@@ -212,4 +217,5 @@ acpi_status acpi_ds_scope_stack_pop(struct acpi_walk_state *walk_state)
 
 	acpi_ut_delete_generic_state(scope_info);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

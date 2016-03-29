@@ -61,6 +61,7 @@ ACPI_MODULE_NAME("hwacpi")
  ******************************************************************************/
 acpi_status acpi_hw_set_mode(u32 mode)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_status status;
 
@@ -130,6 +131,7 @@ acpi_status acpi_hw_set_mode(u32 mode)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -147,6 +149,7 @@ acpi_status acpi_hw_set_mode(u32 mode)
 
 u32 acpi_hw_get_mode(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 value;
 
@@ -176,6 +179,7 @@ u32 acpi_hw_get_mode(void)
 	} else {
 		return_UINT32(ACPI_SYS_MODE_LEGACY);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

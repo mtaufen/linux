@@ -83,6 +83,7 @@ static acpi_status
 acpi_ex_setup_region(union acpi_operand_object *obj_desc,
 		     u32 field_datum_byte_offset)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *rgn_desc;
 	u8 space_id;
@@ -208,6 +209,7 @@ acpi_ex_setup_region(union acpi_operand_object *obj_desc,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -232,6 +234,7 @@ acpi_status
 acpi_ex_access_region(union acpi_operand_object *obj_desc,
 		      u32 field_datum_byte_offset, u64 *value, u32 function)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *rgn_desc;
 	u32 region_offset;
@@ -301,6 +304,7 @@ acpi_ex_access_region(union acpi_operand_object *obj_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -323,12 +327,14 @@ acpi_ex_access_region(union acpi_operand_object *obj_desc,
 static u8
 acpi_ex_register_overflow(union acpi_operand_object *obj_desc, u64 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (obj_desc->common_field.bit_length >= ACPI_INTEGER_BIT_SIZE) {
 		/*
 		 * The field is large enough to hold the maximum integer, so we can
 		 * never overflow it.
 		 */
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -342,11 +348,13 @@ acpi_ex_register_overflow(union acpi_operand_object *obj_desc, u64 value)
 			    ACPI_FORMAT_UINT64(value),
 			    obj_desc->common_field.bit_length));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
 	/* The Value will fit into the field with no truncation */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -372,6 +380,7 @@ static acpi_status
 acpi_ex_field_datum_io(union acpi_operand_object *obj_desc,
 		       u32 field_datum_byte_offset, u64 *value, u32 read_write)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u64 local_value;
 
@@ -557,6 +566,7 @@ acpi_ex_field_datum_io(union acpi_operand_object *obj_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -579,6 +589,7 @@ acpi_ex_write_with_update_rule(union acpi_operand_object *obj_desc,
 			       u64 mask,
 			       u64 field_value, u32 field_datum_byte_offset)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u64 merged_value;
 	u64 current_value;
@@ -662,6 +673,7 @@ acpi_ex_write_with_update_rule(union acpi_operand_object *obj_desc,
 				   &merged_value, ACPI_WRITE);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -682,6 +694,7 @@ acpi_status
 acpi_ex_extract_from_field(union acpi_operand_object *obj_desc,
 			   void *buffer, u32 buffer_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u64 raw_datum;
 	u64 merged_datum;
@@ -820,6 +833,7 @@ acpi_ex_extract_from_field(union acpi_operand_object *obj_desc,
 			buffer_length - buffer_offset));
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -840,6 +854,7 @@ acpi_status
 acpi_ex_insert_into_field(union acpi_operand_object *obj_desc,
 			  void *buffer, u32 buffer_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *new_buffer;
 	acpi_status status;
 	u64 mask;
@@ -1006,4 +1021,5 @@ exit:
 		ACPI_FREE(new_buffer);
 	}
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

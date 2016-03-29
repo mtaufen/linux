@@ -83,10 +83,12 @@ acpi_status
 acpi_hw_validate_register(struct acpi_generic_address *reg,
 			  u8 max_bit_width, u64 *address)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Must have a valid pointer to a GAS structure */
 
 	if (!reg) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -97,6 +99,7 @@ acpi_hw_validate_register(struct acpi_generic_address *reg,
 	 */
 	ACPI_MOVE_64_TO_64(address, &reg->address);
 	if (!(*address)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_ADDRESS);
 	}
 
@@ -106,6 +109,7 @@ acpi_hw_validate_register(struct acpi_generic_address *reg,
 	    (reg->space_id != ACPI_ADR_SPACE_SYSTEM_IO)) {
 		ACPI_ERROR((AE_INFO,
 			    "Unsupported address space: 0x%X", reg->space_id));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_SUPPORT);
 	}
 
@@ -117,6 +121,7 @@ acpi_hw_validate_register(struct acpi_generic_address *reg,
 		ACPI_ERROR((AE_INFO,
 			    "Unsupported register bit width: 0x%X",
 			    reg->bit_width));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_SUPPORT);
 	}
 
@@ -128,6 +133,7 @@ acpi_hw_validate_register(struct acpi_generic_address *reg,
 			      reg->bit_offset));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -154,6 +160,7 @@ acpi_hw_validate_register(struct acpi_generic_address *reg,
 
 acpi_status acpi_hw_read(u32 *value, struct acpi_generic_address *reg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u64 address;
 	u64 value64;
 	acpi_status status;
@@ -164,6 +171,7 @@ acpi_status acpi_hw_read(u32 *value, struct acpi_generic_address *reg)
 
 	status = acpi_hw_validate_register(reg, 32, &address);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -191,6 +199,7 @@ acpi_status acpi_hw_read(u32 *value, struct acpi_generic_address *reg)
 			  *value, reg->bit_width, ACPI_FORMAT_UINT64(address),
 			  acpi_ut_get_region_name(reg->space_id)));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -211,6 +220,7 @@ acpi_status acpi_hw_read(u32 *value, struct acpi_generic_address *reg)
 
 acpi_status acpi_hw_write(u32 value, struct acpi_generic_address *reg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u64 address;
 	acpi_status status;
 
@@ -220,6 +230,7 @@ acpi_status acpi_hw_write(u32 value, struct acpi_generic_address *reg)
 
 	status = acpi_hw_validate_register(reg, 32, &address);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -242,6 +253,7 @@ acpi_status acpi_hw_write(u32 value, struct acpi_generic_address *reg)
 			  value, reg->bit_width, ACPI_FORMAT_UINT64(address),
 			  acpi_ut_get_region_name(reg->space_id)));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -260,6 +272,7 @@ acpi_status acpi_hw_write(u32 value, struct acpi_generic_address *reg)
 
 acpi_status acpi_hw_clear_acpi_status(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_cpu_flags lock_flags = 0;
 
@@ -288,6 +301,7 @@ acpi_status acpi_hw_clear_acpi_status(void)
 
 exit:
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -304,14 +318,17 @@ exit:
 
 struct acpi_bit_register_info *acpi_hw_get_bit_register_info(u32 register_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	if (register_id > ACPI_BITREG_MAX) {
 		ACPI_ERROR((AE_INFO, "Invalid BitRegister ID: 0x%X",
 			    register_id));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (&acpi_gbl_bit_register_info[register_id]);
 }
 
@@ -334,6 +351,7 @@ struct acpi_bit_register_info *acpi_hw_get_bit_register_info(u32 register_id)
 
 acpi_status acpi_hw_write_pm1_control(u32 pm1a_control, u32 pm1b_control)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(hw_write_pm1_control);
@@ -350,6 +368,7 @@ acpi_status acpi_hw_write_pm1_control(u32 pm1a_control, u32 pm1b_control)
 				  &acpi_gbl_FADT.xpm1b_control_block);
 	}
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -366,6 +385,7 @@ acpi_status acpi_hw_write_pm1_control(u32 pm1a_control, u32 pm1b_control)
  ******************************************************************************/
 acpi_status acpi_hw_register_read(u32 register_id, u32 *return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 value = 0;
 	acpi_status status;
 
@@ -431,6 +451,7 @@ acpi_status acpi_hw_register_read(u32 register_id, u32 *return_value)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -461,6 +482,7 @@ acpi_status acpi_hw_register_read(u32 register_id, u32 *return_value)
 
 acpi_status acpi_hw_register_write(u32 register_id, u32 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 read_value;
 
@@ -563,6 +585,7 @@ acpi_status acpi_hw_register_write(u32 register_id, u32 value)
 
 exit:
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /******************************************************************************
@@ -584,6 +607,7 @@ acpi_hw_read_multiple(u32 *value,
 		      struct acpi_generic_address *register_a,
 		      struct acpi_generic_address *register_b)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 value_a = 0;
 	u32 value_b = 0;
 	acpi_status status;
@@ -592,6 +616,7 @@ acpi_hw_read_multiple(u32 *value,
 
 	status = acpi_hw_read(&value_a, register_a);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -600,6 +625,8 @@ acpi_hw_read_multiple(u32 *value,
 	if (register_b->address) {
 		status = acpi_hw_read(&value_b, register_b);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	}
@@ -615,6 +642,7 @@ acpi_hw_read_multiple(u32 *value,
 	 * and writes have no side effects"
 	 */
 	*value = (value_a | value_b);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -637,12 +665,14 @@ acpi_hw_write_multiple(u32 value,
 		       struct acpi_generic_address *register_a,
 		       struct acpi_generic_address *register_b)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	/* The first register is always required */
 
 	status = acpi_hw_write(value, register_a);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -662,6 +692,7 @@ acpi_hw_write_multiple(u32 value,
 		status = acpi_hw_write(value, register_b);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 

@@ -63,6 +63,7 @@ ACPI_MODULE_NAME("excreate")
  ******************************************************************************/
 acpi_status acpi_ex_create_alias(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *target_node;
 	struct acpi_namespace_node *alias_node;
 	acpi_status status = AE_OK;
@@ -150,6 +151,7 @@ acpi_status acpi_ex_create_alias(struct acpi_walk_state *walk_state)
 	/* Since both operands are Nodes, we don't need to delete them */
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -166,6 +168,7 @@ acpi_status acpi_ex_create_alias(struct acpi_walk_state *walk_state)
 
 acpi_status acpi_ex_create_event(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 
@@ -200,6 +203,7 @@ cleanup:
 	 */
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -218,6 +222,7 @@ cleanup:
 
 acpi_status acpi_ex_create_mutex(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *obj_desc;
 
@@ -255,6 +260,7 @@ cleanup:
 	 */
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -277,6 +283,7 @@ acpi_ex_create_region(u8 * aml_start,
 		      u32 aml_length,
 		      u8 space_id, struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
@@ -358,6 +365,7 @@ cleanup:
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -376,6 +384,7 @@ cleanup:
 
 acpi_status acpi_ex_create_processor(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
@@ -405,6 +414,7 @@ acpi_status acpi_ex_create_processor(struct acpi_walk_state *walk_state)
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -423,6 +433,7 @@ acpi_status acpi_ex_create_processor(struct acpi_walk_state *walk_state)
 
 acpi_status acpi_ex_create_power_resource(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
@@ -451,6 +462,7 @@ acpi_status acpi_ex_create_power_resource(struct acpi_walk_state *walk_state)
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 
@@ -472,6 +484,7 @@ acpi_status
 acpi_ex_create_method(u8 * aml_start,
 		      u32 aml_length, struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
@@ -530,4 +543,5 @@ exit:
 
 	acpi_ut_remove_reference(operand[1]);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

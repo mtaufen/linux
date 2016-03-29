@@ -71,11 +71,13 @@ acpi_db_set_method_breakpoint(char *location,
 			      struct acpi_walk_state *walk_state,
 			      union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 address;
 	u32 aml_offset;
 
 	if (!op) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -93,6 +95,7 @@ acpi_db_set_method_breakpoint(char *location,
 
 	walk_state->user_breakpoint = address;
 	acpi_os_printf("Breakpoint set at AML offset %X\n", address);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -110,13 +113,16 @@ acpi_db_set_method_breakpoint(char *location,
 
 void acpi_db_set_method_call_breakpoint(union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!op) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	acpi_gbl_step_to_next_call = TRUE;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -136,6 +142,7 @@ void acpi_db_set_method_call_breakpoint(union acpi_parse_object *op)
 
 void acpi_db_set_method_data(char *type_arg, char *index_arg, char *value_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char type;
 	u32 index;
 	u32 value;
@@ -150,6 +157,7 @@ void acpi_db_set_method_data(char *type_arg, char *index_arg, char *value_arg)
 	type = type_arg[0];
 	if ((type != 'L') && (type != 'A') && (type != 'N')) {
 		acpi_os_printf("Invalid SET operand: %s\n", type_arg);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -158,15 +166,20 @@ void acpi_db_set_method_data(char *type_arg, char *index_arg, char *value_arg)
 	if (type == 'N') {
 		node = acpi_db_convert_to_node(index_arg);
 		if (!node) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
 		if (node->type != ACPI_TYPE_INTEGER) {
 			acpi_os_printf("Can only set Integer nodes\n");
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 		obj_desc = node->object;
 		obj_desc->integer.value = value;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -177,6 +190,7 @@ void acpi_db_set_method_data(char *type_arg, char *index_arg, char *value_arg)
 	walk_state = acpi_ds_get_current_walk_state(acpi_gbl_current_walk_list);
 	if (!walk_state) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -185,7 +199,8 @@ void acpi_db_set_method_data(char *type_arg, char *index_arg, char *value_arg)
 	obj_desc = acpi_ut_create_integer_object((u64)value);
 	if (!obj_desc) {
 		acpi_os_printf("Could not create an internal object\n");
-		return;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return;
 	}
 
 	/* Store the new object into the target */
@@ -244,6 +259,7 @@ void acpi_db_set_method_data(char *type_arg, char *index_arg, char *value_arg)
 
 cleanup:
 	acpi_ut_remove_reference(obj_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -262,10 +278,12 @@ cleanup:
 
 void acpi_db_disassemble_aml(char *statements, union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 num_statements = 8;
 
 	if (!op) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -275,6 +293,7 @@ void acpi_db_disassemble_aml(char *statements, union acpi_parse_object *op)
 #ifdef ACPI_DISASSEMBLER
 	acpi_dm_disassemble(NULL, op, num_statements);
 #endif
+printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -292,6 +311,7 @@ void acpi_db_disassemble_aml(char *statements, union acpi_parse_object *op)
 
 acpi_status acpi_db_disassemble_method(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_parse_object *op;
 	struct acpi_walk_state *walk_state;
@@ -300,12 +320,14 @@ acpi_status acpi_db_disassemble_method(char *name)
 
 	method = acpi_db_convert_to_node(name);
 	if (!method) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	if (method->type != ACPI_TYPE_METHOD) {
 		ACPI_ERROR((AE_INFO, "%s (%s): Object must be a control method",
 			    name, acpi_ut_get_type_name(method->type)));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -313,6 +335,7 @@ acpi_status acpi_db_disassemble_method(char *name)
 
 	op = acpi_ps_create_scope_op(obj_desc->method.aml_start);
 	if (!op) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -320,6 +343,7 @@ acpi_status acpi_db_disassemble_method(char *name)
 
 	walk_state = acpi_ds_create_walk_state(0, op, NULL, NULL);
 	if (!walk_state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -328,6 +352,7 @@ acpi_status acpi_db_disassemble_method(char *name)
 				       obj_desc->method.aml_length, NULL,
 				       ACPI_IMODE_LOAD_PASS1);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -338,6 +363,7 @@ acpi_status acpi_db_disassemble_method(char *name)
 
 	status = acpi_ds_scope_stack_push(method, method->type, walk_state);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -365,5 +391,6 @@ acpi_status acpi_db_disassemble_method(char *name)
 	acpi_ns_delete_namespace_subtree(method);
 	acpi_ns_delete_namespace_by_owner(obj_desc->method.owner_id);
 	acpi_ut_release_owner_id(&obj_desc->method.owner_id);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

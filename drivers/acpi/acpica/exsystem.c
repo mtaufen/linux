@@ -64,6 +64,7 @@ ACPI_MODULE_NAME("exsystem")
  ******************************************************************************/
 acpi_status acpi_ex_system_wait_semaphore(acpi_semaphore semaphore, u16 timeout)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ex_system_wait_semaphore);
@@ -90,6 +91,7 @@ acpi_status acpi_ex_system_wait_semaphore(acpi_semaphore semaphore, u16 timeout)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -109,6 +111,7 @@ acpi_status acpi_ex_system_wait_semaphore(acpi_semaphore semaphore, u16 timeout)
 
 acpi_status acpi_ex_system_wait_mutex(acpi_mutex mutex, u16 timeout)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ex_system_wait_mutex);
@@ -135,6 +138,7 @@ acpi_status acpi_ex_system_wait_mutex(acpi_mutex mutex, u16 timeout)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -156,6 +160,7 @@ acpi_status acpi_ex_system_wait_mutex(acpi_mutex mutex, u16 timeout)
 
 acpi_status acpi_ex_system_do_stall(u32 how_long)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_ENTRY();
@@ -174,6 +179,7 @@ acpi_status acpi_ex_system_do_stall(u32 how_long)
 		acpi_os_stall(how_long);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -192,6 +198,7 @@ acpi_status acpi_ex_system_do_stall(u32 how_long)
 
 acpi_status acpi_ex_system_do_sleep(u64 how_long)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Since this thread will sleep, we must release the interpreter */
@@ -211,6 +218,7 @@ acpi_status acpi_ex_system_do_sleep(u64 how_long)
 	/* And now we must get the interpreter again */
 
 	acpi_ex_enter_interpreter();
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -229,6 +237,7 @@ acpi_status acpi_ex_system_do_sleep(u64 how_long)
 
 acpi_status acpi_ex_system_signal_event(union acpi_operand_object * obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ex_system_signal_event);
@@ -239,6 +248,7 @@ acpi_status acpi_ex_system_signal_event(union acpi_operand_object * obj_desc)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -260,6 +270,7 @@ acpi_status
 acpi_ex_system_wait_event(union acpi_operand_object *time_desc,
 			  union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ex_system_wait_event);
@@ -272,6 +283,7 @@ acpi_ex_system_wait_event(union acpi_operand_object *time_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -288,6 +300,7 @@ acpi_ex_system_wait_event(union acpi_operand_object *time_desc,
 
 acpi_status acpi_ex_system_reset_event(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	acpi_semaphore temp_semaphore;
 
@@ -304,5 +317,6 @@ acpi_status acpi_ex_system_reset_event(union acpi_operand_object *obj_desc)
 		obj_desc->event.os_semaphore = temp_semaphore;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }

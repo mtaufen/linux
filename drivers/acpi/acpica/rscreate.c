@@ -67,6 +67,7 @@ acpi_buffer_to_resource(u8 *aml_buffer,
 			u16 aml_buffer_length,
 			struct acpi_resource **resource_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_size list_size_needed;
 	void *resource;
@@ -114,6 +115,7 @@ acpi_buffer_to_resource(u8 *aml_buffer,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_buffer_to_resource)
@@ -139,6 +141,7 @@ acpi_status
 acpi_rs_create_resource_list(union acpi_operand_object *aml_buffer,
 			     struct acpi_buffer *output_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_status status;
 	u8 *aml_start;
@@ -188,6 +191,7 @@ acpi_rs_create_resource_list(union acpi_operand_object *aml_buffer,
 	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "OutputBuffer %p Length %X\n",
 			  output_buffer->pointer, (u32) output_buffer->length));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -215,6 +219,7 @@ acpi_status
 acpi_rs_create_pci_routing_table(union acpi_operand_object *package_object,
 				 struct acpi_buffer *output_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *buffer;
 	union acpi_operand_object **top_object_list;
 	union acpi_operand_object **sub_object_list;
@@ -414,6 +419,7 @@ acpi_rs_create_pci_routing_table(union acpi_operand_object *package_object,
 	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "OutputBuffer %p Length %X\n",
 			  output_buffer->pointer, (u32) output_buffer->length));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -437,6 +443,7 @@ acpi_status
 acpi_rs_create_aml_resources(struct acpi_buffer *resource_list,
 			     struct acpi_buffer *output_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_size aml_size_needed = 0;
 
@@ -478,4 +485,5 @@ acpi_rs_create_aml_resources(struct acpi_buffer *resource_list,
 	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "OutputBuffer %p Length %X\n",
 			  output_buffer->pointer, (u32) output_buffer->length));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

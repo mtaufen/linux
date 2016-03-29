@@ -113,6 +113,7 @@ acpi_ut_copy_isimple_to_esimple(union acpi_operand_object *internal_object,
 				union acpi_object *external_object,
 				u8 * data_space, acpi_size * buffer_space_used)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ut_copy_isimple_to_esimple);
@@ -228,6 +229,7 @@ acpi_ut_copy_isimple_to_esimple(union acpi_operand_object *internal_object,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -248,6 +250,7 @@ acpi_ut_copy_ielement_to_eelement(u8 object_type,
 				  union acpi_generic_state *state,
 				  void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_pkg_info *info = (struct acpi_pkg_info *)context;
 	acpi_size object_space;
@@ -271,6 +274,8 @@ acpi_ut_copy_ielement_to_eelement(u8 object_type,
 							 info->free_space,
 							 &object_space);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		break;
@@ -302,11 +307,13 @@ acpi_ut_copy_ielement_to_eelement(u8 object_type,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	info->free_space += object_space;
 	info->length += object_space;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -333,6 +340,7 @@ static acpi_status
 acpi_ut_copy_ipackage_to_epackage(union acpi_operand_object *internal_object,
 				  u8 * buffer, acpi_size * space_used)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_object *external_object;
 	acpi_status status;
 	struct acpi_pkg_info info;
@@ -373,6 +381,7 @@ acpi_ut_copy_ipackage_to_epackage(union acpi_operand_object *internal_object,
 
 	*space_used = info.length;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -393,6 +402,7 @@ acpi_status
 acpi_ut_copy_iobject_to_eobject(union acpi_operand_object *internal_object,
 				struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ut_copy_iobject_to_eobject);
@@ -430,6 +440,7 @@ acpi_ut_copy_iobject_to_eobject(union acpi_operand_object *internal_object,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -452,6 +463,7 @@ static acpi_status
 acpi_ut_copy_esimple_to_isimple(union acpi_object *external_object,
 				union acpi_operand_object **ret_internal_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *internal_object;
 
 	ACPI_FUNCTION_TRACE(ut_copy_esimple_to_isimple);
@@ -555,6 +567,7 @@ acpi_ut_copy_esimple_to_isimple(union acpi_object *external_object,
 error_exit:
 	acpi_ut_remove_reference(internal_object);
 	return_ACPI_STATUS(AE_NO_MEMORY);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -575,6 +588,7 @@ static acpi_status
 acpi_ut_copy_epackage_to_ipackage(union acpi_object *external_object,
 				  union acpi_operand_object **internal_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *package_object;
 	union acpi_operand_object **package_elements;
@@ -618,6 +632,7 @@ acpi_ut_copy_epackage_to_ipackage(union acpi_object *external_object,
 
 	*internal_object = package_object;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -637,6 +652,7 @@ acpi_status
 acpi_ut_copy_eobject_to_iobject(union acpi_object *external_object,
 				union acpi_operand_object **internal_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ut_copy_eobject_to_iobject);
@@ -654,6 +670,7 @@ acpi_ut_copy_eobject_to_iobject(union acpi_object *external_object,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -674,6 +691,7 @@ static acpi_status
 acpi_ut_copy_simple_object(union acpi_operand_object *source_desc,
 			   union acpi_operand_object *dest_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 reference_count;
 	union acpi_operand_object *next_object;
 	acpi_status status;
@@ -719,6 +737,8 @@ acpi_ut_copy_simple_object(union acpi_operand_object *source_desc,
 			dest_desc->buffer.pointer =
 			    ACPI_ALLOCATE(source_desc->buffer.length);
 			if (!dest_desc->buffer.pointer) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_NO_MEMORY);
 			}
 
@@ -741,6 +761,8 @@ acpi_ut_copy_simple_object(union acpi_operand_object *source_desc,
 			    ACPI_ALLOCATE((acpi_size) source_desc->string.
 					  length + 1);
 			if (!dest_desc->string.pointer) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_NO_MEMORY);
 			}
 
@@ -785,6 +807,8 @@ acpi_ut_copy_simple_object(union acpi_operand_object *source_desc,
 
 		status = acpi_os_create_mutex(&dest_desc->mutex.os_mutex);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		break;
@@ -795,6 +819,8 @@ acpi_ut_copy_simple_object(union acpi_operand_object *source_desc,
 						  &dest_desc->event.
 						  os_semaphore);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		break;
@@ -806,6 +832,7 @@ acpi_ut_copy_simple_object(union acpi_operand_object *source_desc,
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -827,6 +854,7 @@ acpi_ut_copy_ielement_to_ielement(u8 object_type,
 				  union acpi_generic_state *state,
 				  void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u32 this_index;
 	union acpi_operand_object **this_target_ptr;
@@ -851,6 +879,8 @@ acpi_ut_copy_ielement_to_ielement(u8 object_type,
 			    acpi_ut_create_internal_object(source_object->
 							   common.type);
 			if (!target_object) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_NO_MEMORY);
 			}
 
@@ -877,6 +907,8 @@ acpi_ut_copy_ielement_to_ielement(u8 object_type,
 		target_object =
 		    acpi_ut_create_package_object(source_object->package.count);
 		if (!target_object) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -893,13 +925,16 @@ acpi_ut_copy_ielement_to_ielement(u8 object_type,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 
 error_exit:
 	acpi_ut_remove_reference(target_object);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -923,6 +958,7 @@ acpi_ut_copy_ipackage_to_ipackage(union acpi_operand_object *source_obj,
 				  union acpi_operand_object *dest_obj,
 				  struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ut_copy_ipackage_to_ipackage);
@@ -958,6 +994,7 @@ acpi_ut_copy_ipackage_to_ipackage(union acpi_operand_object *source_obj,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -979,6 +1016,7 @@ acpi_ut_copy_iobject_to_iobject(union acpi_operand_object *source_desc,
 				union acpi_operand_object **dest_desc,
 				struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ut_copy_iobject_to_iobject);
@@ -1007,4 +1045,5 @@ acpi_ut_copy_iobject_to_iobject(union acpi_operand_object *source_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

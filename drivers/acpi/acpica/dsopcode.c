@@ -77,6 +77,7 @@ acpi_ds_init_buffer_field(u16 aml_opcode,
 
 acpi_status acpi_ds_initialize_region(acpi_handle obj_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -85,6 +86,7 @@ acpi_status acpi_ds_initialize_region(acpi_handle obj_handle)
 	/* Namespace is NOT locked */
 
 	status = acpi_ev_initialize_region(obj_desc, FALSE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -113,6 +115,7 @@ acpi_ds_init_buffer_field(u16 aml_opcode,
 			  union acpi_operand_object *length_desc,
 			  union acpi_operand_object *result_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 offset;
 	u32 bit_offset;
 	u32 bit_count;
@@ -280,6 +283,7 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -300,6 +304,7 @@ acpi_status
 acpi_ds_eval_buffer_field_operands(struct acpi_walk_state *walk_state,
 				   union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
@@ -365,6 +370,7 @@ acpi_ds_eval_buffer_field_operands(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -385,6 +391,7 @@ acpi_status
 acpi_ds_eval_region_operands(struct acpi_walk_state *walk_state,
 			     union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *operand_desc;
@@ -456,6 +463,7 @@ acpi_ds_eval_region_operands(struct acpi_walk_state *walk_state,
 
 	obj_desc->region.flags |= AOPOBJ_DATA_VALID;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -477,6 +485,7 @@ acpi_status
 acpi_ds_eval_table_region_operands(struct acpi_walk_state *walk_state,
 				   union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object **operand;
@@ -564,6 +573,7 @@ cleanup:
 	acpi_ut_remove_reference(operand[2]);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -586,6 +596,7 @@ acpi_ds_eval_data_object_operands(struct acpi_walk_state *walk_state,
 				  union acpi_parse_object *op,
 				  union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *arg_desc;
 	u32 length;
@@ -668,6 +679,7 @@ acpi_ds_eval_data_object_operands(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -688,6 +700,7 @@ acpi_status
 acpi_ds_eval_bank_field_operands(struct acpi_walk_state *walk_state,
 				 union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *operand_desc;
@@ -766,4 +779,5 @@ acpi_ds_eval_bank_field_operands(struct acpi_walk_state *walk_state,
 
 	acpi_ut_remove_reference(operand_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

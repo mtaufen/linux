@@ -64,6 +64,7 @@ ACPI_MODULE_NAME("hwsleep")
  ******************************************************************************/
 acpi_status acpi_hw_legacy_sleep(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_bit_register_info *sleep_type_reg_info;
 	struct acpi_bit_register_info *sleep_enable_reg_info;
 	u32 pm1a_control;
@@ -199,6 +200,7 @@ acpi_status acpi_hw_legacy_sleep(u8 sleep_state)
 	} while (!in_value);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -217,6 +219,7 @@ acpi_status acpi_hw_legacy_sleep(u8 sleep_state)
 
 acpi_status acpi_hw_legacy_wake_prep(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_bit_register_info *sleep_type_reg_info;
 	struct acpi_bit_register_info *sleep_enable_reg_info;
@@ -267,6 +270,7 @@ acpi_status acpi_hw_legacy_wake_prep(u8 sleep_state)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -284,6 +288,7 @@ acpi_status acpi_hw_legacy_wake_prep(u8 sleep_state)
 
 acpi_status acpi_hw_legacy_wake(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(hw_legacy_wake);
@@ -340,6 +345,7 @@ acpi_status acpi_hw_legacy_wake(u8 sleep_state)
 
 	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, ACPI_SST_WORKING);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

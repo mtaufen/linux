@@ -88,6 +88,7 @@ static const char acpi_gbl_upper_hex_digits[] = "0123456789ABCDEF";
 static acpi_size
 acpi_ut_bound_string_length(const char *string, acpi_size count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length = 0;
 
 	while (*string && count) {
@@ -96,6 +97,7 @@ acpi_ut_bound_string_length(const char *string, acpi_size count)
 		count--;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (length);
 }
 
@@ -115,12 +117,14 @@ acpi_ut_bound_string_length(const char *string, acpi_size count)
 
 static char *acpi_ut_bound_string_output(char *string, const char *end, char c)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (string < end) {
 		*string = c;
 	}
 
 	++string;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (string);
 }
 
@@ -142,6 +146,7 @@ static char *acpi_ut_bound_string_output(char *string, const char *end, char c)
 
 static char *acpi_ut_put_number(char *string, u64 number, u8 base, u8 upper)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const char *digits;
 	u64 digit_index;
 	char *pos;
@@ -160,6 +165,7 @@ static char *acpi_ut_put_number(char *string, u64 number, u8 base, u8 upper)
 	}
 
 	/* *(Pos++) = '0'; */
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (pos);
 }
 
@@ -178,6 +184,7 @@ static char *acpi_ut_put_number(char *string, u64 number, u8 base, u8 upper)
 
 const char *acpi_ut_scan_number(const char *string, u64 *number_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u64 number = 0;
 
 	while (isdigit((int)*string)) {
@@ -186,6 +193,7 @@ const char *acpi_ut_scan_number(const char *string, u64 *number_ptr)
 	}
 
 	*number_ptr = number;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (string);
 }
 
@@ -204,6 +212,7 @@ const char *acpi_ut_scan_number(const char *string, u64 *number_ptr)
 
 const char *acpi_ut_print_number(char *string, u64 number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char ascii_string[20];
 	const char *pos1;
 	char *pos2;
@@ -216,6 +225,7 @@ const char *acpi_ut_print_number(char *string, u64 number)
 	}
 
 	*pos2 = 0;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (string);
 }
 
@@ -242,6 +252,7 @@ static char *acpi_ut_format_number(char *string,
 				   u64 number,
 				   u8 base, s32 width, s32 precision, u8 type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *pos;
 	char sign;
 	char zero;
@@ -253,6 +264,7 @@ static char *acpi_ut_format_number(char *string,
 	/* Parameter validation */
 
 	if (base < 2 || base > 16) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -336,6 +348,7 @@ static char *acpi_ut_format_number(char *string,
 		string = acpi_ut_bound_string_output(string, end, ' ');
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (string);
 }
 
@@ -358,6 +371,7 @@ int
 acpi_ut_vsnprintf(char *string,
 		  acpi_size size, const char *format, va_list args)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 base;
 	u8 type;
 	s32 width;
@@ -586,6 +600,7 @@ acpi_ut_vsnprintf(char *string,
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (ACPI_PTR_DIFF(pos, string));
 }
 
@@ -605,6 +620,7 @@ acpi_ut_vsnprintf(char *string,
 
 int acpi_ut_snprintf(char *string, acpi_size size, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list args;
 	int length;
 
@@ -612,6 +628,7 @@ int acpi_ut_snprintf(char *string, acpi_size size, const char *format, ...)
 	length = acpi_ut_vsnprintf(string, size, format, args);
 	va_end(args);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (length);
 }
 
@@ -632,6 +649,7 @@ int acpi_ut_snprintf(char *string, acpi_size size, const char *format, ...)
 
 int acpi_ut_file_vprintf(ACPI_FILE file, const char *format, va_list args)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_cpu_flags flags;
 	int length;
 
@@ -642,6 +660,7 @@ int acpi_ut_file_vprintf(ACPI_FILE file, const char *format, va_list args)
 	(void)acpi_os_write_file(file, acpi_gbl_print_buffer, length, 1);
 	acpi_os_release_lock(acpi_gbl_print_lock, flags);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (length);
 }
 
@@ -660,6 +679,7 @@ int acpi_ut_file_vprintf(ACPI_FILE file, const char *format, va_list args)
 
 int acpi_ut_file_printf(ACPI_FILE file, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list args;
 	int length;
 
@@ -667,6 +687,7 @@ int acpi_ut_file_printf(ACPI_FILE file, const char *format, ...)
 	length = acpi_ut_file_vprintf(file, format, args);
 	va_end(args);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (length);
 }
 #endif

@@ -69,7 +69,9 @@ static const char acpi_gbl_hex_to_ascii[] = {
 
 char acpi_ut_hex_to_ascii_char(u64 integer, u32 position)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_hex_to_ascii[(integer >> position) & 0xF]);
 }
 
@@ -87,14 +89,18 @@ char acpi_ut_hex_to_ascii_char(u64 integer, u32 position)
 
 u8 acpi_ut_ascii_char_to_hex(int hex_char)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (hex_char <= 0x39) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((u8)(hex_char - 0x30));
 	}
 
 	if (hex_char <= 0x46) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((u8)(hex_char - 0x37));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((u8)(hex_char - 0x57));
 }

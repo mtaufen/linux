@@ -121,11 +121,13 @@ static struct acpi_handler_info acpi_gbl_handler_list[] = {
 
 static void *acpi_db_get_pointer(void *target)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *obj_ptr;
 	acpi_size address;
 
 	address = strtoul(target, NULL, 16);
 	obj_ptr = ACPI_TO_POINTER(address);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (obj_ptr);
 }
 
@@ -143,6 +145,7 @@ static void *acpi_db_get_pointer(void *target)
 
 static void acpi_db_dump_parser_descriptor(union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_opcode_info *info;
 
 	info = acpi_ps_get_opcode_info(op->common.aml_opcode);
@@ -156,6 +159,7 @@ static void acpi_db_dump_parser_descriptor(union acpi_parse_object *op)
 	acpi_os_printf("%20.20s : %p\n", "Value/ArgList", op->common.value.arg);
 	acpi_os_printf("%20.20s : %p\n", "Parent", op->common.parent);
 	acpi_os_printf("%20.20s : %p\n", "NextOp", op->common.next);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -174,6 +178,7 @@ static void acpi_db_dump_parser_descriptor(union acpi_parse_object *op)
 
 void acpi_db_decode_and_display_object(char *target, char *output_type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *obj_ptr;
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *obj_desc;
@@ -184,6 +189,7 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 	u32 size;
 
 	if (!target) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -211,7 +217,9 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 			acpi_os_printf
 			    ("Address %p is invalid in this address space\n",
 			     obj_ptr);
-			return;
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
+		return;
 		}
 
 		/* Decode the object type */
@@ -226,6 +234,8 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 				acpi_os_printf
 				    ("Cannot read entire Named object at address %p\n",
 				     obj_ptr);
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return;
 			}
 
@@ -241,6 +251,8 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 				acpi_os_printf
 				    ("Cannot read entire ACPI object at address %p\n",
 				     obj_ptr);
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return;
 			}
 
@@ -260,6 +272,8 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 				acpi_os_printf
 				    ("Cannot read entire Parser object at address %p\n",
 				     obj_ptr);
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return;
 			}
 
@@ -291,6 +305,7 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 			break;
 		}
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -298,6 +313,7 @@ void acpi_db_decode_and_display_object(char *target, char *output_type)
 
 	node = acpi_db_local_ns_lookup(target);
 	if (!node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -316,6 +332,7 @@ dump_node:
 
 	if (!acpi_os_readable(node, sizeof(struct acpi_namespace_node))) {
 		acpi_os_printf("Invalid Named object at address %p\n", node);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -332,6 +349,8 @@ dump_node:
 			acpi_os_printf
 			    ("Invalid internal ACPI Object at address %p\n",
 			     obj_desc);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -340,6 +359,7 @@ dump_node:
 					  display, ACPI_UINT32_MAX);
 		acpi_ex_dump_object_descriptor(obj_desc, 1);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -356,6 +376,7 @@ dump_node:
 
 void acpi_db_display_method_info(union acpi_parse_object *start_op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_state *walk_state;
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
@@ -373,6 +394,7 @@ void acpi_db_display_method_info(union acpi_parse_object *start_op)
 	walk_state = acpi_ds_get_current_walk_state(acpi_gbl_current_walk_list);
 	if (!walk_state) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -442,6 +464,7 @@ void acpi_db_display_method_info(union acpi_parse_object *start_op)
 	    ("Remaining to execute:  %X AML Opcodes - %X Operators, %X Operands\n",
 	     num_remaining_ops, num_remaining_operators,
 	     num_remaining_operands);
+	    printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -458,15 +481,18 @@ void acpi_db_display_method_info(union acpi_parse_object *start_op)
 
 void acpi_db_display_locals(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_state *walk_state;
 
 	walk_state = acpi_ds_get_current_walk_state(acpi_gbl_current_walk_list);
 	if (!walk_state) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	acpi_db_decode_locals(walk_state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -483,15 +509,18 @@ void acpi_db_display_locals(void)
 
 void acpi_db_display_arguments(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_state *walk_state;
 
 	walk_state = acpi_ds_get_current_walk_state(acpi_gbl_current_walk_list);
 	if (!walk_state) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	acpi_db_decode_arguments(walk_state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -508,6 +537,7 @@ void acpi_db_display_arguments(void)
 
 void acpi_db_display_results(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	struct acpi_walk_state *walk_state;
 	union acpi_operand_object *obj_desc;
@@ -519,6 +549,7 @@ void acpi_db_display_results(void)
 	walk_state = acpi_ds_get_current_walk_state(acpi_gbl_current_walk_list);
 	if (!walk_state) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -549,6 +580,7 @@ void acpi_db_display_results(void)
 
 		index--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -565,12 +597,14 @@ void acpi_db_display_results(void)
 
 void acpi_db_display_calling_tree(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_state *walk_state;
 	struct acpi_namespace_node *node;
 
 	walk_state = acpi_ds_get_current_walk_state(acpi_gbl_current_walk_list);
 	if (!walk_state) {
 		acpi_os_printf("There is no method currently executing\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -583,6 +617,7 @@ void acpi_db_display_calling_tree(void)
 
 		walk_state = walk_state->next;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -599,6 +634,7 @@ void acpi_db_display_calling_tree(void)
 
 void acpi_db_display_object_type(char *object_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size arg;
 	acpi_handle handle;
 	struct acpi_device_info *info;
@@ -612,6 +648,7 @@ void acpi_db_display_object_type(char *object_arg)
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could not get object info, %s\n",
 			       acpi_format_exception(status));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -644,6 +681,7 @@ void acpi_db_display_object_type(char *object_arg)
 	}
 
 	ACPI_FREE(info);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -667,9 +705,11 @@ void
 acpi_db_display_result_object(union acpi_operand_object *obj_desc,
 			      struct acpi_walk_state *walk_state)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 #ifndef ACPI_APPLICATION
 	if (acpi_gbl_db_thread_id != acpi_os_get_thread_id()) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 #endif
@@ -677,12 +717,14 @@ acpi_db_display_result_object(union acpi_operand_object *obj_desc,
 	/* Only display if single stepping */
 
 	if (!acpi_gbl_cm_single_step) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	acpi_os_printf("ResultObj: ");
 	acpi_db_display_internal_object(obj_desc, walk_state);
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -702,19 +744,23 @@ void
 acpi_db_display_argument_object(union acpi_operand_object *obj_desc,
 				struct acpi_walk_state *walk_state)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 #ifndef ACPI_APPLICATION
 	if (acpi_gbl_db_thread_id != acpi_os_get_thread_id()) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 #endif
 
 	if (!acpi_gbl_cm_single_step) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	acpi_os_printf("ArgObj:  ");
 	acpi_db_display_internal_object(obj_desc, walk_state);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #if (!ACPI_REDUCED_HARDWARE)
@@ -732,6 +778,7 @@ acpi_db_display_argument_object(union acpi_operand_object *obj_desc,
 
 void acpi_db_display_gpes(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_block_info *gpe_block;
 	struct acpi_gpe_xrupt_info *gpe_xrupt_info;
 	struct acpi_gpe_event_info *gpe_event_info;
@@ -922,6 +969,7 @@ void acpi_db_display_gpes(void)
 
 		gpe_xrupt_info = gpe_xrupt_info->next;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif				/* !ACPI_REDUCED_HARDWARE */
 
@@ -939,6 +987,7 @@ void acpi_db_display_gpes(void)
 
 void acpi_db_display_handlers(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *handler_obj;
 	acpi_adr_space_type space_id;
@@ -1046,6 +1095,7 @@ found_handler:		;
 				  ACPI_UINT32_MAX,
 				  acpi_db_display_non_root_handlers, NULL, NULL,
 				  NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -1066,6 +1116,7 @@ acpi_db_display_non_root_handlers(acpi_handle obj_handle,
 				  u32 nesting_level,
 				  void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    ACPI_CAST_PTR(struct acpi_namespace_node, obj_handle);
 	union acpi_operand_object *obj_desc;
@@ -1074,11 +1125,13 @@ acpi_db_display_non_root_handlers(acpi_handle obj_handle,
 
 	obj_desc = acpi_ns_get_attached_object(node);
 	if (!obj_desc) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	pathname = acpi_ns_get_normalized_pathname(node, TRUE);
 	if (!pathname) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -1102,5 +1155,6 @@ acpi_db_display_non_root_handlers(acpi_handle obj_handle,
 	}
 
 	ACPI_FREE(pathname);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

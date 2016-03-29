@@ -71,6 +71,7 @@ ACPI_MODULE_NAME("dswload")
 acpi_status
 acpi_ds_init_callbacks(struct acpi_walk_state *walk_state, u32 pass_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	switch (pass_number) {
 	case 0:
@@ -117,9 +118,11 @@ acpi_ds_init_callbacks(struct acpi_walk_state *walk_state, u32 pass_number)
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -140,6 +143,7 @@ acpi_status
 acpi_ds_load1_begin_op(struct acpi_walk_state * walk_state,
 		       union acpi_parse_object ** out_op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op;
 	struct acpi_namespace_node *node;
 	acpi_status status;
@@ -413,6 +417,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state * walk_state,
 			   op);
 	*out_op = op;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -430,6 +435,7 @@ acpi_ds_load1_begin_op(struct acpi_walk_state * walk_state,
 
 acpi_status acpi_ds_load1_end_op(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op;
 	acpi_object_type object_type;
 	acpi_status status = AE_OK;
@@ -572,4 +578,5 @@ acpi_status acpi_ds_load1_end_op(struct acpi_walk_state *walk_state)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

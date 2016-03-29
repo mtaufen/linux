@@ -70,11 +70,13 @@ static void acpi_db_decode_node(struct acpi_namespace_node *node);
 void
 acpi_db_dump_method_info(acpi_status status, struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_thread_state *thread;
 
 	/* Ignore control codes, they are not errors */
 
 	if ((status & AE_CODE_MASK) == AE_CODE_CONTROL) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -82,6 +84,7 @@ acpi_db_dump_method_info(acpi_status status, struct acpi_walk_state *walk_state)
 
 	if (walk_state->deferred_node) {
 		acpi_os_printf("Executing subtree for Buffer/Package/Region\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -92,6 +95,7 @@ acpi_db_dump_method_info(acpi_status status, struct acpi_walk_state *walk_state)
 	 */
 	thread = walk_state->thread;
 	if (!thread) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -102,6 +106,7 @@ acpi_db_dump_method_info(acpi_status status, struct acpi_walk_state *walk_state)
 	acpi_os_printf("\n");
 	acpi_db_decode_arguments(walk_state);
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -118,16 +123,19 @@ acpi_db_dump_method_info(acpi_status status, struct acpi_walk_state *walk_state)
 
 void acpi_db_decode_internal_object(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (!obj_desc) {
 		acpi_os_printf(" Uninitialized");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	if (ACPI_GET_DESCRIPTOR_TYPE(obj_desc) != ACPI_DESC_TYPE_OPERAND) {
 		acpi_os_printf(" %p [%s]", obj_desc,
 			       acpi_ut_get_descriptor_name(obj_desc));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -166,6 +174,7 @@ void acpi_db_decode_internal_object(union acpi_operand_object *obj_desc)
 		acpi_os_printf(" %p", obj_desc);
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -182,6 +191,7 @@ void acpi_db_decode_internal_object(union acpi_operand_object *obj_desc)
 
 static void acpi_db_decode_node(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("<Node>          Name %4.4s",
 		       acpi_ut_get_node_name(node));
@@ -213,6 +223,7 @@ static void acpi_db_decode_node(struct acpi_namespace_node *node)
 					       (node));
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -232,13 +243,15 @@ void
 acpi_db_display_internal_object(union acpi_operand_object *obj_desc,
 				struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 type;
 
 	acpi_os_printf("%p ", obj_desc);
 
 	if (!obj_desc) {
 		acpi_os_printf("<Null Object>\n");
-		return;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return;
 	}
 
 	/* Decode the object type */
@@ -259,7 +272,9 @@ acpi_db_display_internal_object(union acpi_operand_object *obj_desc,
 		type = obj_desc->common.type;
 		if (type > ACPI_TYPE_LOCAL_MAX) {
 			acpi_os_printf(" Type %X [Invalid Type]", (u32)type);
-			return;
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
+		return;
 		}
 
 		/* Decode the ACPI object type */
@@ -399,6 +414,7 @@ acpi_db_display_internal_object(union acpi_operand_object *obj_desc,
 	}
 
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -415,6 +431,7 @@ acpi_db_display_internal_object(union acpi_operand_object *obj_desc,
 
 void acpi_db_decode_locals(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
@@ -426,11 +443,13 @@ void acpi_db_decode_locals(struct acpi_walk_state *walk_state)
 	if (!node) {
 		acpi_os_printf
 		    ("No method node (Executing subtree for buffer or opregion)\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	if (node->type != ACPI_TYPE_METHOD) {
 		acpi_os_printf("Executing subtree for Buffer/Package/Region\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -464,6 +483,7 @@ void acpi_db_decode_locals(struct acpi_walk_state *walk_state)
 		    ("No Local Variables are initialized for method [%4.4s]\n",
 		     acpi_ut_get_node_name(node));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -480,6 +500,7 @@ void acpi_db_decode_locals(struct acpi_walk_state *walk_state)
 
 void acpi_db_decode_arguments(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node;
@@ -491,11 +512,13 @@ void acpi_db_decode_arguments(struct acpi_walk_state *walk_state)
 	if (!node) {
 		acpi_os_printf
 		    ("No method node (Executing subtree for buffer or opregion)\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	if (node->type != ACPI_TYPE_METHOD) {
 		acpi_os_printf("Executing subtree for Buffer/Package/Region\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -530,4 +553,5 @@ void acpi_db_decode_arguments(struct acpi_walk_state *walk_state)
 		    ("No Arguments are initialized for method [%4.4s]\n",
 		     acpi_ut_get_node_name(node));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

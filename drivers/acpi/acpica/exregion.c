@@ -72,6 +72,7 @@ acpi_ex_system_memory_space_handler(u32 function,
 				    u64 *value,
 				    void *handler_context, void *region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	void *logical_addr_ptr = NULL;
 	struct acpi_mem_space_context *mem_info = region_context;
@@ -284,6 +285,7 @@ acpi_ex_system_memory_space_handler(u32 function,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -311,6 +313,7 @@ acpi_ex_system_io_space_handler(u32 function,
 				u64 *value,
 				void *handler_context, void *region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u32 value32;
 
@@ -343,6 +346,7 @@ acpi_ex_system_io_space_handler(u32 function,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -370,6 +374,7 @@ acpi_ex_pci_config_space_handler(u32 function,
 				 u64 *value,
 				 void *handler_context, void *region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_pci_id *pci_id;
 	u16 pci_register;
@@ -420,6 +425,7 @@ acpi_ex_pci_config_space_handler(u32 function,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -447,11 +453,13 @@ acpi_ex_cmos_space_handler(u32 function,
 			   u64 *value,
 			   void *handler_context, void *region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ex_cmos_space_handler);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -479,11 +487,13 @@ acpi_ex_pci_bar_space_handler(u32 function,
 			      u64 *value,
 			      void *handler_context, void *region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE(ex_pci_bar_space_handler);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -511,6 +521,7 @@ acpi_ex_data_table_space_handler(u32 function,
 				 u64 *value,
 				 void *handler_context, void *region_context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ex_data_table_space_handler);
 
 	/*
@@ -536,4 +547,5 @@ acpi_ex_data_table_space_handler(u32 function,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

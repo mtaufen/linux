@@ -61,19 +61,23 @@ ACPI_MODULE_NAME("tbxfroot")
  ******************************************************************************/
 u32 acpi_tb_get_rsdp_length(struct acpi_table_rsdp *rsdp)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!ACPI_VALIDATE_RSDP_SIG(rsdp->signature)) {
 
 		/* BAD Signature */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (0);
 	}
 
 	/* "Length" field is available if table version >= 2 */
 
 	if (rsdp->revision >= 2) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (rsdp->length);
 	} else {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (ACPI_RSDP_CHECKSUM_LENGTH);
 	}
 }
@@ -92,7 +96,8 @@ u32 acpi_tb_get_rsdp_length(struct acpi_table_rsdp *rsdp)
 
 acpi_status acpi_tb_validate_rsdp(struct acpi_table_rsdp * rsdp)
 {
-
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	printk("validating rsdp pointer: %p\n", rsdp);
 	/*
 	 * The signature and checksum must both be correct
 	 *
@@ -103,12 +108,14 @@ acpi_status acpi_tb_validate_rsdp(struct acpi_table_rsdp * rsdp)
 
 		/* Nope, BAD Signature */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_SIGNATURE);
 	}
 
 	/* Check the standard checksum */
 
 	if (acpi_tb_checksum((u8 *) rsdp, ACPI_RSDP_CHECKSUM_LENGTH) != 0) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_CHECKSUM);
 	}
 
@@ -116,9 +123,11 @@ acpi_status acpi_tb_validate_rsdp(struct acpi_table_rsdp * rsdp)
 
 	if ((rsdp->revision >= 2) &&
 	    (acpi_tb_checksum((u8 *) rsdp, ACPI_RSDP_XCHECKSUM_LENGTH) != 0)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_CHECKSUM);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -144,6 +153,7 @@ acpi_status acpi_tb_validate_rsdp(struct acpi_table_rsdp * rsdp)
 
 acpi_status __init acpi_find_root_pointer(acpi_physical_address * table_address)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *table_ptr;
 	u8 *mem_rover;
 	u32 physical_address;
@@ -242,6 +252,7 @@ acpi_status __init acpi_find_root_pointer(acpi_physical_address * table_address)
 
 	ACPI_BIOS_ERROR((AE_INFO, "A valid RSDP was not found"));
 	return_ACPI_STATUS(AE_NOT_FOUND);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -258,6 +269,7 @@ acpi_status __init acpi_find_root_pointer(acpi_physical_address * table_address)
  ******************************************************************************/
 u8 *acpi_tb_scan_memory_for_rsdp(u8 *start_address, u32 length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 *mem_rover;
 	u8 *end_address;
@@ -295,4 +307,5 @@ u8 *acpi_tb_scan_memory_for_rsdp(u8 *start_address, u32 length)
 			  "Searched entire block from %p, valid RSDP was not found\n",
 			  start_address));
 	return_PTR(NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

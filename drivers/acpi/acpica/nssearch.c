@@ -97,6 +97,7 @@ acpi_ns_search_one_scope(u32 target_name,
 			 acpi_object_type type,
 			 struct acpi_namespace_node **return_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 
 	ACPI_FUNCTION_TRACE(ns_search_one_scope);
@@ -168,6 +169,7 @@ acpi_ns_search_one_scope(u32 target_name,
 			  parent_node->child));
 
 	return_ACPI_STATUS(AE_NOT_FOUND);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -201,6 +203,7 @@ acpi_ns_search_parent_tree(u32 target_name,
 			   acpi_object_type type,
 			   struct acpi_namespace_node **return_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *parent_node;
 
@@ -256,6 +259,7 @@ acpi_ns_search_parent_tree(u32 target_name,
 	/* Not found in parent tree */
 
 	return_ACPI_STATUS(AE_NOT_FOUND);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -291,6 +295,7 @@ acpi_ns_search_and_enter(u32 target_name,
 			 acpi_object_type type,
 			 u32 flags, struct acpi_namespace_node **return_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *new_node;
 
@@ -429,4 +434,5 @@ acpi_ns_search_and_enter(u32 target_name,
 	acpi_ns_install_node(walk_state, node, new_node, type);
 	*return_node = new_node;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

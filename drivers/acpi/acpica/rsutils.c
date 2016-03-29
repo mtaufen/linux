@@ -63,6 +63,7 @@ ACPI_MODULE_NAME("rsutils")
  ******************************************************************************/
 u8 acpi_rs_decode_bitmask(u16 mask, u8 * list)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 i;
 	u8 bit_count;
 
@@ -79,6 +80,7 @@ u8 acpi_rs_decode_bitmask(u16 mask, u8 * list)
 		mask >>= 1;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (bit_count);
 }
 
@@ -97,6 +99,7 @@ u8 acpi_rs_decode_bitmask(u16 mask, u8 * list)
 
 u16 acpi_rs_encode_bitmask(u8 * list, u8 count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u16 mask;
 
@@ -108,6 +111,7 @@ u16 acpi_rs_encode_bitmask(u8 * list, u8 count)
 		mask |= (0x1 << list[i]);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (mask);
 }
 
@@ -131,6 +135,7 @@ u16 acpi_rs_encode_bitmask(u8 * list, u8 count)
 void
 acpi_rs_move_data(void *destination, void *source, u16 item_count, u8 move_type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_ENTRY();
@@ -149,6 +154,8 @@ acpi_rs_move_data(void *destination, void *source, u16 item_count, u8 move_type)
 		case ACPI_RSC_MOVE_SERIAL_RES:
 
 			memcpy(destination, source, item_count);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 
 			/*
@@ -177,9 +184,12 @@ acpi_rs_move_data(void *destination, void *source, u16 item_count, u8 move_type)
 
 		default:
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -203,6 +213,7 @@ void
 acpi_rs_set_resource_length(acpi_rsdesc_size total_length,
 			    union aml_resource *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_rs_length resource_length;
 
 	ACPI_FUNCTION_ENTRY();
@@ -230,6 +241,7 @@ acpi_rs_set_resource_length(acpi_rsdesc_size total_length,
 		      ~ACPI_RESOURCE_NAME_SMALL_LENGTH_MASK)
 		     | resource_length);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -254,6 +266,7 @@ acpi_rs_set_resource_header(u8 descriptor_type,
 			    acpi_rsdesc_size total_length,
 			    union aml_resource *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Set the Resource Type */
@@ -263,6 +276,7 @@ acpi_rs_set_resource_header(u8 descriptor_type,
 	/* Set the Resource Length */
 
 	acpi_rs_set_resource_length(total_length, aml);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -281,6 +295,7 @@ acpi_rs_set_resource_header(u8 descriptor_type,
 
 static u16 acpi_rs_strcpy(char *destination, char *source)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 i;
 
 	ACPI_FUNCTION_ENTRY();
@@ -293,6 +308,7 @@ static u16 acpi_rs_strcpy(char *destination, char *source)
 
 	/* Return string length including the NULL terminator */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((u16) (i + 1));
 }
 
@@ -322,6 +338,7 @@ acpi_rs_get_resource_source(acpi_rs_length resource_length,
 			    struct acpi_resource_source * resource_source,
 			    union aml_resource * aml, char *string_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_rsdesc_size total_length;
 	u8 *aml_resource_source;
 
@@ -377,6 +394,7 @@ acpi_rs_get_resource_source(acpi_rs_length resource_length,
 				   ACPI_CAST_PTR(char,
 						 &aml_resource_source[1]));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((acpi_rs_length) total_length);
 	}
 
@@ -385,6 +403,7 @@ acpi_rs_get_resource_source(acpi_rs_length resource_length,
 	resource_source->index = 0;
 	resource_source->string_length = 0;
 	resource_source->string_ptr = NULL;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (0);
 }
 
@@ -410,6 +429,7 @@ acpi_rs_set_resource_source(union aml_resource * aml,
 			    acpi_rs_length minimum_length,
 			    struct acpi_resource_source * resource_source)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *aml_resource_source;
 	acpi_rsdesc_size descriptor_length;
 
@@ -444,6 +464,7 @@ acpi_rs_set_resource_source(union aml_resource * aml,
 
 	/* Return the new total length of the AML descriptor */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (descriptor_length);
 }
 
@@ -469,6 +490,7 @@ acpi_status
 acpi_rs_get_prt_method_data(struct acpi_namespace_node * node,
 			    struct acpi_buffer * ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -495,6 +517,7 @@ acpi_rs_get_prt_method_data(struct acpi_namespace_node * node,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -519,6 +542,7 @@ acpi_status
 acpi_rs_get_crs_method_data(struct acpi_namespace_node *node,
 			    struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -546,6 +570,7 @@ acpi_rs_get_crs_method_data(struct acpi_namespace_node *node,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -570,6 +595,7 @@ acpi_status
 acpi_rs_get_prs_method_data(struct acpi_namespace_node *node,
 			    struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -597,6 +623,7 @@ acpi_rs_get_prs_method_data(struct acpi_namespace_node *node,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -621,6 +648,7 @@ acpi_status
 acpi_rs_get_aei_method_data(struct acpi_namespace_node *node,
 			    struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -648,6 +676,7 @@ acpi_rs_get_aei_method_data(struct acpi_namespace_node *node,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -673,6 +702,7 @@ acpi_status
 acpi_rs_get_method_data(acpi_handle handle,
 			char *path, struct acpi_buffer *ret_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -701,6 +731,7 @@ acpi_rs_get_method_data(acpi_handle handle,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -727,6 +758,7 @@ acpi_status
 acpi_rs_set_srs_method_data(struct acpi_namespace_node *node,
 			    struct acpi_buffer *in_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_evaluate_info *info;
 	union acpi_operand_object *args[2];
 	acpi_status status;
@@ -788,4 +820,5 @@ acpi_rs_set_srs_method_data(struct acpi_namespace_node *node,
 cleanup:
 	ACPI_FREE(info);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

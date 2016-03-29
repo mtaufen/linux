@@ -72,6 +72,7 @@ acpi_ex_get_serial_access_length(u32 accessor_type, u32 access_length);
 static u32
 acpi_ex_get_serial_access_length(u32 accessor_type, u32 access_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length;
 
 	switch (accessor_type) {
@@ -107,6 +108,7 @@ acpi_ex_get_serial_access_length(u32 accessor_type, u32 access_length)
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (length);
 }
 
@@ -130,6 +132,7 @@ acpi_ex_read_data_from_field(struct acpi_walk_state * walk_state,
 			     union acpi_operand_object *obj_desc,
 			     union acpi_operand_object **ret_buffer_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *buffer_desc;
 	acpi_size length;
@@ -316,6 +319,7 @@ exit:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -337,6 +341,7 @@ acpi_ex_write_data_to_field(union acpi_operand_object *source_desc,
 			    union acpi_operand_object *obj_desc,
 			    union acpi_operand_object **result_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 length;
 	void *buffer;
@@ -543,4 +548,5 @@ acpi_ex_write_data_to_field(union acpi_operand_object *source_desc,
 	acpi_ex_release_global_lock(obj_desc->common_field.field_flags);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

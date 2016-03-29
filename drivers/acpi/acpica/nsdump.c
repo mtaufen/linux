@@ -83,6 +83,7 @@ acpi_ns_get_max_depth(acpi_handle obj_handle,
 
 void acpi_ns_print_pathname(u32 num_segments, char *pathname)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_NAME(ns_print_pathname);
@@ -90,6 +91,7 @@ void acpi_ns_print_pathname(u32 num_segments, char *pathname)
 	/* Check if debug output enabled */
 
 	if (!ACPI_IS_DEBUG_ENABLED(ACPI_LV_NAMES, ACPI_NAMESPACE)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -112,6 +114,7 @@ void acpi_ns_print_pathname(u32 num_segments, char *pathname)
 	}
 
 	acpi_os_printf("]\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -133,6 +136,7 @@ void acpi_ns_print_pathname(u32 num_segments, char *pathname)
 void
 acpi_ns_dump_pathname(acpi_handle handle, char *msg, u32 level, u32 component)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE(ns_dump_pathname);
 
@@ -147,6 +151,7 @@ acpi_ns_dump_pathname(acpi_handle handle, char *msg, u32 level, u32 component)
 	acpi_ns_print_node_pathname(handle, msg);
 	acpi_os_printf("\n");
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -169,6 +174,7 @@ acpi_status
 acpi_ns_dump_one_object(acpi_handle obj_handle,
 			u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_info *info = (struct acpi_walk_info *)context;
 	struct acpi_namespace_node *this_node;
 	union acpi_operand_object *obj_desc = NULL;
@@ -183,11 +189,13 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 	/* Is output enabled? */
 
 	if (!(acpi_dbg_level & info->debug_level)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	if (!obj_handle) {
 		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Null object handle\n"));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -195,6 +203,7 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 	if (!this_node) {
 		ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Invalid object handle %p\n",
 				  obj_handle));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -204,6 +213,7 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 
 	if ((info->owner_id != ACPI_OWNER_ID_MAX) &&
 	    (info->owner_id != this_node->owner_id)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -263,7 +273,9 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 			}
 
 			acpi_os_printf("\n");
-			return (AE_OK);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
+		return (AE_OK);
 		}
 
 		switch (type) {
@@ -457,6 +469,8 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 			/* No attached object, we are done */
 
 			acpi_os_printf("\n");
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -505,6 +519,7 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 	/* If debug turned off, done */
 
 	if (!(acpi_dbg_level & ACPI_LV_VALUES)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -623,6 +638,7 @@ acpi_ns_dump_one_object(acpi_handle obj_handle,
 
 cleanup:
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -651,6 +667,7 @@ acpi_ns_dump_objects(acpi_object_type type,
 		     u32 max_depth,
 		     acpi_owner_id owner_id, acpi_handle start_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_info info;
 	acpi_status status;
 
@@ -665,6 +682,7 @@ acpi_ns_dump_objects(acpi_object_type type,
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could not acquire namespace mutex\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -679,6 +697,7 @@ acpi_ns_dump_objects(acpi_object_type type,
 				     (void *)&info, NULL);
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -703,12 +722,14 @@ static acpi_status
 acpi_ns_dump_one_object_path(acpi_handle obj_handle,
 			     u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 max_level = *((u32 *)context);
 	char *pathname;
 	struct acpi_namespace_node *node;
 	int path_indent;
 
 	if (!obj_handle) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -717,6 +738,7 @@ acpi_ns_dump_one_object_path(acpi_handle obj_handle,
 
 		/* Ignore bad node during namespace walk */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -733,6 +755,7 @@ acpi_ns_dump_one_object_path(acpi_handle obj_handle,
 
 	acpi_os_printf("%s\n", &pathname[1]);
 	ACPI_FREE(pathname);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -740,11 +763,13 @@ static acpi_status
 acpi_ns_get_max_depth(acpi_handle obj_handle,
 		      u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 *max_level = (u32 *)context;
 
 	if (level > *max_level) {
 		*max_level = level;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -773,6 +798,7 @@ acpi_ns_dump_object_paths(acpi_object_type type,
 			  u32 max_depth,
 			  acpi_owner_id owner_id, acpi_handle start_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 max_level = 0;
 
@@ -787,6 +813,7 @@ acpi_ns_dump_object_paths(acpi_object_type type,
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could not acquire namespace mutex\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -807,6 +834,7 @@ acpi_ns_dump_object_paths(acpi_object_type type,
 				     (void *)&max_level, NULL);
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -824,6 +852,7 @@ acpi_ns_dump_object_paths(acpi_object_type type,
 
 void acpi_ns_dump_entry(acpi_handle handle, u32 debug_level)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_info info;
 
 	ACPI_FUNCTION_ENTRY();
@@ -833,6 +862,7 @@ void acpi_ns_dump_entry(acpi_handle handle, u32 debug_level)
 	info.display_type = ACPI_DISPLAY_SUMMARY;
 
 	(void)acpi_ns_dump_one_object(handle, 1, &info, NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifdef ACPI_ASL_COMPILER
@@ -853,6 +883,7 @@ void acpi_ns_dump_entry(acpi_handle handle, u32 debug_level)
 
 void acpi_ns_dump_tables(acpi_handle search_base, u32 max_depth)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_handle search_handle = search_base;
 
 	ACPI_FUNCTION_TRACE(ns_dump_tables);
@@ -878,6 +909,7 @@ void acpi_ns_dump_tables(acpi_handle search_base, u32 max_depth)
 	acpi_ns_dump_objects(ACPI_TYPE_ANY, ACPI_DISPLAY_OBJECTS, max_depth,
 			     ACPI_OWNER_ID_MAX, search_handle);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 #endif

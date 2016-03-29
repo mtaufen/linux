@@ -63,12 +63,14 @@ void
 acpi_ut_push_generic_state(union acpi_generic_state **list_head,
 			   union acpi_generic_state *state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Push the state object onto the front of the list (stack) */
 
 	state->common.next = *list_head;
 	*list_head = state;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -87,6 +89,7 @@ acpi_ut_push_generic_state(union acpi_generic_state **list_head,
 union acpi_generic_state *acpi_ut_pop_generic_state(union acpi_generic_state
 						    **list_head)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -101,6 +104,7 @@ union acpi_generic_state *acpi_ut_pop_generic_state(union acpi_generic_state
 		*list_head = state->common.next;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (state);
 }
 
@@ -119,6 +123,7 @@ union acpi_generic_state *acpi_ut_pop_generic_state(union acpi_generic_state
 
 union acpi_generic_state *acpi_ut_create_generic_state(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -130,6 +135,7 @@ union acpi_generic_state *acpi_ut_create_generic_state(void)
 		state->common.descriptor_type = ACPI_DESC_TYPE_STATE;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (state);
 }
 
@@ -148,6 +154,7 @@ union acpi_generic_state *acpi_ut_create_generic_state(void)
 
 struct acpi_thread_state *acpi_ut_create_thread_state(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -156,6 +163,7 @@ struct acpi_thread_state *acpi_ut_create_thread_state(void)
 
 	state = acpi_ut_create_generic_state();
 	if (!state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -171,6 +179,7 @@ struct acpi_thread_state *acpi_ut_create_thread_state(void)
 		state->thread.thread_id = (acpi_thread_id) 1;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((struct acpi_thread_state *)state);
 }
 
@@ -192,6 +201,7 @@ struct acpi_thread_state *acpi_ut_create_thread_state(void)
 union acpi_generic_state *acpi_ut_create_update_state(union acpi_operand_object
 						      *object, u16 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -200,6 +210,7 @@ union acpi_generic_state *acpi_ut_create_update_state(union acpi_operand_object
 
 	state = acpi_ut_create_generic_state();
 	if (!state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -208,6 +219,7 @@ union acpi_generic_state *acpi_ut_create_update_state(union acpi_operand_object
 	state->common.descriptor_type = ACPI_DESC_TYPE_STATE_UPDATE;
 	state->update.object = object;
 	state->update.value = action;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (state);
 }
 
@@ -228,6 +240,7 @@ union acpi_generic_state *acpi_ut_create_pkg_state(void *internal_object,
 						   void *external_object,
 						   u16 index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -236,6 +249,7 @@ union acpi_generic_state *acpi_ut_create_pkg_state(void *internal_object,
 
 	state = acpi_ut_create_generic_state();
 	if (!state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -247,6 +261,7 @@ union acpi_generic_state *acpi_ut_create_pkg_state(void *internal_object,
 	state->pkg.index = index;
 	state->pkg.num_packages = 1;
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (state);
 }
 
@@ -265,6 +280,7 @@ union acpi_generic_state *acpi_ut_create_pkg_state(void *internal_object,
 
 union acpi_generic_state *acpi_ut_create_control_state(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *state;
 
 	ACPI_FUNCTION_ENTRY();
@@ -273,6 +289,7 @@ union acpi_generic_state *acpi_ut_create_control_state(void)
 
 	state = acpi_ut_create_generic_state();
 	if (!state) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -281,6 +298,7 @@ union acpi_generic_state *acpi_ut_create_control_state(void)
 	state->common.descriptor_type = ACPI_DESC_TYPE_STATE_CONTROL;
 	state->common.state = ACPI_CONTROL_CONDITIONAL_EXECUTING;
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (state);
 }
 
@@ -299,6 +317,7 @@ union acpi_generic_state *acpi_ut_create_control_state(void)
 
 void acpi_ut_delete_generic_state(union acpi_generic_state *state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Ignore null state */
@@ -307,5 +326,6 @@ void acpi_ut_delete_generic_state(union acpi_generic_state *state)
 		(void)acpi_os_release_object(acpi_gbl_state_cache, state);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }

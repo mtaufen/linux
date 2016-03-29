@@ -94,6 +94,7 @@ acpi_rs_dump_descriptor(void *resource, struct acpi_rsdump_info *table);
 
 void acpi_rs_dump_resource_list(struct acpi_resource *resource_list)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 count = 0;
 	u32 type;
 
@@ -102,6 +103,7 @@ void acpi_rs_dump_resource_list(struct acpi_resource *resource_list)
 	/* Check if debug output enabled */
 
 	if (!ACPI_IS_DEBUG_ENABLED(ACPI_LV_RESOURCES, _COMPONENT)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -118,6 +120,8 @@ void acpi_rs_dump_resource_list(struct acpi_resource *resource_list)
 			acpi_os_printf
 			    ("Invalid descriptor type (%X) in resource list\n",
 			     resource_list->type);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -126,6 +130,8 @@ void acpi_rs_dump_resource_list(struct acpi_resource *resource_list)
 		if (!resource_list->length) {
 			acpi_os_printf
 			    ("Invalid zero length descriptor in resource list\n");
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -149,6 +155,7 @@ void acpi_rs_dump_resource_list(struct acpi_resource *resource_list)
 		/* Exit when END_TAG descriptor is reached */
 
 	} while (type != ACPI_RESOURCE_TYPE_END_TAG);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -165,6 +172,7 @@ void acpi_rs_dump_resource_list(struct acpi_resource *resource_list)
 
 void acpi_rs_dump_irq_list(u8 *route_table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_pci_routing_table *prt_element;
 	u8 count;
 
@@ -173,6 +181,7 @@ void acpi_rs_dump_irq_list(u8 *route_table)
 	/* Check if debug output enabled */
 
 	if (!ACPI_IS_DEBUG_ENABLED(ACPI_LV_RESOURCES, _COMPONENT)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -188,6 +197,7 @@ void acpi_rs_dump_irq_list(u8 *route_table)
 		prt_element = ACPI_ADD_PTR(struct acpi_pci_routing_table,
 					   prt_element, prt_element->length);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -206,6 +216,7 @@ void acpi_rs_dump_irq_list(u8 *route_table)
 static void
 acpi_rs_dump_descriptor(void *resource, struct acpi_rsdump_info *table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *target = NULL;
 	u8 *previous_target;
 	char *name;
@@ -383,12 +394,15 @@ acpi_rs_dump_descriptor(void *resource, struct acpi_rsdump_info *table)
 
 			acpi_os_printf("**** Invalid table opcode [%X] ****\n",
 				       table->opcode);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
 		table++;
 		count--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -407,9 +421,11 @@ acpi_rs_dump_descriptor(void *resource, struct acpi_rsdump_info *table)
 static void
 acpi_rs_dump_resource_source(struct acpi_resource_source *resource_source)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	if (resource_source->index == 0xFF) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -418,6 +434,7 @@ acpi_rs_dump_resource_source(struct acpi_resource_source *resource_source)
 	acpi_rs_out_string("Resource Source",
 			   resource_source->string_ptr ?
 			   resource_source->string_ptr : "[Not Specified]");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -435,6 +452,7 @@ acpi_rs_dump_resource_source(struct acpi_resource_source *resource_source)
 
 static void acpi_rs_dump_address_common(union acpi_resource_data *resource)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Decode the type-specific flags */
@@ -465,6 +483,7 @@ static void acpi_rs_dump_address_common(union acpi_resource_data *resource)
 	/* Decode the general flags */
 
 	acpi_rs_dump_descriptor(resource, acpi_rs_dump_general_flags);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -483,41 +502,53 @@ static void acpi_rs_dump_address_common(union acpi_resource_data *resource)
 
 static void acpi_rs_out_string(char *title, char *value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("%27s : %s", title, value);
 	if (!*value) {
 		acpi_os_printf("[NULL NAMESTRING]");
 	}
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_out_integer8(char *title, u8 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_os_printf("%27s : %2.2X\n", title, value);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_out_integer16(char *title, u16 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("%27s : %4.4X\n", title, value);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_out_integer32(char *title, u32 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("%27s : %8.8X\n", title, value);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_out_integer64(char *title, u64 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("%27s : %8.8X%8.8X\n", title, ACPI_FORMAT_UINT64(value));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_out_title(char *title)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("%27s : ", title);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -535,15 +566,18 @@ static void acpi_rs_out_title(char *title)
 
 static void acpi_rs_dump_byte_list(u16 length, u8 * data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 i;
 
 	for (i = 0; i < length; i++) {
 		acpi_os_printf("%25s%2.2X : %2.2X\n", "Byte", i, data[i]);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_dump_short_byte_list(u8 length, u8 * data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 i;
 
 	for (i = 0; i < length; i++) {
@@ -551,22 +585,27 @@ static void acpi_rs_dump_short_byte_list(u8 length, u8 * data)
 	}
 
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_dump_dword_list(u8 length, u32 * data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 i;
 
 	for (i = 0; i < length; i++) {
 		acpi_os_printf("%25s%2.2X : %8.8X\n", "Dword", i, data[i]);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_rs_dump_word_list(u16 length, u16 *data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 i;
 
 	for (i = 0; i < length; i++) {
 		acpi_os_printf("%25s%2.2X : %4.4X\n", "Word", i, data[i]);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

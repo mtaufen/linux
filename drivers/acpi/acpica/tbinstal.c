@@ -69,6 +69,7 @@ acpi_tb_compare_tables(struct acpi_table_desc *table_desc, u32 table_index);
 static u8
 acpi_tb_compare_tables(struct acpi_table_desc *table_desc, u32 table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u8 is_identical;
 	struct acpi_table_header *table;
@@ -79,6 +80,7 @@ acpi_tb_compare_tables(struct acpi_table_desc *table_desc, u32 table_index)
 	    acpi_tb_acquire_table(&acpi_gbl_root_table_list.tables[table_index],
 				  &table, &table_length, &table_flags);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -93,6 +95,7 @@ acpi_tb_compare_tables(struct acpi_table_desc *table_desc, u32 table_index)
 	/* Release the acquired table */
 
 	acpi_tb_release_table(table, table_length, table_flags);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (is_identical);
 }
 
@@ -117,11 +120,13 @@ void
 acpi_tb_install_table_with_override(struct acpi_table_desc *new_table_desc,
 				    u8 override, u32 *table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	acpi_status status;
 
 	status = acpi_tb_get_next_table_descriptor(&i, NULL);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -153,6 +158,7 @@ acpi_tb_install_table_with_override(struct acpi_table_desc *new_table_desc,
 	if (i == acpi_gbl_dsdt_index) {
 		acpi_ut_set_integer_width(new_table_desc->pointer->revision);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -175,6 +181,7 @@ acpi_status
 acpi_tb_install_fixed_table(acpi_physical_address address,
 			    char *signature, u32 *table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_desc new_table_desc;
 	acpi_status status;
 
@@ -184,6 +191,7 @@ acpi_tb_install_fixed_table(acpi_physical_address address,
 		ACPI_ERROR((AE_INFO,
 			    "Null physical address for ACPI table [%s]",
 			    signature));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -215,6 +223,7 @@ release_and_exit:
 
 	acpi_tb_release_temp_table(&new_table_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -244,6 +253,7 @@ acpi_tb_install_standard_table(acpi_physical_address address,
 			       u8 flags,
 			       u8 reload, u8 override, u32 *table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	acpi_status status = AE_OK;
 	struct acpi_table_desc new_table_desc;
@@ -371,6 +381,7 @@ release_and_exit:
 
 	acpi_tb_release_temp_table(&new_table_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -392,6 +403,7 @@ release_and_exit:
 
 void acpi_tb_override_table(struct acpi_table_desc *old_table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	char *override_type;
 	struct acpi_table_desc new_table_desc;
@@ -421,6 +433,7 @@ void acpi_tb_override_table(struct acpi_table_desc *old_table_desc)
 		goto finish_override;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;			/* There was no override */
 
 finish_override:
@@ -429,6 +442,7 @@ finish_override:
 
 	status = acpi_tb_verify_temp_table(&new_table_desc, NULL);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -454,6 +468,7 @@ finish_override:
 	/* Release the temporary table descriptor */
 
 	acpi_tb_release_temp_table(&new_table_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -470,6 +485,7 @@ finish_override:
 
 void acpi_tb_uninstall_table(struct acpi_table_desc *table_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE(tb_uninstall_table);
 
@@ -488,4 +504,5 @@ void acpi_tb_uninstall_table(struct acpi_table_desc *table_desc)
 
 	table_desc->address = ACPI_PTR_TO_PHYSADDR(NULL);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -351,12 +351,14 @@ static u8
 acpi_db_match_command_help(char *command,
 			   const struct acpi_db_command_help *help)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *invocation = help->invocation;
 	u32 line_count;
 
 	/* Valid commands in the help table begin with a couple of spaces */
 
 	if (*invocation != ' ') {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -368,6 +370,8 @@ acpi_db_match_command_help(char *command,
 
 	while ((*command) && (*invocation) && (*invocation != ' ')) {
 		if (tolower((int)*command) != tolower((int)*invocation)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 
@@ -385,6 +389,7 @@ acpi_db_match_command_help(char *command,
 		line_count--;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 
@@ -404,6 +409,7 @@ acpi_db_match_command_help(char *command,
 
 static void acpi_db_display_command_info(char *command, u8 display_all)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_db_command_help *next;
 	u8 matched;
 
@@ -411,11 +417,14 @@ static void acpi_db_display_command_info(char *command, u8 display_all)
 	while (next->invocation) {
 		matched = acpi_db_match_command_help(command, next);
 		if (!display_all && matched) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
 		next++;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -434,6 +443,7 @@ static void acpi_db_display_command_info(char *command, u8 display_all)
 
 static void acpi_db_display_help(char *command)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_db_command_help *next = acpi_gbl_db_command_help;
 
 	if (!command) {
@@ -450,6 +460,7 @@ static void acpi_db_display_help(char *command)
 
 		acpi_db_display_command_info(command, TRUE);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -468,6 +479,7 @@ static void acpi_db_display_help(char *command)
 char *acpi_db_get_next_token(char *string,
 			     char **next, acpi_object_type * return_type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *start;
 	u32 depth;
 	acpi_object_type type = ACPI_TYPE_INTEGER;
@@ -475,6 +487,7 @@ char *acpi_db_get_next_token(char *string,
 	/* At end of buffer? */
 
 	if (!string || !(*string)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -486,6 +499,8 @@ char *acpi_db_get_next_token(char *string,
 		}
 
 		if (!(*string)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (NULL);
 		}
 	}
@@ -579,6 +594,7 @@ char *acpi_db_get_next_token(char *string,
 	}
 
 	*return_type = type;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (start);
 }
 
@@ -597,6 +613,7 @@ char *acpi_db_get_next_token(char *string,
 
 static u32 acpi_db_get_line(char *input_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 count;
 	char *next;
@@ -608,6 +625,7 @@ static u32 acpi_db_get_line(char *input_buffer)
 		acpi_os_printf
 		    ("Buffer overflow while parsing input line (max %u characters)\n",
 		     sizeof(acpi_gbl_db_parsed_buf));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (0);
 	}
 
@@ -632,6 +650,7 @@ static u32 acpi_db_get_line(char *input_buffer)
 		count--;	/* Number of args only */
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (count);
 }
 
@@ -649,21 +668,26 @@ static u32 acpi_db_get_line(char *input_buffer)
 
 static u32 acpi_db_match_command(char *user_command)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (!user_command || user_command[0] == 0) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (CMD_NULL);
 	}
 
 	for (i = CMD_FIRST_VALID; acpi_gbl_db_commands[i].name; i++) {
 		if (strstr(acpi_gbl_db_commands[i].name, user_command) ==
 		    acpi_gbl_db_commands[i].name) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (i);
 		}
 	}
 
 	/* Command not recognized */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (CMD_NOT_FOUND);
 }
 
@@ -686,6 +710,7 @@ acpi_db_command_dispatch(char *input_buffer,
 			 struct acpi_walk_state * walk_state,
 			 union acpi_parse_object * op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 temp;
 	u32 command_index;
 	u32 param_count;
@@ -695,6 +720,7 @@ acpi_db_command_dispatch(char *input_buffer,
 	/* If acpi_terminate has been called, terminate this thread */
 
 	if (acpi_gbl_db_terminate_loop) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_CTRL_TERMINATE);
 	}
 
@@ -723,7 +749,8 @@ acpi_db_command_dispatch(char *input_buffer,
 
 		acpi_db_display_command_info(acpi_gbl_db_commands
 					     [command_index].name, FALSE);
-		return (AE_CTRL_TRUE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_CTRL_TRUE);
 	}
 
 	/* Decode and dispatch the command */
@@ -732,6 +759,8 @@ acpi_db_command_dispatch(char *input_buffer,
 	case CMD_NULL:
 
 		if (op) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 		break;
@@ -801,6 +830,7 @@ acpi_db_command_dispatch(char *input_buffer,
 	case CMD_GO:
 
 		acpi_gbl_cm_single_step = FALSE;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 
 	case CMD_HANDLERS:
@@ -823,20 +853,26 @@ acpi_db_command_dispatch(char *input_buffer,
 
 		command_line = acpi_db_get_from_history(acpi_gbl_db_args[1]);
 		if (!command_line) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_CTRL_TRUE);
 		}
 
 		status = acpi_db_command_dispatch(command_line, walk_state, op);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 
 	case CMD_HISTORY_LAST:	/* !! command */
 
 		command_line = acpi_db_get_from_history(NULL);
 		if (!command_line) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_CTRL_TRUE);
 		}
 
 		status = acpi_db_command_dispatch(command_line, walk_state, op);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 
 	case CMD_INFORMATION:
@@ -853,6 +889,8 @@ acpi_db_command_dispatch(char *input_buffer,
 
 		if (op) {
 			acpi_gbl_cm_single_step = TRUE;
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 		break;
@@ -974,6 +1012,7 @@ acpi_db_command_dispatch(char *input_buffer,
 
 	case CMD_STOP:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NOT_IMPLEMENTED);
 
 	case CMD_TABLES:
@@ -1013,6 +1052,8 @@ acpi_db_command_dispatch(char *input_buffer,
 		if (ACPI_FAILURE(status)) {
 			acpi_os_printf("AcpiEnable failed (Status=%X)\n",
 				       status);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 #endif				/* !ACPI_REDUCED_HARDWARE */
@@ -1114,6 +1155,8 @@ acpi_db_command_dispatch(char *input_buffer,
 
 		if (op) {
 			acpi_os_printf("Method execution terminated\n");
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_CTRL_TERMINATE);
 		}
 
@@ -1124,12 +1167,14 @@ acpi_db_command_dispatch(char *input_buffer,
 		acpi_db_close_debug_file();
 #endif
 		acpi_gbl_db_terminate_loop = TRUE;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_CTRL_TERMINATE);
 
 	case CMD_NOT_FOUND:
 	default:
 
 		acpi_os_printf("%s: unknown command\n", acpi_gbl_db_args[0]);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_CTRL_TRUE);
 	}
 
@@ -1137,6 +1182,7 @@ acpi_db_command_dispatch(char *input_buffer,
 		status = AE_CTRL_TRUE;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -1155,9 +1201,11 @@ acpi_db_command_dispatch(char *input_buffer,
 
 void ACPI_SYSTEM_XFACE acpi_db_execute_thread(void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	(void)acpi_db_user_commands();
 	acpi_gbl_db_threads_terminated = TRUE;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -1175,6 +1223,7 @@ void ACPI_SYSTEM_XFACE acpi_db_execute_thread(void *context)
 
 acpi_status acpi_db_user_commands(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	acpi_os_printf("\n");
@@ -1209,5 +1258,6 @@ acpi_status acpi_db_user_commands(void)
 	if (ACPI_FAILURE(status) && status != AE_CTRL_TERMINATE) {
 		ACPI_EXCEPTION((AE_INFO, status, "While parsing command line"));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }

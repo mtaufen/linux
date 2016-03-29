@@ -116,17 +116,23 @@ const char *acpi_gbl_region_types[ACPI_NUM_PREDEFINED_REGIONS] = {
 
 const char *acpi_ut_get_region_name(u8 space_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (space_id >= ACPI_USER_REGION_BEGIN) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("UserDefinedRegion");
 	} else if (space_id == ACPI_ADR_SPACE_DATA_TABLE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("DataTable");
 	} else if (space_id == ACPI_ADR_SPACE_FIXED_HARDWARE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("FunctionalFixedHW");
 	} else if (space_id >= ACPI_NUM_PREDEFINED_REGIONS) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("InvalidSpaceId");
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_region_types[space_id]);
 }
 
@@ -154,11 +160,14 @@ static const char *acpi_gbl_event_types[ACPI_NUM_FIXED_EVENTS] = {
 
 const char *acpi_ut_get_event_name(u32 event_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (event_id > ACPI_EVENT_MAX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("InvalidEventID");
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_event_types[event_id]);
 }
 
@@ -223,16 +232,20 @@ static const char *acpi_gbl_ns_type_names[] = {
 
 const char *acpi_ut_get_type_name(acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (type > ACPI_TYPE_INVALID) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (acpi_gbl_bad_type);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_ns_type_names[type]);
 }
 
 const char *acpi_ut_get_object_type_name(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ut_get_object_type_name);
 
 	if (!obj_desc) {
@@ -254,6 +267,7 @@ const char *acpi_ut_get_object_type_name(union acpi_operand_object *obj_desc)
 	}
 
 	return_PTR(acpi_ut_get_type_name(obj_desc->common.type));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -270,23 +284,27 @@ const char *acpi_ut_get_object_type_name(union acpi_operand_object *obj_desc)
 
 const char *acpi_ut_get_node_name(void *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node = (struct acpi_namespace_node *)object;
 
 	/* Must return a string of exactly 4 characters == ACPI_NAME_SIZE */
 
 	if (!object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("NULL");
 	}
 
 	/* Check for Root node */
 
 	if ((object == ACPI_ROOT_OBJECT) || (object == acpi_gbl_root_node)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("\"\\\" ");
 	}
 
 	/* Descriptor must be a namespace node */
 
 	if (ACPI_GET_DESCRIPTOR_TYPE(node) != ACPI_DESC_TYPE_NAMED) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("####");
 	}
 
@@ -298,6 +316,7 @@ const char *acpi_ut_get_node_name(void *object)
 
 	/* Return the name */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (node->name.ascii);
 }
 
@@ -336,15 +355,19 @@ static const char *acpi_gbl_desc_type_names[] = {
 
 const char *acpi_ut_get_descriptor_name(void *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("NULL OBJECT");
 	}
 
 	if (ACPI_GET_DESCRIPTOR_TYPE(object) > ACPI_DESC_TYPE_MAX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Not a Descriptor");
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_desc_type_names[ACPI_GET_DESCRIPTOR_TYPE(object)]);
 }
 
@@ -374,23 +397,29 @@ static const char *acpi_gbl_ref_class_names[] = {
 
 const char *acpi_ut_get_reference_name(union acpi_operand_object *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("NULL Object");
 	}
 
 	if (ACPI_GET_DESCRIPTOR_TYPE(object) != ACPI_DESC_TYPE_OPERAND) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Not an Operand object");
 	}
 
 	if (object->common.type != ACPI_TYPE_LOCAL_REFERENCE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Not a Reference object");
 	}
 
 	if (object->reference.class > ACPI_REFCLASS_MAX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Unknown Reference class");
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_ref_class_names[object->reference.class]);
 }
 
@@ -424,11 +453,14 @@ static const char *acpi_gbl_mutex_names[ACPI_NUM_MUTEX] = {
 
 const char *acpi_ut_get_mutex_name(u32 mutex_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (mutex_id > ACPI_MAX_MUTEX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Invalid Mutex ID");
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_gbl_mutex_names[mutex_id]);
 }
 
@@ -486,16 +518,19 @@ static const char *acpi_gbl_thermal_notify[4] = {
 
 const char *acpi_ut_get_notify_name(u32 notify_value, acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* 00 - 0D are common to all object types */
 
 	if (notify_value <= ACPI_NOTIFY_MAX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (acpi_gbl_generic_notify[notify_value]);
 	}
 
 	/* 0D - 7F are reserved */
 
 	if (notify_value <= ACPI_MAX_SYS_NOTIFY) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Reserved");
 	}
 
@@ -505,15 +540,23 @@ const char *acpi_ut_get_notify_name(u32 notify_value, acpi_object_type type)
 		switch (type) {
 		case ACPI_TYPE_ANY:
 		case ACPI_TYPE_DEVICE:
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (acpi_gbl_device_notify[notify_value - 0x80]);
 
 		case ACPI_TYPE_PROCESSOR:
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (acpi_gbl_processor_notify[notify_value - 0x80]);
 
 		case ACPI_TYPE_THERMAL:
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (acpi_gbl_thermal_notify[notify_value - 0x80]);
 
 		default:
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return ("Target object type does not support notifies");
 		}
 	}
@@ -521,11 +564,13 @@ const char *acpi_ut_get_notify_name(u32 notify_value, acpi_object_type type)
 	/* 84 - BF are device-specific */
 
 	if (notify_value <= ACPI_MAX_DEVICE_SPECIFIC_NOTIFY) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ("Device-Specific");
 	}
 
 	/* C0 and above are hardware-specific */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ("Hardware-Specific");
 }
 #endif
@@ -544,13 +589,16 @@ const char *acpi_ut_get_notify_name(u32 notify_value, acpi_object_type type)
 
 u8 acpi_ut_valid_object_type(acpi_object_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (type > ACPI_TYPE_LOCAL_MAX) {
 
 		/* Note: Assumes all TYPEs are contiguous (external/local) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }

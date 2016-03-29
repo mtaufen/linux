@@ -160,13 +160,15 @@ static unsigned char write_method_code[] = {
 
 void acpi_db_execute_test(char *type_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 temp;
 
 	acpi_ut_strupr(type_arg);
 	temp = acpi_db_match_argument(type_arg, acpi_db_test_types);
 	if (temp == ACPI_TYPE_NOT_FOUND) {
 		acpi_os_printf("Invalid or unsupported argument\n");
-		return;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return;
 	}
 
 	switch (temp) {
@@ -183,6 +185,7 @@ void acpi_db_execute_test(char *type_arg)
 	default:
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -201,6 +204,7 @@ void acpi_db_execute_test(char *type_arg)
 
 static void acpi_db_test_all_objects(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	/* Install the debugger read-object control method if necessary */
@@ -211,6 +215,8 @@ static void acpi_db_test_all_objects(void)
 			acpi_os_printf
 			    ("%s, Could not install debugger read method\n",
 			     acpi_format_exception(status));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -220,6 +226,8 @@ static void acpi_db_test_all_objects(void)
 			acpi_os_printf
 			    ("Could not obtain handle for debug method %s\n",
 			     ACPI_DB_READ_METHOD);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 	}
@@ -232,6 +240,8 @@ static void acpi_db_test_all_objects(void)
 			acpi_os_printf
 			    ("%s, Could not install debugger write method\n",
 			     acpi_format_exception(status));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -241,6 +251,8 @@ static void acpi_db_test_all_objects(void)
 			acpi_os_printf
 			    ("Could not obtain handle for debug method %s\n",
 			     ACPI_DB_WRITE_METHOD);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 	}
@@ -250,6 +262,7 @@ static void acpi_db_test_all_objects(void)
 	(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
 				  ACPI_UINT32_MAX, acpi_db_test_one_object,
 				  NULL, NULL, NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -272,6 +285,7 @@ static acpi_status
 acpi_db_test_one_object(acpi_handle obj_handle,
 			u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *region_obj;
@@ -334,6 +348,7 @@ acpi_db_test_one_object(acpi_handle obj_handle,
 
 		/* Ignore all other types */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -343,7 +358,8 @@ acpi_db_test_one_object(acpi_handle obj_handle,
 		       acpi_ut_get_type_name(node->type), node->name.ascii);
 	if (!obj_desc) {
 		acpi_os_printf(" Ignoring, no attached object\n");
-		return (AE_OK);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_OK);
 	}
 
 	/*
@@ -369,6 +385,8 @@ acpi_db_test_one_object(acpi_handle obj_handle,
 			     acpi_ut_get_region_name(region_obj->region.
 						     space_id),
 			     region_obj->region.node->name.ascii);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 		break;
@@ -416,6 +434,7 @@ acpi_db_test_one_object(acpi_handle obj_handle,
 	}
 
 	acpi_os_printf("\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -439,6 +458,7 @@ acpi_db_test_one_object(acpi_handle obj_handle,
 static acpi_status
 acpi_db_test_integer_type(struct acpi_namespace_node *node, u32 bit_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_object *temp1 = NULL;
 	union acpi_object *temp2 = NULL;
 	union acpi_object *temp3 = NULL;
@@ -449,6 +469,7 @@ acpi_db_test_integer_type(struct acpi_namespace_node *node, u32 bit_length)
 	if (bit_length > 64) {
 		acpi_os_printf(" Invalid length for an Integer: %u",
 			       bit_length);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -456,6 +477,7 @@ acpi_db_test_integer_type(struct acpi_namespace_node *node, u32 bit_length)
 
 	status = acpi_db_read_from_object(node, ACPI_TYPE_INTEGER, &temp1);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -521,6 +543,7 @@ exit:
 	if (temp3) {
 		acpi_os_free(temp3);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -542,6 +565,7 @@ exit:
 static acpi_status
 acpi_db_test_buffer_type(struct acpi_namespace_node *node, u32 bit_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_object *temp1 = NULL;
 	union acpi_object *temp2 = NULL;
 	union acpi_object *temp3 = NULL;
@@ -555,6 +579,7 @@ acpi_db_test_buffer_type(struct acpi_namespace_node *node, u32 bit_length)
 	byte_length = ACPI_ROUND_BITS_UP_TO_BYTES(bit_length);
 	if (byte_length == 0) {
 		acpi_os_printf(" Ignoring zero length buffer");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -562,6 +587,7 @@ acpi_db_test_buffer_type(struct acpi_namespace_node *node, u32 bit_length)
 
 	buffer = ACPI_ALLOCATE_ZEROED(byte_length);
 	if (!buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -646,6 +672,7 @@ exit:
 	if (temp3) {
 		acpi_os_free(temp3);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -667,6 +694,7 @@ exit:
 static acpi_status
 acpi_db_test_string_type(struct acpi_namespace_node *node, u32 byte_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_object *temp1 = NULL;
 	union acpi_object *temp2 = NULL;
 	union acpi_object *temp3 = NULL;
@@ -678,6 +706,7 @@ acpi_db_test_string_type(struct acpi_namespace_node *node, u32 byte_length)
 
 	status = acpi_db_read_from_object(node, ACPI_TYPE_STRING, &temp1);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -739,6 +768,7 @@ exit:
 	if (temp3) {
 		acpi_os_free(temp3);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -764,6 +794,7 @@ acpi_db_read_from_object(struct acpi_namespace_node *node,
 			 acpi_object_type expected_type,
 			 union acpi_object **value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_object *ret_value;
 	struct acpi_object_list param_objects;
 	union acpi_object params[2];
@@ -787,6 +818,7 @@ acpi_db_read_from_object(struct acpi_namespace_node *node,
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could not read from object, %s",
 			       acpi_format_exception(status));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -807,6 +839,8 @@ acpi_db_read_from_object(struct acpi_namespace_node *node,
 			     acpi_ut_get_type_name(expected_type),
 			     acpi_ut_get_type_name(ret_value->type));
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_TYPE);
 		}
 
@@ -819,9 +853,11 @@ acpi_db_read_from_object(struct acpi_namespace_node *node,
 			       acpi_ut_get_type_name(ret_value->type));
 
 		acpi_os_free(return_obj.pointer);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_TYPE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -845,6 +881,7 @@ static acpi_status
 acpi_db_write_to_object(struct acpi_namespace_node *node,
 			union acpi_object *value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_object_list param_objects;
 	union acpi_object params[2];
 	acpi_status status;
@@ -869,6 +906,7 @@ acpi_db_write_to_object(struct acpi_namespace_node *node,
 			       acpi_format_exception(status));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -887,6 +925,7 @@ acpi_db_write_to_object(struct acpi_namespace_node *node,
 
 static void acpi_db_evaluate_all_predefined_names(char *count_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_db_execute_walk info;
 
 	info.count = 0;
@@ -905,6 +944,7 @@ static void acpi_db_evaluate_all_predefined_names(char *count_arg)
 
 	acpi_os_printf("Evaluated %u predefined names in the namespace\n",
 		       info.count);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -925,6 +965,7 @@ acpi_db_evaluate_one_predefined_name(acpi_handle obj_handle,
 				     u32 nesting_level,
 				     void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    (struct acpi_namespace_node *)obj_handle;
 	struct acpi_db_execute_walk *info =
@@ -946,15 +987,18 @@ acpi_db_evaluate_one_predefined_name(acpi_handle obj_handle,
 
 	predefined = acpi_ut_match_predefined_method(node->name.ascii);
 	if (!predefined) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	if (node->type == ACPI_TYPE_LOCAL_SCOPE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	pathname = acpi_ns_get_normalized_pathname(node, TRUE);
 	if (!pathname) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -963,6 +1007,7 @@ acpi_db_evaluate_one_predefined_name(acpi_handle obj_handle,
 	status = acpi_get_object_info(obj_handle, &obj_info);
 	if (ACPI_FAILURE(status)) {
 		ACPI_FREE(pathname);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -1053,5 +1098,6 @@ acpi_db_evaluate_one_predefined_name(acpi_handle obj_handle,
 		status = AE_CTRL_TERMINATE;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }

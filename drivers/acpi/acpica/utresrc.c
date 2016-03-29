@@ -412,6 +412,7 @@ acpi_ut_walk_aml_resources(struct acpi_walk_state *walk_state,
 			   acpi_size aml_length,
 			   acpi_walk_aml_callback user_function, void **context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 *end_aml;
 	u8 resource_index;
@@ -505,6 +506,7 @@ acpi_ut_walk_aml_resources(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(AE_AML_NO_RESOURCE_END_TAG);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -528,6 +530,7 @@ acpi_status
 acpi_ut_validate_resource(struct acpi_walk_state *walk_state,
 			  void *aml, u8 *return_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union aml_resource *aml_resource;
 	u8 resource_type;
 	u8 resource_index;
@@ -634,6 +637,8 @@ acpi_ut_validate_resource(struct acpi_walk_state *walk_state,
 					    aml_resource->common_serial_bus.
 					    type));
 			}
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_INVALID_RESOURCE_TYPE);
 		}
 	}
@@ -644,7 +649,8 @@ acpi_ut_validate_resource(struct acpi_walk_state *walk_state,
 		*return_index = resource_index;
 	}
 
-	return (AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+		return (AE_OK);
 
 invalid_resource:
 
@@ -653,7 +659,8 @@ invalid_resource:
 			    "Invalid/unsupported resource descriptor: Type 0x%2.2X",
 			    resource_type));
 	}
-	return (AE_AML_INVALID_RESOURCE_TYPE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+		return (AE_AML_INVALID_RESOURCE_TYPE);
 
 bad_resource_length:
 
@@ -664,6 +671,7 @@ bad_resource_length:
 			    resource_type, resource_length,
 			    minimum_resource_length));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_AML_BAD_RESOURCE_LENGTH);
 }
 
@@ -683,6 +691,7 @@ bad_resource_length:
 
 u8 acpi_ut_get_resource_type(void *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/*
@@ -693,10 +702,12 @@ u8 acpi_ut_get_resource_type(void *aml)
 
 		/* Large Resource Type -- bits 6:0 contain the name */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (ACPI_GET8(aml));
 	} else {
 		/* Small Resource Type -- bits 6:3 contain the name */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((u8) (ACPI_GET8(aml) & ACPI_RESOURCE_NAME_SMALL_MASK));
 	}
 }
@@ -717,6 +728,7 @@ u8 acpi_ut_get_resource_type(void *aml)
 
 u16 acpi_ut_get_resource_length(void *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_rs_length resource_length;
 
 	ACPI_FUNCTION_ENTRY();
@@ -738,6 +750,7 @@ u16 acpi_ut_get_resource_length(void *aml)
 					 ACPI_RESOURCE_NAME_SMALL_LENGTH_MASK);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (resource_length);
 }
 
@@ -755,13 +768,16 @@ u16 acpi_ut_get_resource_length(void *aml)
 
 u8 acpi_ut_get_resource_header_length(void *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Examine the large/small bit in the resource header */
 
 	if (ACPI_GET8(aml) & ACPI_RESOURCE_NAME_LARGE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (sizeof(struct aml_resource_large_header));
 	} else {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (sizeof(struct aml_resource_small_header));
 	}
 }
@@ -782,12 +798,14 @@ u8 acpi_ut_get_resource_header_length(void *aml)
 
 u32 acpi_ut_get_descriptor_length(void *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/*
 	 * Get the Resource Length (does not include header length) and add
 	 * the header length (depends on if this is a small or large resource)
 	 */
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_ut_get_resource_length(aml) +
 		acpi_ut_get_resource_header_length(aml));
 }
@@ -809,6 +827,7 @@ u32 acpi_ut_get_descriptor_length(void *aml)
 acpi_status
 acpi_ut_get_resource_end_tag(union acpi_operand_object *obj_desc, u8 **end_tag)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ut_get_resource_end_tag);
@@ -827,4 +846,5 @@ acpi_ut_get_resource_end_tag(union acpi_operand_object *obj_desc, u8 **end_tag)
 					    (void **)end_tag);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

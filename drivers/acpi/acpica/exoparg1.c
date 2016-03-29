@@ -86,6 +86,7 @@ ACPI_MODULE_NAME("exoparg1")
  ******************************************************************************/
 acpi_status acpi_ex_opcode_0A_0T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *return_desc = NULL;
 
@@ -129,6 +130,7 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -146,6 +148,7 @@ cleanup:
 
 acpi_status acpi_ex_opcode_1A_0T_0R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	acpi_status status = AE_OK;
 
@@ -195,6 +198,7 @@ acpi_status acpi_ex_opcode_1A_0T_0R(struct acpi_walk_state *walk_state)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -212,6 +216,7 @@ acpi_status acpi_ex_opcode_1A_0T_0R(struct acpi_walk_state *walk_state)
 
 acpi_status acpi_ex_opcode_1A_1T_0R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object **operand = &walk_state->operands[0];
 
@@ -237,6 +242,7 @@ acpi_status acpi_ex_opcode_1A_1T_0R(struct acpi_walk_state *walk_state)
 cleanup:
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -254,6 +260,7 @@ cleanup:
 
 acpi_status acpi_ex_opcode_1A_1T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *return_desc = NULL;
@@ -573,6 +580,7 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -589,6 +597,7 @@ cleanup:
 
 acpi_status acpi_ex_opcode_1A_0T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *temp_desc;
 	union acpi_operand_object *return_desc = NULL;
@@ -1080,4 +1089,5 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

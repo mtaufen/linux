@@ -364,6 +364,7 @@ static void
 acpi_ex_dump_object(union acpi_operand_object *obj_desc,
 		    struct acpi_exdump_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *target;
 	char *name;
 	const char *reference_name;
@@ -377,6 +378,7 @@ acpi_ex_dump_object(union acpi_operand_object *obj_desc,
 		acpi_os_printf
 		    ("ExDumpObject: Display not implemented for object type %s\n",
 		     acpi_ut_get_object_type_name(obj_desc));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -586,12 +588,15 @@ acpi_ex_dump_object(union acpi_operand_object *obj_desc,
 
 			acpi_os_printf("**** Invalid table opcode [%X] ****\n",
 				       info->opcode);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
 		info++;
 		count--;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -894,6 +899,7 @@ void
 acpi_ex_dump_operands(union acpi_operand_object **operands,
 		      const char *opcode_name, u32 num_operands)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ex_dump_operands);
 
 	if (!opcode_name) {
@@ -918,6 +924,7 @@ acpi_ex_dump_operands(union acpi_operand_object **operands,
 
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC,
 			  "**** End operand dump for [%s]\n", opcode_name));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -936,12 +943,16 @@ acpi_ex_dump_operands(union acpi_operand_object **operands,
 
 static void acpi_ex_out_string(char *title, char *value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_os_printf("%20s : %s\n", title, value);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 static void acpi_ex_out_pointer(char *title, void *value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_os_printf("%20s : %p\n", title, value);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -957,6 +968,7 @@ static void acpi_ex_out_pointer(char *title, void *value)
 
 void acpi_ex_dump_namespace_node(struct acpi_namespace_node *node, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
@@ -965,6 +977,8 @@ void acpi_ex_dump_namespace_node(struct acpi_namespace_node *node, u32 flags)
 		/* Check if debug output enabled */
 
 		if (!ACPI_IS_DEBUG_ENABLED(ACPI_LV_OBJECTS, _COMPONENT)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 	}
@@ -975,6 +989,7 @@ void acpi_ex_dump_namespace_node(struct acpi_namespace_node *node, u32 flags)
 
 	acpi_ex_dump_object(ACPI_CAST_PTR(union acpi_operand_object, node),
 			    acpi_ex_dump_node);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -989,6 +1004,7 @@ void acpi_ex_dump_namespace_node(struct acpi_namespace_node *node, u32 flags)
 
 static void acpi_ex_dump_reference_obj(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_buffer ret_buf;
 	acpi_status status;
 
@@ -1029,6 +1045,7 @@ static void acpi_ex_dump_reference_obj(union acpi_operand_object *obj_desc)
 				       obj_desc->reference.object);
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -1047,6 +1064,7 @@ static void
 acpi_ex_dump_package_obj(union acpi_operand_object *obj_desc,
 			 u32 level, u32 index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	/* Indentation and index output */
@@ -1065,7 +1083,8 @@ acpi_ex_dump_package_obj(union acpi_operand_object *obj_desc,
 
 	if (!obj_desc) {
 		acpi_os_printf("[Null Object]\n");
-		return;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return;
 	}
 
 	/* Packages may only contain a few object types */
@@ -1123,6 +1142,7 @@ acpi_ex_dump_package_obj(union acpi_operand_object *obj_desc,
 		acpi_os_printf("[Unknown Type] %X\n", obj_desc->common.type);
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -1139,6 +1159,7 @@ acpi_ex_dump_package_obj(union acpi_operand_object *obj_desc,
 void
 acpi_ex_dump_object_descriptor(union acpi_operand_object *obj_desc, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(ex_dump_object_descriptor);
 
 	if (!obj_desc) {
@@ -1206,6 +1227,7 @@ dump_object:
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif

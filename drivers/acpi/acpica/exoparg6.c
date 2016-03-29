@@ -98,6 +98,7 @@ acpi_ex_do_match(u32 match_op,
 		 union acpi_operand_object *package_obj,
 		 union acpi_operand_object *match_obj)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 logical_result = TRUE;
 	acpi_status status;
 
@@ -127,6 +128,8 @@ acpi_ex_do_match(u32 match_op,
 		    acpi_ex_do_logical_op(AML_LEQUAL_OP, match_obj, package_obj,
 					  &logical_result);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 		break;
@@ -140,6 +143,8 @@ acpi_ex_do_match(u32 match_op,
 		    acpi_ex_do_logical_op(AML_LLESS_OP, match_obj, package_obj,
 					  &logical_result);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 		logical_result = (u8) ! logical_result;
@@ -154,6 +159,8 @@ acpi_ex_do_match(u32 match_op,
 		    acpi_ex_do_logical_op(AML_LGREATER_OP, match_obj,
 					  package_obj, &logical_result);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 		break;
@@ -167,6 +174,8 @@ acpi_ex_do_match(u32 match_op,
 		    acpi_ex_do_logical_op(AML_LGREATER_OP, match_obj,
 					  package_obj, &logical_result);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 		logical_result = (u8) ! logical_result;
@@ -181,6 +190,8 @@ acpi_ex_do_match(u32 match_op,
 		    acpi_ex_do_logical_op(AML_LLESS_OP, match_obj, package_obj,
 					  &logical_result);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 		break;
@@ -189,9 +200,11 @@ acpi_ex_do_match(u32 match_op,
 
 		/* Undefined */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (logical_result);
 }
 
@@ -209,6 +222,7 @@ acpi_ex_do_match(u32 match_op,
 
 acpi_status acpi_ex_opcode_6A_0T_1R(struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *return_desc = NULL;
 	acpi_status status = AE_OK;
@@ -330,4 +344,5 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

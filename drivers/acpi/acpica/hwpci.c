@@ -122,6 +122,7 @@ acpi_status
 acpi_hw_derive_pci_id(struct acpi_pci_id *pci_id,
 		      acpi_handle root_pci_device, acpi_handle pci_region)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_pci_device *list_head;
 
@@ -147,6 +148,7 @@ acpi_hw_derive_pci_id(struct acpi_pci_id *pci_id,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -173,6 +175,7 @@ acpi_hw_build_pci_list(acpi_handle root_pci_device,
 		       acpi_handle pci_region,
 		       struct acpi_pci_device **return_list_head)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_handle current_device;
 	acpi_handle parent_device;
 	acpi_status status;
@@ -192,12 +195,16 @@ acpi_hw_build_pci_list(acpi_handle root_pci_device,
 			/* Must delete the list before exit */
 
 			acpi_hw_delete_pci_list(*return_list_head);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
 		/* Finished when we reach the PCI root device (PNP0A03 or PNP0A08) */
 
 		if (parent_device == root_pci_device) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -207,6 +214,8 @@ acpi_hw_build_pci_list(acpi_handle root_pci_device,
 			/* Must delete the list before exit */
 
 			acpi_hw_delete_pci_list(*return_list_head);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -218,6 +227,7 @@ acpi_hw_build_pci_list(acpi_handle root_pci_device,
 
 		current_device = parent_device;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -241,6 +251,7 @@ static acpi_status
 acpi_hw_process_pci_list(struct acpi_pci_id *pci_id,
 			 struct acpi_pci_device *list_head)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_pci_device *info;
 	u16 bus_number;
@@ -267,6 +278,8 @@ acpi_hw_process_pci_list(struct acpi_pci_id *pci_id,
 		status = acpi_hw_get_pci_device_info(pci_id, info->device,
 						     &bus_number, &is_bridge);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -279,6 +292,7 @@ acpi_hw_process_pci_list(struct acpi_pci_id *pci_id,
 			  pci_id->segment, pci_id->bus, pci_id->device,
 			  pci_id->function, status, bus_number, is_bridge));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -297,6 +311,7 @@ acpi_hw_process_pci_list(struct acpi_pci_id *pci_id,
 
 static void acpi_hw_delete_pci_list(struct acpi_pci_device *list_head)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_pci_device *next;
 	struct acpi_pci_device *previous;
 
@@ -306,6 +321,7 @@ static void acpi_hw_delete_pci_list(struct acpi_pci_device *list_head)
 		next = previous->next;
 		ACPI_FREE(previous);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -333,6 +349,7 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 			    acpi_handle pci_device,
 			    u16 *bus_number, u8 *is_bridge)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_object_type object_type;
 	u64 return_value;
@@ -342,10 +359,12 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 
 	status = acpi_get_type(pci_device, &object_type);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	if (object_type != ACPI_TYPE_DEVICE) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -354,6 +373,7 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 	status = acpi_ut_evaluate_numeric_object(METHOD_NAME__ADR,
 						 pci_device, &return_value);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -382,6 +402,7 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 						PCI_CFG_HEADER_TYPE_REG,
 						&pci_value, 8);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -391,6 +412,7 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 
 	if ((pci_value != PCI_TYPE_BRIDGE) &&
 	    (pci_value != PCI_TYPE_CARDBUS_BRIDGE)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -400,6 +422,7 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 						PCI_CFG_PRIMARY_BUS_NUMBER_REG,
 						&pci_value, 8);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -412,9 +435,11 @@ acpi_hw_get_pci_device_info(struct acpi_pci_id *pci_id,
 						PCI_CFG_SECONDARY_BUS_NUMBER_REG,
 						&pci_value, 8);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	*bus_number = (u16)pci_value;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

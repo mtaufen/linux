@@ -93,10 +93,12 @@ acpi_status
 acpi_ut_create_list(char *list_name,
 		    u16 object_size, struct acpi_memory_list **return_cache)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_memory_list *cache;
 
 	cache = acpi_os_allocate(sizeof(struct acpi_memory_list));
 	if (!cache) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -106,6 +108,7 @@ acpi_ut_create_list(char *list_name,
 	cache->object_size = object_size;
 
 	*return_cache = cache;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -127,6 +130,7 @@ acpi_ut_create_list(char *list_name,
 void *acpi_ut_allocate_and_track(acpi_size size,
 				 u32 component, const char *module, u32 line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_debug_mem_block *allocation;
 	acpi_status status;
 
@@ -147,6 +151,7 @@ void *acpi_ut_allocate_and_track(acpi_size size,
 		ACPI_WARNING((module, line,
 			      "Could not allocate size %u", (u32)size));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -155,6 +160,7 @@ void *acpi_ut_allocate_and_track(acpi_size size,
 				     component, module, line);
 	if (ACPI_FAILURE(status)) {
 		acpi_os_free(allocation);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -168,6 +174,7 @@ void *acpi_ut_allocate_and_track(acpi_size size,
 		    acpi_gbl_global_list->current_total_size;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((void *)&allocation->user_space);
 }
 
@@ -190,6 +197,7 @@ void *acpi_ut_allocate_zeroed_and_track(acpi_size size,
 					u32 component,
 					const char *module, u32 line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_debug_mem_block *allocation;
 	acpi_status status;
 
@@ -210,6 +218,7 @@ void *acpi_ut_allocate_zeroed_and_track(acpi_size size,
 
 		ACPI_ERROR((module, line,
 			    "Could not allocate size %u", (u32)size));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -218,6 +227,7 @@ void *acpi_ut_allocate_zeroed_and_track(acpi_size size,
 					  line);
 	if (ACPI_FAILURE(status)) {
 		acpi_os_free(allocation);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -231,6 +241,7 @@ void *acpi_ut_allocate_zeroed_and_track(acpi_size size,
 		    acpi_gbl_global_list->current_total_size;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((void *)&allocation->user_space);
 }
 
@@ -253,6 +264,7 @@ void
 acpi_ut_free_and_track(void *allocation,
 		       u32 component, const char *module, u32 line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_debug_mem_block *debug_block;
 	acpi_status status;
 
@@ -281,6 +293,7 @@ acpi_ut_free_and_track(void *allocation,
 	ACPI_DEBUG_PRINT((ACPI_DB_ALLOCATIONS, "%p freed (block %p)\n",
 			  allocation, debug_block));
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -314,10 +327,12 @@ static struct acpi_debug_mem_block *acpi_ut_find_allocation(struct
 							    acpi_debug_mem_block
 							    *allocation)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_debug_mem_block *element;
 
 	element = acpi_gbl_global_list->list_head;
 	if (!element) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -333,6 +348,8 @@ static struct acpi_debug_mem_block *acpi_ut_find_allocation(struct
 		/* Check for end-of-list */
 
 		if (!element->next) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (element);
 		}
 
@@ -340,9 +357,11 @@ static struct acpi_debug_mem_block *acpi_ut_find_allocation(struct
 	}
 
 	if (element == allocation) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (element);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (element->previous);
 }
 
@@ -369,6 +388,7 @@ acpi_ut_track_allocation(struct acpi_debug_mem_block *allocation,
 			 u8 alloc_type,
 			 u32 component, const char *module, u32 line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_memory_list *mem_list;
 	struct acpi_debug_mem_block *element;
 	acpi_status status = AE_OK;
@@ -436,6 +456,7 @@ acpi_ut_track_allocation(struct acpi_debug_mem_block *allocation,
 unlock_and_exit:
 	status = acpi_ut_release_mutex(ACPI_MTX_MEMORY);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -457,12 +478,14 @@ static acpi_status
 acpi_ut_remove_allocation(struct acpi_debug_mem_block *allocation,
 			  u32 component, const char *module, u32 line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_memory_list *mem_list;
 	acpi_status status;
 
 	ACPI_FUNCTION_NAME(ut_remove_allocation);
 
 	if (acpi_gbl_disable_mem_tracking) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -474,11 +497,13 @@ acpi_ut_remove_allocation(struct acpi_debug_mem_block *allocation,
 		ACPI_ERROR((module, line,
 			    "Empty allocation list, nothing to free!"));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_MEMORY);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -502,6 +527,7 @@ acpi_ut_remove_allocation(struct acpi_debug_mem_block *allocation,
 	memset(&allocation->user_space, 0xEA, allocation->size);
 
 	status = acpi_ut_release_mutex(ACPI_MTX_MEMORY);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -519,6 +545,7 @@ acpi_ut_remove_allocation(struct acpi_debug_mem_block *allocation,
 
 void acpi_ut_dump_allocation_info(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 /*
 	struct acpi_memory_list         *mem_list;
 */
@@ -558,6 +585,7 @@ void acpi_ut_dump_allocation_info(void)
 			sizeof (struct acpi_namespace_node)))));
 */
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -575,6 +603,7 @@ void acpi_ut_dump_allocation_info(void)
 
 void acpi_ut_dump_allocations(u32 component, const char *module)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_debug_mem_block *element;
 	union acpi_descriptor *descriptor;
 	u32 num_outstanding = 0;
@@ -719,6 +748,7 @@ void acpi_ut_dump_allocations(u32 component, const char *module)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* ACPI_DBG_TRACK_ALLOCATIONS */

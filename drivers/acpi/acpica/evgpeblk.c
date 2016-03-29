@@ -75,6 +75,7 @@ static acpi_status
 acpi_ev_install_gpe_block(struct acpi_gpe_block_info *gpe_block,
 			  u32 interrupt_number)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_block_info *next_gpe_block;
 	struct acpi_gpe_xrupt_info *gpe_xrupt_block;
 	acpi_status status;
@@ -114,6 +115,7 @@ acpi_ev_install_gpe_block(struct acpi_gpe_block_info *gpe_block,
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -130,6 +132,7 @@ unlock_and_exit:
 
 acpi_status acpi_ev_delete_gpe_block(struct acpi_gpe_block_info *gpe_block)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_cpu_flags flags;
 
@@ -182,6 +185,7 @@ acpi_status acpi_ev_delete_gpe_block(struct acpi_gpe_block_info *gpe_block)
 unlock_and_exit:
 	status = acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -199,6 +203,7 @@ unlock_and_exit:
 static acpi_status
 acpi_ev_create_gpe_info_blocks(struct acpi_gpe_block_info *gpe_block)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_register_info *gpe_register_info = NULL;
 	struct acpi_gpe_event_info *gpe_event_info = NULL;
 	struct acpi_gpe_event_info *this_event;
@@ -308,6 +313,7 @@ error_exit:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -338,6 +344,7 @@ acpi_ev_create_gpe_block(struct acpi_namespace_node *gpe_device,
 			 u32 interrupt_number,
 			 struct acpi_gpe_block_info **return_gpe_block)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_gpe_block_info *gpe_block;
 	struct acpi_gpe_walk_info walk_info;
@@ -418,6 +425,7 @@ acpi_ev_create_gpe_block(struct acpi_namespace_node *gpe_device,
 
 	acpi_current_gpe_count += gpe_block->gpe_count;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -439,6 +447,7 @@ acpi_ev_initialize_gpe_block(struct acpi_gpe_xrupt_info *gpe_xrupt_info,
 			     struct acpi_gpe_block_info *gpe_block,
 			     void *ignored)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_gpe_event_info *gpe_event_info;
 	u32 gpe_enabled_count;
@@ -509,6 +518,7 @@ acpi_ev_initialize_gpe_block(struct acpi_gpe_xrupt_info *gpe_xrupt_info,
 	gpe_block->initialized = TRUE;
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

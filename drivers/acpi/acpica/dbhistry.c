@@ -77,6 +77,7 @@ u32 acpi_gbl_next_cmd_num = 1;
 
 void acpi_db_add_to_history(char *command_line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 cmd_len;
 	u16 buffer_len;
 
@@ -84,6 +85,7 @@ void acpi_db_add_to_history(char *command_line)
 
 	cmd_len = (u16)strlen(command_line);
 	if (!cmd_len) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -130,6 +132,7 @@ void acpi_db_add_to_history(char *command_line)
 	if (acpi_gbl_num_history < HISTORY_SIZE) {
 		acpi_gbl_num_history++;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -146,6 +149,7 @@ void acpi_db_add_to_history(char *command_line)
 
 void acpi_db_display_history(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u16 history_index;
 
@@ -167,6 +171,7 @@ void acpi_db_display_history(void)
 			history_index = 0;
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -184,6 +189,7 @@ void acpi_db_display_history(void)
 
 char *acpi_db_get_from_history(char *command_num_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 cmd_num;
 
 	if (command_num_arg == NULL) {
@@ -194,6 +200,7 @@ char *acpi_db_get_from_history(char *command_num_arg)
 		cmd_num = strtoul(command_num_arg, NULL, 0);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_db_get_history_by_index(cmd_num));
 }
 
@@ -212,6 +219,7 @@ char *acpi_db_get_from_history(char *command_num_arg)
 
 char *acpi_db_get_history_by_index(u32 cmd_num)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u16 history_index;
 
@@ -223,6 +231,8 @@ char *acpi_db_get_history_by_index(u32 cmd_num)
 
 			/* Found the command, return it */
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (acpi_gbl_history_buffer[history_index].command);
 		}
 
@@ -235,5 +245,6 @@ char *acpi_db_get_history_by_index(u32 cmd_num)
 	}
 
 	acpi_os_printf("Invalid history number: %u\n", history_index);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);
 }

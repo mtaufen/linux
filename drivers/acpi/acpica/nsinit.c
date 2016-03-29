@@ -78,6 +78,7 @@ acpi_ns_find_ini_methods(acpi_handle obj_handle,
 
 acpi_status acpi_ns_initialize_objects(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_init_walk_info info;
 
@@ -115,6 +116,7 @@ acpi_status acpi_ns_initialize_objects(void)
 			  info.method_count, info.op_region_count));
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -135,6 +137,7 @@ acpi_status acpi_ns_initialize_objects(void)
 
 acpi_status acpi_ns_initialize_devices(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_device_walk_info info;
 
@@ -215,6 +218,7 @@ acpi_status acpi_ns_initialize_devices(void)
 error_exit:
 	ACPI_EXCEPTION((AE_INFO, status, "During device initialization"));
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -241,6 +245,7 @@ static acpi_status
 acpi_ns_init_one_object(acpi_handle obj_handle,
 			u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_object_type type;
 	acpi_status status = AE_OK;
 	struct acpi_init_walk_info *info =
@@ -258,7 +263,8 @@ acpi_ns_init_one_object(acpi_handle obj_handle,
 	type = acpi_ns_get_type(obj_handle);
 	obj_desc = acpi_ns_get_attached_object(node);
 	if (!obj_desc) {
-		return (AE_OK);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_OK);
 	}
 
 	/* Increment counters for object types we are looking for */
@@ -293,13 +299,15 @@ acpi_ns_init_one_object(acpi_handle obj_handle,
 
 		/* No init required, just exit now */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	/* If the object is already initialized, nothing else to do */
 
 	if (obj_desc->common.flags & AOPOBJ_DATA_VALID) {
-		return (AE_OK);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_OK);
 	}
 
 	/* Must lock the interpreter before executing AML code */
@@ -360,6 +368,7 @@ acpi_ns_init_one_object(acpi_handle obj_handle,
 	 * to abort the walk on any single error.
 	 */
 	acpi_ex_exit_interpreter();
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -383,6 +392,7 @@ static acpi_status
 acpi_ns_find_ini_methods(acpi_handle obj_handle,
 			 u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_device_walk_info *info =
 	    ACPI_CAST_PTR(struct acpi_device_walk_info, context);
 	struct acpi_namespace_node *node;
@@ -395,12 +405,14 @@ acpi_ns_find_ini_methods(acpi_handle obj_handle,
 	    (node->type == ACPI_TYPE_PROCESSOR) ||
 	    (node->type == ACPI_TYPE_THERMAL)) {
 		info->device_count++;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	/* We are only looking for methods named _INI */
 
 	if (!ACPI_COMPARE_NAME(node->name.ascii, METHOD_NAME__INI)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -427,6 +439,7 @@ acpi_ns_find_ini_methods(acpi_handle obj_handle,
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -448,6 +461,7 @@ static acpi_status
 acpi_ns_init_one_device(acpi_handle obj_handle,
 			u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_device_walk_info *walk_info =
 	    ACPI_CAST_PTR(struct acpi_device_walk_info, context);
 	struct acpi_evaluate_info *info = walk_info->evaluate_info;
@@ -605,4 +619,5 @@ acpi_ns_init_one_device(acpi_handle obj_handle,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

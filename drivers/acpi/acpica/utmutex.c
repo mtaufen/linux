@@ -67,6 +67,7 @@ static void acpi_ut_delete_mutex(acpi_mutex_handle mutex_id);
 
 acpi_status acpi_ut_mutex_initialize(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	acpi_status status;
 
@@ -113,6 +114,7 @@ acpi_status acpi_ut_mutex_initialize(void)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -130,6 +132,7 @@ acpi_status acpi_ut_mutex_initialize(void)
 
 void acpi_ut_mutex_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_TRACE(ut_mutex_terminate);
@@ -152,6 +155,7 @@ void acpi_ut_mutex_terminate(void)
 
 	acpi_ut_delete_rw_lock(&acpi_gbl_namespace_rw_lock);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -168,6 +172,7 @@ void acpi_ut_mutex_terminate(void)
 
 static acpi_status acpi_ut_create_mutex(acpi_mutex_handle mutex_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 
 	ACPI_FUNCTION_TRACE_U32(ut_create_mutex, mutex_id);
@@ -181,6 +186,7 @@ static acpi_status acpi_ut_create_mutex(acpi_mutex_handle mutex_id)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -197,6 +203,7 @@ static acpi_status acpi_ut_create_mutex(acpi_mutex_handle mutex_id)
 
 static void acpi_ut_delete_mutex(acpi_mutex_handle mutex_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_TRACE_U32(ut_delete_mutex, mutex_id);
 
@@ -206,6 +213,7 @@ static void acpi_ut_delete_mutex(acpi_mutex_handle mutex_id)
 	acpi_gbl_mutex_info[mutex_id].thread_id = ACPI_MUTEX_NOT_ACQUIRED;
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -222,12 +230,14 @@ static void acpi_ut_delete_mutex(acpi_mutex_handle mutex_id)
 
 acpi_status acpi_ut_acquire_mutex(acpi_mutex_handle mutex_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	acpi_thread_id this_thread_id;
 
 	ACPI_FUNCTION_NAME(ut_acquire_mutex);
 
 	if (mutex_id > ACPI_MAX_MUTEX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -253,6 +263,9 @@ acpi_status acpi_ut_acquire_mutex(acpi_mutex_handle mutex_id)
 						    (mutex_id),
 						    (u32)this_thread_id));
 
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (AE_ALREADY_ACQUIRED);
 				}
 
@@ -262,6 +275,8 @@ acpi_status acpi_ut_acquire_mutex(acpi_mutex_handle mutex_id)
 					    acpi_ut_get_mutex_name(i),
 					    acpi_ut_get_mutex_name(mutex_id)));
 
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_ACQUIRE_DEADLOCK);
 			}
 		}
@@ -290,6 +305,7 @@ acpi_status acpi_ut_acquire_mutex(acpi_mutex_handle mutex_id)
 				(u32)this_thread_id, mutex_id));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -307,6 +323,7 @@ acpi_status acpi_ut_acquire_mutex(acpi_mutex_handle mutex_id)
 
 acpi_status acpi_ut_release_mutex(acpi_mutex_handle mutex_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ut_release_mutex);
 
 	ACPI_DEBUG_PRINT((ACPI_DB_MUTEX, "Thread %u releasing Mutex [%s]\n",
@@ -314,6 +331,7 @@ acpi_status acpi_ut_release_mutex(acpi_mutex_handle mutex_id)
 			  acpi_ut_get_mutex_name(mutex_id)));
 
 	if (mutex_id > ACPI_MAX_MUTEX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -325,6 +343,7 @@ acpi_status acpi_ut_release_mutex(acpi_mutex_handle mutex_id)
 			    "Mutex [0x%X] is not acquired, cannot release",
 			    mutex_id));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NOT_ACQUIRED);
 	}
 #ifdef ACPI_MUTEX_DEBUG
@@ -350,6 +369,8 @@ acpi_status acpi_ut_release_mutex(acpi_mutex_handle mutex_id)
 					    acpi_ut_get_mutex_name(i),
 					    acpi_ut_get_mutex_name(mutex_id)));
 
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_RELEASE_DEADLOCK);
 			}
 		}
@@ -361,5 +382,6 @@ acpi_status acpi_ut_release_mutex(acpi_mutex_handle mutex_id)
 	acpi_gbl_mutex_info[mutex_id].thread_id = ACPI_MUTEX_NOT_ACQUIRED;
 
 	acpi_os_release_mutex(acpi_gbl_mutex_info[mutex_id].mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

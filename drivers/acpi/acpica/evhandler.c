@@ -78,6 +78,7 @@ u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] = {
 
 acpi_status acpi_ev_install_region_handlers(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 
@@ -132,6 +133,7 @@ acpi_status acpi_ev_install_region_handlers(void)
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -152,6 +154,7 @@ u8
 acpi_ev_has_default_handler(struct acpi_namespace_node *node,
 			    acpi_adr_space_type space_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *handler_obj;
 
@@ -167,6 +170,9 @@ acpi_ev_has_default_handler(struct acpi_namespace_node *node,
 			if (handler_obj->address_space.space_id == space_id) {
 				if (handler_obj->address_space.handler_flags &
 				    ACPI_ADDR_HANDLER_DEFAULT_INSTALLED) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (TRUE);
 				}
 			}
@@ -175,6 +181,7 @@ acpi_ev_has_default_handler(struct acpi_namespace_node *node,
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -199,6 +206,7 @@ static acpi_status
 acpi_ev_install_handler(acpi_handle obj_handle,
 			u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *handler_obj;
 	union acpi_operand_object *next_handler_obj;
 	union acpi_operand_object *obj_desc;
@@ -212,6 +220,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 	/* Parameter validation */
 
 	if (!handler_obj) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -219,6 +228,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 
 	node = acpi_ns_validate_handle(obj_handle);
 	if (!node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -228,6 +238,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 	 */
 	if ((node->type != ACPI_TYPE_DEVICE) &&
 	    (node->type != ACPI_TYPE_REGION) && (node != acpi_gbl_root_node)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -238,6 +249,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 
 		/* No object, just exit */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -271,6 +283,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 			 * the walk routine to not traverse this branch. This preserves
 			 * the scoping rule for handlers.
 			 */
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 			return (AE_CTRL_DEPTH);
 		}
 
@@ -278,6 +291,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 		 * As long as the device didn't have a handler for this space we
 		 * don't care about it. We just ignore it and proceed.
 		 */
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -287,6 +301,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 
 		/* This region is for a different address space, just ignore it */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -300,6 +315,7 @@ acpi_ev_install_handler(acpi_handle obj_handle,
 	/* Connect the region to the new handler */
 
 	status = acpi_ev_attach_region(handler_obj, obj_desc, FALSE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -322,6 +338,7 @@ union acpi_operand_object *acpi_ev_find_region_handler(acpi_adr_space_type
 						       union acpi_operand_object
 						       *handler_obj)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Walk the handler list for this device */
 
@@ -330,6 +347,8 @@ union acpi_operand_object *acpi_ev_find_region_handler(acpi_adr_space_type
 		/* Same space_id indicates a handler is installed */
 
 		if (handler_obj->address_space.space_id == space_id) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (handler_obj);
 		}
 
@@ -338,6 +357,7 @@ union acpi_operand_object *acpi_ev_find_region_handler(acpi_adr_space_type
 		handler_obj = handler_obj->address_space.next;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);
 }
 
@@ -364,6 +384,7 @@ acpi_ev_install_space_handler(struct acpi_namespace_node * node,
 			      acpi_adr_space_handler handler,
 			      acpi_adr_space_setup setup, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *handler_obj;
 	acpi_status status = AE_OK;
@@ -558,4 +579,5 @@ acpi_ev_install_space_handler(struct acpi_namespace_node * node,
 
 unlock_and_exit:
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

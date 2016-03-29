@@ -85,6 +85,7 @@ static u32 acpi_ex_digits_needed(u64 value, u32 base);
 
 void acpi_ex_enter_interpreter(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ex_enter_interpreter);
@@ -96,6 +97,7 @@ void acpi_ex_enter_interpreter(void)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -123,6 +125,7 @@ void acpi_ex_enter_interpreter(void)
 
 void acpi_ex_exit_interpreter(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ex_exit_interpreter);
@@ -134,6 +137,7 @@ void acpi_ex_exit_interpreter(void)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -151,6 +155,7 @@ void acpi_ex_exit_interpreter(void)
 
 u8 acpi_ex_truncate_for32bit_table(union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
@@ -161,6 +166,7 @@ u8 acpi_ex_truncate_for32bit_table(union acpi_operand_object *obj_desc)
 	if ((!obj_desc) ||
 	    (ACPI_GET_DESCRIPTOR_TYPE(obj_desc) != ACPI_DESC_TYPE_OPERAND) ||
 	    (obj_desc->common.type != ACPI_TYPE_INTEGER)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -171,9 +177,11 @@ u8 acpi_ex_truncate_for32bit_table(union acpi_operand_object *obj_desc)
 		 * the value to 32 bits by zeroing out the upper 32-bit field
 		 */
 		obj_desc->integer.value &= (u64)ACPI_UINT32_MAX;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -193,6 +201,7 @@ u8 acpi_ex_truncate_for32bit_table(union acpi_operand_object *obj_desc)
 
 void acpi_ex_acquire_global_lock(u32 field_flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ex_acquire_global_lock);
@@ -215,6 +224,7 @@ void acpi_ex_acquire_global_lock(u32 field_flags)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -232,6 +242,7 @@ void acpi_ex_acquire_global_lock(u32 field_flags)
 
 void acpi_ex_release_global_lock(u32 field_flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ex_release_global_lock);
@@ -254,6 +265,7 @@ void acpi_ex_release_global_lock(u32 field_flags)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -272,6 +284,7 @@ void acpi_ex_release_global_lock(u32 field_flags)
 
 static u32 acpi_ex_digits_needed(u64 value, u32 base)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 num_digits;
 	u64 current_value;
 
@@ -295,6 +308,7 @@ static u32 acpi_ex_digits_needed(u64 value, u32 base)
 	}
 
 	return_UINT32(num_digits);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -315,6 +329,7 @@ static u32 acpi_ex_digits_needed(u64 value, u32 base)
 
 void acpi_ex_eisa_id_to_string(char *out_string, u64 compressed_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 swapped_id;
 
 	ACPI_FUNCTION_ENTRY();
@@ -343,6 +358,7 @@ void acpi_ex_eisa_id_to_string(char *out_string, u64 compressed_id)
 	out_string[5] = acpi_ut_hex_to_ascii_char((u64) swapped_id, 4);
 	out_string[6] = acpi_ut_hex_to_ascii_char((u64) swapped_id, 0);
 	out_string[7] = 0;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -364,6 +380,7 @@ void acpi_ex_eisa_id_to_string(char *out_string, u64 compressed_id)
 
 void acpi_ex_integer_to_string(char *out_string, u64 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 count;
 	u32 digits_needed;
 	u32 remainder;
@@ -377,6 +394,7 @@ void acpi_ex_integer_to_string(char *out_string, u64 value)
 		(void)acpi_ut_short_divide(value, 10, &value, &remainder);
 		out_string[count - 1] = (char)('0' + remainder);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -397,6 +415,7 @@ void acpi_ex_integer_to_string(char *out_string, u64 value)
 
 void acpi_ex_pci_cls_to_string(char *out_string, u8 class_code[3])
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
@@ -409,6 +428,7 @@ void acpi_ex_pci_cls_to_string(char *out_string, u8 class_code[3])
 	out_string[4] = acpi_ut_hex_to_ascii_char((u64)class_code[2], 4);
 	out_string[5] = acpi_ut_hex_to_ascii_char((u64)class_code[2], 0);
 	out_string[6] = 0;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -425,14 +445,17 @@ void acpi_ex_pci_cls_to_string(char *out_string, u8 class_code[3])
 
 u8 acpi_is_valid_space_id(u8 space_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if ((space_id >= ACPI_NUM_PREDEFINED_REGIONS) &&
 	    (space_id < ACPI_USER_REGION_BEGIN) &&
 	    (space_id != ACPI_ADR_SPACE_DATA_TABLE) &&
 	    (space_id != ACPI_ADR_SPACE_FIXED_HARDWARE)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 

@@ -156,6 +156,7 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
 		      u32 package_index,
 		      union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object *new_object = NULL;
 	acpi_status status;
@@ -185,6 +186,8 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
 
 			ACPI_EXCEPTION((AE_INFO, status,
 					"During return object analysis"));
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		if (new_object) {
@@ -197,6 +200,7 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
 	 * expected.
 	 */
 	if (info->return_btype & expected_btypes) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -228,6 +232,9 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
 								package_index,
 								return_object_ptr);
 				if (ACPI_SUCCESS(status)) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (AE_OK);	/* Repair was successful */
 				}
 			} else {
@@ -237,6 +244,8 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
 						      "Missing expected return value"));
 			}
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_NO_RETURN_VALUE);
 		}
 	}
@@ -277,12 +286,15 @@ acpi_ns_simple_repair(struct acpi_evaluate_info *info,
 			 */
 			*return_object_ptr = new_object;	/* New Package object */
 			info->return_flags |= ACPI_OBJECT_REPAIRED;
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 	}
 
 	/* We cannot repair this object */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_AML_OPERAND_TYPE);
 
 object_repaired:
@@ -327,6 +339,7 @@ object_repaired:
 	acpi_ut_remove_reference(return_object);
 	*return_object_ptr = new_object;
 	info->return_flags |= ACPI_OBJECT_REPAIRED;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -354,6 +367,7 @@ static const struct acpi_simple_repair_info *acpi_ns_match_simple_repair(struct
 									 u32
 									 package_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_simple_repair_info *this_name;
 
 	/* Search info table for a repairable predefined method/object name */
@@ -368,15 +382,20 @@ static const struct acpi_simple_repair_info *acpi_ns_match_simple_repair(struct
 			    (this_name->package_index ==
 			     ACPI_ALL_PACKAGE_ELEMENTS
 			     || package_index == this_name->package_index)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (this_name);
 			}
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (NULL);
 		}
 
 		this_name++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);		/* Name was not found in the repair table */
 }
 
@@ -404,6 +423,7 @@ acpi_ns_repair_null_element(struct acpi_evaluate_info * info,
 			    u32 package_index,
 			    union acpi_operand_object **return_object_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *return_object = *return_object_ptr;
 	union acpi_operand_object *new_object;
 
@@ -412,6 +432,7 @@ acpi_ns_repair_null_element(struct acpi_evaluate_info * info,
 	/* No repair needed if return object is non-NULL */
 
 	if (return_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -439,10 +460,12 @@ acpi_ns_repair_null_element(struct acpi_evaluate_info * info,
 	} else {
 		/* Error for all other expected types */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
 	if (!new_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -459,6 +482,7 @@ acpi_ns_repair_null_element(struct acpi_evaluate_info * info,
 
 	*return_object_ptr = new_object;
 	info->return_flags |= ACPI_OBJECT_REPAIRED;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -483,6 +507,7 @@ acpi_ns_remove_null_elements(struct acpi_evaluate_info *info,
 			     u8 package_type,
 			     union acpi_operand_object *obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **source;
 	union acpi_operand_object **dest;
 	u32 count;
@@ -511,6 +536,7 @@ acpi_ns_remove_null_elements(struct acpi_evaluate_info *info,
 	case ACPI_PTYPE2_VAR_VAR:
 	case ACPI_PTYPE1_FIXED:
 	case ACPI_PTYPE1_OPTION:
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -545,6 +571,7 @@ acpi_ns_remove_null_elements(struct acpi_evaluate_info *info,
 		*dest = NULL;
 		obj_desc->package.count = new_count;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -576,6 +603,7 @@ acpi_ns_wrap_with_package(struct acpi_evaluate_info *info,
 			  union acpi_operand_object *original_object,
 			  union acpi_operand_object **obj_desc_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *pkg_obj_desc;
 
 	ACPI_FUNCTION_NAME(ns_wrap_with_package);
@@ -586,6 +614,7 @@ acpi_ns_wrap_with_package(struct acpi_evaluate_info *info,
 	 */
 	pkg_obj_desc = acpi_ut_create_package_object(1);
 	if (!pkg_obj_desc) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -600,5 +629,6 @@ acpi_ns_wrap_with_package(struct acpi_evaluate_info *info,
 
 	*obj_desc_ptr = pkg_obj_desc;
 	info->return_flags |= ACPI_OBJECT_REPAIRED | ACPI_OBJECT_WRAPPED;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

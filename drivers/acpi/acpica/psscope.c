@@ -62,7 +62,9 @@ ACPI_MODULE_NAME("psscope")
 union acpi_parse_object *acpi_ps_get_parent_scope(struct acpi_parse_state
 						  *parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (parser_state->scope->parse_scope.op);
 }
 
@@ -82,7 +84,9 @@ union acpi_parse_object *acpi_ps_get_parent_scope(struct acpi_parse_state
 
 u8 acpi_ps_has_completed_scope(struct acpi_parse_state * parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((u8)
 		((parser_state->aml >= parser_state->scope->parse_scope.arg_end
 		  || !parser_state->scope->parse_scope.arg_count)));
@@ -105,6 +109,7 @@ acpi_status
 acpi_ps_init_scope(struct acpi_parse_state * parser_state,
 		   union acpi_parse_object * root_op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope;
 
 	ACPI_FUNCTION_TRACE_PTR(ps_init_scope, root_op);
@@ -124,6 +129,7 @@ acpi_ps_init_scope(struct acpi_parse_state * parser_state,
 	parser_state->start_op = root_op;
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -146,6 +152,7 @@ acpi_ps_push_scope(struct acpi_parse_state *parser_state,
 		   union acpi_parse_object *op,
 		   u32 remaining_args, u32 arg_count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope;
 
 	ACPI_FUNCTION_TRACE_PTR(ps_push_scope, op);
@@ -177,6 +184,7 @@ acpi_ps_push_scope(struct acpi_parse_state *parser_state,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -199,6 +207,7 @@ void
 acpi_ps_pop_scope(struct acpi_parse_state *parser_state,
 		  union acpi_parse_object **op, u32 * arg_list, u32 * arg_count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope = parser_state->scope;
 
 	ACPI_FUNCTION_TRACE(ps_pop_scope);
@@ -229,6 +238,7 @@ acpi_ps_pop_scope(struct acpi_parse_state *parser_state,
 	ACPI_DEBUG_PRINT((ACPI_DB_PARSE,
 			  "Popped Op %p Args %X\n", *op, *arg_count));
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -246,6 +256,7 @@ acpi_ps_pop_scope(struct acpi_parse_state *parser_state,
 
 void acpi_ps_cleanup_scope(struct acpi_parse_state *parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *scope;
 
 	ACPI_FUNCTION_TRACE_PTR(ps_cleanup_scope, parser_state);
@@ -262,4 +273,5 @@ void acpi_ps_cleanup_scope(struct acpi_parse_state *parser_state)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

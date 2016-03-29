@@ -64,10 +64,12 @@ ACPI_MODULE_NAME("utstring")
  ******************************************************************************/
 void acpi_ut_print_string(char *string, u16 max_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (!string) {
 		acpi_os_printf("<\"NULL STRING PTR\">");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -141,6 +143,7 @@ void acpi_ut_print_string(char *string, u16 max_length)
 	if (i == max_length && string[i]) {
 		acpi_os_printf("...");
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -163,6 +166,7 @@ void acpi_ut_print_string(char *string, u16 max_length)
 
 u8 acpi_ut_valid_acpi_char(char character, u32 position)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!((character >= 'A' && character <= 'Z') ||
 	      (character >= '0' && character <= '9') || (character == '_'))) {
@@ -170,12 +174,16 @@ u8 acpi_ut_valid_acpi_char(char character, u32 position)
 		/* Allow a '!' in the last position */
 
 		if (character == '!' && position == 3) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (TRUE);
 		}
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 
@@ -197,16 +205,20 @@ u8 acpi_ut_valid_acpi_char(char character, u32 position)
 
 u8 acpi_ut_valid_acpi_name(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_ENTRY();
 
 	for (i = 0; i < ACPI_NAME_SIZE; i++) {
 		if (!acpi_ut_valid_acpi_char(name[i], i)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 
@@ -234,6 +246,7 @@ u8 acpi_ut_valid_acpi_name(char *name)
 
 void acpi_ut_repair_name(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u8 found_bad_char = FALSE;
 	u32 original_name;
@@ -245,6 +258,7 @@ void acpi_ut_repair_name(char *name)
 	 * error during the execution of module-level code.
 	 */
 	if (ACPI_COMPARE_NAME(name, "\\___")) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -280,6 +294,7 @@ void acpi_ut_repair_name(char *name)
 					  original_name, name));
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #if defined ACPI_ASL_COMPILER || defined ACPI_EXEC_APP
@@ -298,8 +313,10 @@ void acpi_ut_repair_name(char *name)
 
 void ut_convert_backslashes(char *pathname)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!pathname) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -310,5 +327,6 @@ void ut_convert_backslashes(char *pathname)
 
 		pathname++;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif

@@ -75,6 +75,7 @@ static acpi_status
 acpi_db_start_command(struct acpi_walk_state *walk_state,
 		      union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	/* TBD: [Investigate] are there namespace locking issues here? */
@@ -114,6 +115,7 @@ error_exit:
 		ACPI_EXCEPTION((AE_INFO, status,
 				"While parsing/handling command line"));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -131,9 +133,11 @@ error_exit:
 
 void acpi_db_signal_break_point(struct acpi_walk_state *walk_state)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 #ifndef ACPI_APPLICATION
 	if (acpi_gbl_db_thread_id != acpi_os_get_thread_id()) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 #endif
@@ -145,6 +149,7 @@ void acpi_db_signal_break_point(struct acpi_walk_state *walk_state)
 	 */
 	acpi_gbl_cm_single_step = TRUE;
 	acpi_os_printf("**break** Executed AML BreakPoint opcode\n");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -165,6 +170,7 @@ acpi_status
 acpi_db_single_step(struct acpi_walk_state * walk_state,
 		    union acpi_parse_object * op, u32 opcode_class)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *next;
 	acpi_status status = AE_OK;
 	u32 original_debug_level;
@@ -176,6 +182,7 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 
 #ifndef ACPI_APPLICATION
 	if (acpi_gbl_db_thread_id != acpi_os_get_thread_id()) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 #endif
@@ -184,6 +191,7 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 
 	if (acpi_gbl_abort_method) {
 		acpi_gbl_abort_method = FALSE;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_ABORT_METHOD);
 	}
 
@@ -220,13 +228,15 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 	 * namely, opcodes that have arguments
 	 */
 	if (op->common.aml_opcode == AML_INT_NAMEDFIELD_OP) {
-		return (AE_OK);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (AE_OK);
 	}
 
 	switch (opcode_class) {
 	case AML_CLASS_UNKNOWN:
 	case AML_CLASS_ARGUMENT:	/* constants, literals, etc. do nothing */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 
 	default:
@@ -331,6 +341,7 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 	/* If we are not single stepping, just continue executing the method */
 
 	if (!acpi_gbl_cm_single_step) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -343,6 +354,8 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 
 			/* Not a method call, just keep executing */
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -372,6 +385,7 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 
 	/* User commands complete, continue execution of the interrupted method */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -389,6 +403,7 @@ acpi_db_single_step(struct acpi_walk_state * walk_state,
 
 acpi_status acpi_initialize_debugger(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_initialize_debugger);
@@ -452,6 +467,7 @@ acpi_status acpi_initialize_debugger(void)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_initialize_debugger)
@@ -469,6 +485,7 @@ ACPI_EXPORT_SYMBOL(acpi_initialize_debugger)
  ******************************************************************************/
 void acpi_terminate_debugger(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Terminate the AML Debugger */
 
@@ -493,6 +510,7 @@ void acpi_terminate_debugger(void)
 	/* Ensure that debug output is now disabled */
 
 	acpi_gbl_db_output_flags = ACPI_DB_DISABLE_OUTPUT;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_terminate_debugger)
@@ -510,7 +528,9 @@ ACPI_EXPORT_SYMBOL(acpi_terminate_debugger)
  ******************************************************************************/
 void acpi_set_debugger_thread_id(acpi_thread_id thread_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_gbl_db_thread_id = thread_id;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_set_debugger_thread_id)

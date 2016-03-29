@@ -75,6 +75,7 @@ static void
 acpi_ds_print_node_pathname(struct acpi_namespace_node *node,
 			    const char *message)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_buffer buffer;
 	acpi_status status;
 
@@ -102,6 +103,7 @@ acpi_ds_print_node_pathname(struct acpi_namespace_node *node,
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -124,6 +126,7 @@ acpi_ds_dump_method_stack(acpi_status status,
 			  struct acpi_walk_state *walk_state,
 			  union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *next;
 	struct acpi_thread_state *thread;
 	struct acpi_walk_state *next_walk_state;
@@ -218,6 +221,7 @@ acpi_ds_dump_method_stack(acpi_status status,
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #else
@@ -226,6 +230,8 @@ acpi_ds_dump_method_stack(acpi_status status,
 			  struct acpi_walk_state *walk_state,
 			  union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 

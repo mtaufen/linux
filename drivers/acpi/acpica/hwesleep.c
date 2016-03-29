@@ -64,6 +64,7 @@ ACPI_MODULE_NAME("hwesleep")
  ******************************************************************************/
 void acpi_hw_execute_sleep_method(char *method_pathname, u32 integer_argument)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_object_list arg_list;
 	union acpi_object arg;
 	acpi_status status;
@@ -84,6 +85,7 @@ void acpi_hw_execute_sleep_method(char *method_pathname, u32 integer_argument)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -102,6 +104,7 @@ void acpi_hw_execute_sleep_method(char *method_pathname, u32 integer_argument)
 
 acpi_status acpi_hw_extended_sleep(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 sleep_type_value;
 	u64 sleep_status;
@@ -167,6 +170,7 @@ acpi_status acpi_hw_extended_sleep(u8 sleep_state)
 	} while (!(((u8)sleep_status) & ACPI_X_WAKE_STATUS));
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -184,6 +188,7 @@ acpi_status acpi_hw_extended_sleep(u8 sleep_state)
 
 acpi_status acpi_hw_extended_wake_prep(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 sleep_type_value;
 
@@ -202,6 +207,7 @@ acpi_status acpi_hw_extended_wake_prep(u8 sleep_state)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -219,6 +225,7 @@ acpi_status acpi_hw_extended_wake_prep(u8 sleep_state)
 
 acpi_status acpi_hw_extended_wake(u8 sleep_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(hw_extended_wake);
 
 	/* Ensure enter_sleep_state_prep -> enter_sleep_state ordering */
@@ -240,4 +247,5 @@ acpi_status acpi_hw_extended_wake(u8 sleep_state)
 
 	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, ACPI_SST_WORKING);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

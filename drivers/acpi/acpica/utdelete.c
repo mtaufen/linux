@@ -71,6 +71,7 @@ acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action);
 
 static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *obj_pointer = NULL;
 	union acpi_operand_object *handler_desc;
 	union acpi_operand_object *second_desc;
@@ -337,6 +338,7 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
 
 	acpi_ut_delete_object_desc(object);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -354,6 +356,7 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
 
 void acpi_ut_delete_internal_object_list(union acpi_operand_object **obj_list)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **internal_obj;
 
 	ACPI_FUNCTION_ENTRY();
@@ -367,6 +370,7 @@ void acpi_ut_delete_internal_object_list(union acpi_operand_object **obj_list)
 	/* Free the combined parameter pointer list and object array */
 
 	ACPI_FREE(obj_list);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -386,6 +390,7 @@ void acpi_ut_delete_internal_object_list(union acpi_operand_object **obj_list)
 static void
 acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 original_count;
 	u16 new_count = 0;
 	acpi_cpu_flags lock_flags;
@@ -393,6 +398,7 @@ acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action)
 	ACPI_FUNCTION_NAME(ut_update_ref_count);
 
 	if (!object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -458,6 +464,7 @@ acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action)
 		acpi_os_release_lock(acpi_gbl_reference_count_lock, lock_flags);
 		ACPI_ERROR((AE_INFO, "Unknown Reference Count action (0x%X)",
 			    action));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -470,6 +477,7 @@ acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action)
 			      "Large Reference Count (0x%X) in object %p, Type=0x%.2X",
 			      new_count, object, object->common.type));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -496,6 +504,7 @@ acpi_ut_update_ref_count(union acpi_operand_object *object, u32 action)
 acpi_status
 acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_generic_state *state_list = NULL;
 	union acpi_operand_object *next_object = NULL;
@@ -512,7 +521,9 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
 		if (ACPI_GET_DESCRIPTOR_TYPE(object) == ACPI_DESC_TYPE_NAMED) {
 			ACPI_DEBUG_PRINT((ACPI_DB_ALLOCATIONS,
 					  "Object %p is NS handle\n", object));
-			return (AE_OK);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
+		return (AE_OK);
 		}
 
 		/*
@@ -662,6 +673,7 @@ acpi_ut_update_object_reference(union acpi_operand_object *object, u16 action)
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 
 error_exit:
@@ -676,6 +688,7 @@ error_exit:
 		acpi_ut_delete_generic_state(state);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -694,12 +707,14 @@ error_exit:
 
 void acpi_ut_add_reference(union acpi_operand_object *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_NAME(ut_add_reference);
 
 	/* Ensure that we have a valid object */
 
 	if (!acpi_ut_valid_internal_object(object)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -710,6 +725,7 @@ void acpi_ut_add_reference(union acpi_operand_object *object)
 	/* Increment the reference count */
 
 	(void)acpi_ut_update_object_reference(object, REF_INCREMENT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -727,6 +743,7 @@ void acpi_ut_add_reference(union acpi_operand_object *object)
 
 void acpi_ut_remove_reference(union acpi_operand_object *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_NAME(ut_remove_reference);
 
@@ -736,12 +753,14 @@ void acpi_ut_remove_reference(union acpi_operand_object *object)
 	 */
 	if (!object ||
 	    (ACPI_GET_DESCRIPTOR_TYPE(object) == ACPI_DESC_TYPE_NAMED)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	/* Ensure that we have a valid object */
 
 	if (!acpi_ut_valid_internal_object(object)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -755,5 +774,6 @@ void acpi_ut_remove_reference(union acpi_operand_object *object)
 	 * of all subobjects!)
 	 */
 	(void)acpi_ut_update_object_reference(object, REF_DECREMENT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }

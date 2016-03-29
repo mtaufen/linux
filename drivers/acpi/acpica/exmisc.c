@@ -69,6 +69,7 @@ acpi_ex_get_object_reference(union acpi_operand_object *obj_desc,
 			     union acpi_operand_object **return_desc,
 			     struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *reference_obj;
 	union acpi_operand_object *referenced_obj;
 
@@ -136,6 +137,7 @@ acpi_ex_get_object_reference(union acpi_operand_object *obj_desc,
 			  *return_desc));
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -159,6 +161,7 @@ acpi_ex_concat_template(union acpi_operand_object *operand0,
 			union acpi_operand_object **actual_return_desc,
 			struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *return_desc;
 	u8 *new_buf;
@@ -221,6 +224,7 @@ acpi_ex_concat_template(union acpi_operand_object *operand0,
 
 	*actual_return_desc = return_desc;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -244,6 +248,7 @@ acpi_ex_do_concatenate(union acpi_operand_object *operand0,
 		       union acpi_operand_object **actual_return_desc,
 		       struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *local_operand1 = operand1;
 	union acpi_operand_object *return_desc;
 	char *new_buf;
@@ -425,6 +430,7 @@ cleanup:
 		acpi_ut_remove_reference(local_operand1);
 	}
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -445,36 +451,44 @@ cleanup:
 
 u64 acpi_ex_do_math_op(u16 opcode, u64 integer0, u64 integer1)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_ENTRY();
 
 	switch (opcode) {
 	case AML_ADD_OP:	/* Add (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 + integer1);
 
 	case AML_BIT_AND_OP:	/* And (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 & integer1);
 
 	case AML_BIT_NAND_OP:	/* NAnd (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (~(integer0 & integer1));
 
 	case AML_BIT_OR_OP:	/* Or (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 | integer1);
 
 	case AML_BIT_NOR_OP:	/* NOr (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (~(integer0 | integer1));
 
 	case AML_BIT_XOR_OP:	/* XOr (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 ^ integer1);
 
 	case AML_MULTIPLY_OP:	/* Multiply (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 * integer1);
 
 	case AML_SHIFT_LEFT_OP:	/* shift_left (Operand, shift_count, Result) */
@@ -484,8 +498,11 @@ u64 acpi_ex_do_math_op(u16 opcode, u64 integer0, u64 integer1)
 		 * width since the behavior of this is not well-defined in the C language.
 		 */
 		if (integer1 >= acpi_gbl_integer_bit_width) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (0);
 		}
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 << integer1);
 
 	case AML_SHIFT_RIGHT_OP:	/* shift_right (Operand, shift_count, Result) */
@@ -495,16 +512,21 @@ u64 acpi_ex_do_math_op(u16 opcode, u64 integer0, u64 integer1)
 		 * width since the behavior of this is not well-defined in the C language.
 		 */
 		if (integer1 >= acpi_gbl_integer_bit_width) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (0);
 		}
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 >> integer1);
 
 	case AML_SUBTRACT_OP:	/* Subtract (Integer0, Integer1, Result) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (integer0 - integer1);
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (0);
 	}
 }
@@ -533,6 +555,7 @@ acpi_status
 acpi_ex_do_logical_numeric_op(u16 opcode,
 			      u64 integer0, u64 integer1, u8 *logical_result)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	u8 local_result = FALSE;
 
@@ -563,6 +586,7 @@ acpi_ex_do_logical_numeric_op(u16 opcode,
 
 	*logical_result = local_result;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -596,6 +620,7 @@ acpi_ex_do_logical_op(u16 opcode,
 		      union acpi_operand_object *operand0,
 		      union acpi_operand_object *operand1, u8 * logical_result)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *local_operand1 = operand1;
 	u64 integer0;
 	u64 integer1;
@@ -763,4 +788,5 @@ cleanup:
 
 	*logical_result = local_result;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -75,6 +75,7 @@ acpi_ut_get_mutex_object(acpi_handle handle,
 			 acpi_string pathname,
 			 union acpi_operand_object **ret_obj)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *mutex_node;
 	union acpi_operand_object *mutex_obj;
 	acpi_status status;
@@ -82,6 +83,7 @@ acpi_ut_get_mutex_object(acpi_handle handle,
 	/* Parameter validation */
 
 	if (!ret_obj || (!handle && !pathname)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -93,6 +95,8 @@ acpi_ut_get_mutex_object(acpi_handle handle,
 		    acpi_get_handle(handle, pathname,
 				    ACPI_CAST_PTR(acpi_handle, &mutex_node));
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	}
@@ -100,6 +104,7 @@ acpi_ut_get_mutex_object(acpi_handle handle,
 	/* Ensure that we actually have a Mutex object */
 
 	if (!mutex_node || (mutex_node->type != ACPI_TYPE_MUTEX)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_TYPE);
 	}
 
@@ -107,10 +112,12 @@ acpi_ut_get_mutex_object(acpi_handle handle,
 
 	mutex_obj = acpi_ns_get_attached_object(mutex_node);
 	if (!mutex_obj) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NULL_OBJECT);
 	}
 
 	*ret_obj = mutex_obj;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -135,6 +142,7 @@ acpi_ut_get_mutex_object(acpi_handle handle,
 acpi_status
 acpi_acquire_mutex(acpi_handle handle, acpi_string pathname, u16 timeout)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *mutex_obj;
 
@@ -142,12 +150,14 @@ acpi_acquire_mutex(acpi_handle handle, acpi_string pathname, u16 timeout)
 
 	status = acpi_ut_get_mutex_object(handle, pathname, &mutex_obj);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	/* Acquire the OS mutex */
 
 	status = acpi_os_acquire_mutex(mutex_obj->mutex.os_mutex, timeout);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -170,6 +180,7 @@ acpi_acquire_mutex(acpi_handle handle, acpi_string pathname, u16 timeout)
 
 acpi_status acpi_release_mutex(acpi_handle handle, acpi_string pathname)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *mutex_obj;
 
@@ -177,11 +188,13 @@ acpi_status acpi_release_mutex(acpi_handle handle, acpi_string pathname)
 
 	status = acpi_ut_get_mutex_object(handle, pathname, &mutex_obj);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	/* Release the OS mutex */
 
 	acpi_os_release_mutex(mutex_obj->mutex.os_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

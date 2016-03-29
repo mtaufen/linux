@@ -65,6 +65,7 @@ ACPI_MODULE_NAME("hwxface")
  ******************************************************************************/
 acpi_status acpi_reset(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_generic_address *reset_reg;
 	acpi_status status;
 
@@ -102,6 +103,7 @@ acpi_status acpi_reset(void)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_reset)
@@ -126,6 +128,7 @@ ACPI_EXPORT_SYMBOL(acpi_reset)
  ******************************************************************************/
 acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 value_lo;
 	u32 value_hi;
 	u32 width;
@@ -135,6 +138,7 @@ acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 	ACPI_FUNCTION_NAME(acpi_read);
 
 	if (!return_value) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -142,6 +146,7 @@ acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 
 	status = acpi_hw_validate_register(reg, 64, &address);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -154,6 +159,8 @@ acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 					     address, return_value,
 					     reg->bit_width);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	} else {		/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
@@ -169,6 +176,8 @@ acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 		status = acpi_hw_read_port((acpi_io_address)
 					   address, &value_lo, width);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -180,6 +189,8 @@ acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 						   (address + 4), &value_hi,
 						   32);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 		}
@@ -195,6 +206,7 @@ acpi_status acpi_read(u64 *return_value, struct acpi_generic_address *reg)
 			  ACPI_FORMAT_UINT64(address),
 			  acpi_ut_get_region_name(reg->space_id)));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -214,6 +226,7 @@ ACPI_EXPORT_SYMBOL(acpi_read)
  ******************************************************************************/
 acpi_status acpi_write(u64 value, struct acpi_generic_address *reg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 width;
 	u64 address;
 	acpi_status status;
@@ -224,6 +237,7 @@ acpi_status acpi_write(u64 value, struct acpi_generic_address *reg)
 
 	status = acpi_hw_validate_register(reg, 64, &address);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -235,6 +249,8 @@ acpi_status acpi_write(u64 value, struct acpi_generic_address *reg)
 		status = acpi_os_write_memory((acpi_physical_address)
 					      address, value, reg->bit_width);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 	} else {		/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
@@ -248,6 +264,8 @@ acpi_status acpi_write(u64 value, struct acpi_generic_address *reg)
 					    address, ACPI_LODWORD(value),
 					    width);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -256,6 +274,8 @@ acpi_status acpi_write(u64 value, struct acpi_generic_address *reg)
 						    (address + 4),
 						    ACPI_HIDWORD(value), 32);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 		}
@@ -267,6 +287,7 @@ acpi_status acpi_write(u64 value, struct acpi_generic_address *reg)
 			  ACPI_FORMAT_UINT64(address),
 			  acpi_ut_get_region_name(reg->space_id)));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -299,6 +320,7 @@ ACPI_EXPORT_SYMBOL(acpi_write)
  ******************************************************************************/
 acpi_status acpi_read_bit_register(u32 register_id, u32 *return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_bit_register_info *bit_reg_info;
 	u32 register_value;
 	u32 value;
@@ -333,6 +355,7 @@ acpi_status acpi_read_bit_register(u32 register_id, u32 *return_value)
 
 	*return_value = value;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_read_bit_register)
@@ -360,6 +383,7 @@ ACPI_EXPORT_SYMBOL(acpi_read_bit_register)
  ******************************************************************************/
 acpi_status acpi_write_bit_register(u32 register_id, u32 value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_bit_register_info *bit_reg_info;
 	acpi_cpu_flags lock_flags;
 	u32 register_value;
@@ -437,6 +461,7 @@ unlock_and_exit:
 
 	acpi_os_release_lock(acpi_gbl_hardware_lock, lock_flags);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_write_bit_register)
@@ -481,6 +506,7 @@ ACPI_EXPORT_SYMBOL(acpi_write_bit_register)
 acpi_status
 acpi_get_sleep_type_data(u8 sleep_state, u8 *sleep_type_a, u8 *sleep_type_b)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_evaluate_info *info;
 	union acpi_operand_object **elements;
@@ -592,6 +618,7 @@ warning_cleanup:
 final_cleanup:
 	ACPI_FREE(info);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_sleep_type_data)

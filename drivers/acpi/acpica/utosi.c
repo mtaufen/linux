@@ -134,11 +134,13 @@ static struct acpi_interface_info acpi_default_supported_interfaces[] = {
 
 acpi_status acpi_ut_initialize_interfaces(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 
 	status = acpi_os_acquire_mutex(acpi_gbl_osi_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -154,6 +156,7 @@ acpi_status acpi_ut_initialize_interfaces(void)
 	}
 
 	acpi_os_release_mutex(acpi_gbl_osi_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -172,11 +175,13 @@ acpi_status acpi_ut_initialize_interfaces(void)
 
 acpi_status acpi_ut_interface_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_interface_info *next_interface;
 
 	status = acpi_os_acquire_mutex(acpi_gbl_osi_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -204,6 +209,7 @@ acpi_status acpi_ut_interface_terminate(void)
 	}
 
 	acpi_os_release_mutex(acpi_gbl_osi_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -222,6 +228,7 @@ acpi_status acpi_ut_interface_terminate(void)
 
 acpi_status acpi_ut_install_interface(acpi_string interface_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_interface_info *interface_info;
 
 	/* Allocate info block and space for the name string */
@@ -229,12 +236,14 @@ acpi_status acpi_ut_install_interface(acpi_string interface_name)
 	interface_info =
 	    ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_interface_info));
 	if (!interface_info) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
 	interface_info->name = ACPI_ALLOCATE_ZEROED(strlen(interface_name) + 1);
 	if (!interface_info->name) {
 		ACPI_FREE(interface_info);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -245,6 +254,7 @@ acpi_status acpi_ut_install_interface(acpi_string interface_name)
 	interface_info->next = acpi_gbl_supported_interfaces;
 
 	acpi_gbl_supported_interfaces = interface_info;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -263,6 +273,7 @@ acpi_status acpi_ut_install_interface(acpi_string interface_name)
 
 acpi_status acpi_ut_remove_interface(acpi_string interface_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_interface_info *previous_interface;
 	struct acpi_interface_info *next_interface;
 
@@ -293,12 +304,17 @@ acpi_status acpi_ut_remove_interface(acpi_string interface_name)
 				 * it does not actually exist. Else, mark it invalid.
 				 */
 				if (next_interface->flags & ACPI_OSI_INVALID) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (AE_NOT_EXIST);
 				}
 
 				next_interface->flags |= ACPI_OSI_INVALID;
 			}
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -308,6 +324,7 @@ acpi_status acpi_ut_remove_interface(acpi_string interface_name)
 
 	/* Interface was not found */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_NOT_EXIST);
 }
 
@@ -328,6 +345,7 @@ acpi_status acpi_ut_remove_interface(acpi_string interface_name)
 
 acpi_status acpi_ut_update_interfaces(u8 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_interface_info *next_interface;
 
 	next_interface = acpi_gbl_supported_interfaces;
@@ -351,6 +369,7 @@ acpi_status acpi_ut_update_interfaces(u8 action)
 		next_interface = next_interface->next;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -369,17 +388,21 @@ acpi_status acpi_ut_update_interfaces(u8 action)
 
 struct acpi_interface_info *acpi_ut_get_interface(acpi_string interface_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_interface_info *next_interface;
 
 	next_interface = acpi_gbl_supported_interfaces;
 	while (next_interface) {
 		if (!strcmp(interface_name, next_interface->name)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (next_interface);
 		}
 
 		next_interface = next_interface->next;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);
 }
 
@@ -399,6 +422,7 @@ struct acpi_interface_info *acpi_ut_get_interface(acpi_string interface_name)
 
 acpi_status acpi_ut_osi_implementation(struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *string_desc;
 	union acpi_operand_object *return_desc;
 	struct acpi_interface_info *interface_info;
@@ -471,4 +495,5 @@ acpi_status acpi_ut_osi_implementation(struct acpi_walk_state * walk_state)
 	return_desc->integer.value = return_value;
 	walk_state->return_desc = return_desc;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -68,6 +68,7 @@ acpi_status
 acpi_tb_find_table(char *signature,
 		   char *oem_id, char *oem_table_id, u32 *table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_table_header header;
 	u32 i;
@@ -149,4 +150,5 @@ acpi_tb_find_table(char *signature,
 	}
 
 	return_ACPI_STATUS(AE_NOT_FOUND);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

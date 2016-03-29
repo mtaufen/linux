@@ -84,6 +84,7 @@ ACPI_MODULE_NAME("exoparg3")
  ******************************************************************************/
 acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	struct acpi_signal_fatal_info *fatal;
 	acpi_status status = AE_OK;
@@ -140,6 +141,7 @@ acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
 cleanup:
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -156,6 +158,7 @@ cleanup:
 
 acpi_status acpi_ex_opcode_3A_1T_1R(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	union acpi_operand_object *return_desc = NULL;
 	char *buffer = NULL;
@@ -281,4 +284,5 @@ cleanup:
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

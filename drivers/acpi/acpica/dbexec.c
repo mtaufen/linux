@@ -83,6 +83,7 @@ acpi_db_execution_walk(acpi_handle obj_handle,
 
 void acpi_db_delete_objects(u32 count, union acpi_object *objects)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	for (i = 0; i < count; i++) {
@@ -109,6 +110,7 @@ void acpi_db_delete_objects(u32 count, union acpi_object *objects)
 			break;
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -128,6 +130,7 @@ static acpi_status
 acpi_db_execute_method(struct acpi_db_method_info *info,
 		       struct acpi_buffer *return_obj)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_object_list param_objects;
 	union acpi_object params[ACPI_DEBUGGER_MAX_ARGS + 1];
@@ -197,6 +200,7 @@ acpi_db_execute_method(struct acpi_db_method_info *info,
 cleanup:
 	acpi_db_delete_objects(param_objects.count, params);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -213,6 +217,7 @@ cleanup:
 
 static acpi_status acpi_db_execute_setup(struct acpi_db_method_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_NAME(db_execute_setup);
@@ -250,18 +255,22 @@ static acpi_status acpi_db_execute_setup(struct acpi_db_method_info *info)
 		acpi_db_set_output_destination(ACPI_DB_REDIRECTABLE_OUTPUT);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 
 error_exit:
 
 	ACPI_EXCEPTION((AE_INFO, status, "During setup for method execution"));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
 #ifdef ACPI_DBG_TRACK_ALLOCATIONS
 u32 acpi_db_get_cache_info(struct acpi_memory_list *cache)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (cache->total_allocated - cache->total_freed -
 		cache->current_depth);
 }
@@ -283,6 +292,7 @@ u32 acpi_db_get_cache_info(struct acpi_memory_list *cache)
 
 static u32 acpi_db_get_outstanding_allocations(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 outstanding = 0;
 
 #ifdef ACPI_DBG_TRACK_ALLOCATIONS
@@ -293,6 +303,7 @@ static u32 acpi_db_get_outstanding_allocations(void)
 	outstanding += acpi_db_get_cache_info(acpi_gbl_operand_cache);
 #endif
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (outstanding);
 }
 
@@ -313,6 +324,7 @@ static acpi_status
 acpi_db_execution_walk(acpi_handle obj_handle,
 		       u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	struct acpi_namespace_node *node =
 	    (struct acpi_namespace_node *)obj_handle;
@@ -321,6 +333,7 @@ acpi_db_execution_walk(acpi_handle obj_handle,
 
 	obj_desc = acpi_ns_get_attached_object(node);
 	if (obj_desc->method.param_count) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -341,6 +354,7 @@ acpi_db_execution_walk(acpi_handle obj_handle,
 		       acpi_format_exception(status));
 
 	acpi_gbl_method_executing = FALSE;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -363,6 +377,7 @@ acpi_db_execution_walk(acpi_handle obj_handle,
 void
 acpi_db_execute(char *name, char **args, acpi_object_type * types, u32 flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_buffer return_obj;
 	char *name_string;
@@ -378,6 +393,7 @@ acpi_db_execute(char *name, char **args, acpi_object_type * types, u32 flags)
 	 */
 	if (acpi_gbl_method_executing) {
 		acpi_os_printf("Only one debugger execution is allowed.\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 #ifdef ACPI_DEBUG_OUTPUT
@@ -391,10 +407,13 @@ acpi_db_execute(char *name, char **args, acpi_object_type * types, u32 flags)
 					  ACPI_UINT32_MAX,
 					  acpi_db_execution_walk, NULL, NULL,
 					  NULL);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	} else {
 		name_string = ACPI_ALLOCATE(strlen(name) + 1);
 		if (!name_string) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -414,6 +433,8 @@ acpi_db_execute(char *name, char **args, acpi_object_type * types, u32 flags)
 		status = acpi_db_execute_setup(&acpi_gbl_db_method_info);
 		if (ACPI_FAILURE(status)) {
 			ACPI_FREE(name_string);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -484,6 +505,7 @@ acpi_db_execute(char *name, char **args, acpi_object_type * types, u32 flags)
 	}
 
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -501,6 +523,7 @@ acpi_db_execute(char *name, char **args, acpi_object_type * types, u32 flags)
 
 static void ACPI_SYSTEM_XFACE acpi_db_method_thread(void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_db_method_info *info = context;
 	struct acpi_db_method_info local_info;
@@ -589,6 +612,7 @@ static void ACPI_SYSTEM_XFACE acpi_db_method_thread(void *context)
 			     acpi_format_exception(status));
 		}
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -609,6 +633,7 @@ void
 acpi_db_create_execution_threads(char *num_threads_arg,
 				 char *num_loops_arg, char *method_name_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 num_threads;
 	u32 num_loops;
@@ -626,6 +651,7 @@ acpi_db_create_execution_threads(char *num_threads_arg,
 	if (!num_threads || !num_loops) {
 		acpi_os_printf("Bad argument: Threads %X, Loops %X\n",
 			       num_threads, num_loops);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -638,6 +664,7 @@ acpi_db_create_execution_threads(char *num_threads_arg,
 		acpi_os_printf("Could not create semaphore for "
 			       "synchronization with the main thread, %s\n",
 			       acpi_format_exception(status));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -652,6 +679,7 @@ acpi_db_create_execution_threads(char *num_threads_arg,
 			       acpi_format_exception(status));
 
 		(void)acpi_os_delete_semaphore(main_thread_gate);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -663,6 +691,7 @@ acpi_db_create_execution_threads(char *num_threads_arg,
 
 		(void)acpi_os_delete_semaphore(thread_complete_gate);
 		(void)acpi_os_delete_semaphore(main_thread_gate);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -679,6 +708,7 @@ acpi_db_create_execution_threads(char *num_threads_arg,
 		(void)acpi_os_delete_semaphore(main_thread_gate);
 		(void)acpi_os_delete_semaphore(thread_complete_gate);
 		(void)acpi_os_delete_semaphore(info_gate);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 	memset(acpi_gbl_db_method_info.threads, 0, size);
@@ -761,4 +791,5 @@ cleanup_and_exit:
 
 	acpi_os_free(acpi_gbl_db_method_info.threads);
 	acpi_gbl_db_method_info.threads = NULL;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -83,6 +83,7 @@ acpi_evaluate_object_typed(acpi_handle handle,
 			   struct acpi_buffer *return_buffer,
 			   acpi_object_type return_type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 free_buffer_on_error = FALSE;
 
@@ -148,6 +149,7 @@ acpi_evaluate_object_typed(acpi_handle handle,
 
 	return_buffer->length = 0;
 	return_ACPI_STATUS(AE_TYPE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_evaluate_object_typed)
@@ -177,6 +179,7 @@ acpi_evaluate_object(acpi_handle handle,
 		     struct acpi_object_list *external_params,
 		     struct acpi_buffer *return_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_evaluate_info *info;
 	acpi_size buffer_space_needed;
@@ -458,6 +461,7 @@ cleanup:
 
 	ACPI_FREE(info);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_evaluate_object)
@@ -484,13 +488,15 @@ ACPI_EXPORT_SYMBOL(acpi_evaluate_object)
  ******************************************************************************/
 static void acpi_ns_resolve_references(struct acpi_evaluate_info *info)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc = NULL;
 	struct acpi_namespace_node *node;
 
 	/* We are interested in reference objects only */
 
 	if ((info->return_object)->common.type != ACPI_TYPE_LOCAL_REFERENCE) {
-		return;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return;
 	}
 
 	/*
@@ -516,6 +522,7 @@ static void acpi_ns_resolve_references(struct acpi_evaluate_info *info)
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -527,6 +534,7 @@ static void acpi_ns_resolve_references(struct acpi_evaluate_info *info)
 		info->return_object = obj_desc;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -571,6 +579,7 @@ acpi_walk_namespace(acpi_object_type type,
 		    acpi_walk_callback ascending_callback,
 		    void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_walk_namespace);
@@ -627,6 +636,7 @@ unlock_and_exit2:
 unlock_and_exit:
 	(void)acpi_ut_release_read_lock(&acpi_gbl_namespace_rw_lock);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_walk_namespace)
@@ -649,6 +659,7 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 			    u32 nesting_level,
 			    void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_get_devices_info *info = context;
 	acpi_status status;
 	struct acpi_namespace_node *node;
@@ -661,16 +672,19 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	node = acpi_ns_validate_handle(obj_handle);
 	status = acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	if (!node) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -691,8 +705,12 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 	if (info->hid != NULL) {
 		status = acpi_ut_execute_HID(node, &hid);
 		if (status == AE_NOT_FOUND) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		} else if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_CTRL_DEPTH);
 		}
 
@@ -706,8 +724,12 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 			 */
 			status = acpi_ut_execute_CID(node, &cid);
 			if (status == AE_NOT_FOUND) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_OK);
 			} else if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_CTRL_DEPTH);
 			}
 
@@ -726,6 +748,8 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 
 			ACPI_FREE(cid);
 			if (!found) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_OK);
 			}
 		}
@@ -735,6 +759,7 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 
 	status = acpi_ut_execute_STA(node, &flags);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_CTRL_DEPTH);
 	}
 
@@ -745,6 +770,7 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 		 * device is neither present nor functional. See ACPI spec,
 		 * description of _STA for more information.
 		 */
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_CTRL_DEPTH);
 	}
 
@@ -752,6 +778,7 @@ acpi_ns_get_device_callback(acpi_handle obj_handle,
 
 	status = info->user_function(obj_handle, nesting_level,
 				     info->context, return_value);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -785,6 +812,7 @@ acpi_get_devices(const char *HID,
 		 acpi_walk_callback user_function,
 		 void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_get_devices_info info;
 
@@ -822,6 +850,7 @@ acpi_get_devices(const char *HID,
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_devices)
@@ -843,17 +872,20 @@ acpi_status
 acpi_attach_data(acpi_handle obj_handle,
 		 acpi_object_handler handler, void *data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
 	/* Parameter validation */
 
 	if (!obj_handle || !handler || !data) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -869,6 +901,7 @@ acpi_attach_data(acpi_handle obj_handle,
 
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -889,17 +922,20 @@ ACPI_EXPORT_SYMBOL(acpi_attach_data)
 acpi_status
 acpi_detach_data(acpi_handle obj_handle, acpi_object_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
 	/* Parameter validation */
 
 	if (!obj_handle || !handler) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -915,6 +951,7 @@ acpi_detach_data(acpi_handle obj_handle, acpi_object_handler handler)
 
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -939,17 +976,20 @@ acpi_status
 acpi_get_data_full(acpi_handle obj_handle, acpi_object_handler handler,
 		   void **data, void (*callback)(void *))
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
 	/* Parameter validation */
 
 	if (!obj_handle || !handler || !data) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -968,6 +1008,7 @@ acpi_get_data_full(acpi_handle obj_handle, acpi_object_handler handler,
 
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -989,6 +1030,8 @@ ACPI_EXPORT_SYMBOL(acpi_get_data_full)
 acpi_status
 acpi_get_data(acpi_handle obj_handle, acpi_object_handler handler, void **data)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return acpi_get_data_full(obj_handle, handler, data, NULL);
 }
 

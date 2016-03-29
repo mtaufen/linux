@@ -68,6 +68,7 @@ static void ACPI_SYSTEM_XFACE acpi_ev_notify_dispatch(void *context);
 
 u8 acpi_ev_is_notify_object(struct acpi_namespace_node *node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	switch (node->type) {
 	case ACPI_TYPE_DEVICE:
@@ -76,10 +77,12 @@ u8 acpi_ev_is_notify_object(struct acpi_namespace_node *node)
 		/*
 		 * These are the ONLY objects that can receive ACPI notifications
 		 */
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 }
@@ -102,6 +105,7 @@ acpi_status
 acpi_ev_queue_notify_request(struct acpi_namespace_node * node,
 			     u32 notify_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object *handler_list_head = NULL;
 	union acpi_generic_state *info;
@@ -113,6 +117,7 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node * node,
 	/* Are Notifies allowed on this object? */
 
 	if (!acpi_ev_is_notify_object(node)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_TYPE);
 	}
 
@@ -146,6 +151,7 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node * node,
 				  acpi_ut_get_node_name(node), notify_value,
 				  node));
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -153,6 +159,7 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node * node,
 
 	info = acpi_ut_create_generic_state();
 	if (!info) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -177,6 +184,7 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node * node,
 		acpi_ut_delete_generic_state(info);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -195,6 +203,7 @@ acpi_ev_queue_notify_request(struct acpi_namespace_node * node,
 
 static void ACPI_SYSTEM_XFACE acpi_ev_notify_dispatch(void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_generic_state *info = (union acpi_generic_state *)context;
 	union acpi_operand_object *handler_obj;
 
@@ -223,6 +232,7 @@ static void ACPI_SYSTEM_XFACE acpi_ev_notify_dispatch(void *context)
 	/* All done with the info object */
 
 	acpi_ut_delete_generic_state(info);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #if (!ACPI_REDUCED_HARDWARE)
@@ -240,6 +250,7 @@ static void ACPI_SYSTEM_XFACE acpi_ev_notify_dispatch(void *context)
 
 void acpi_ev_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	acpi_status status;
 
@@ -295,6 +306,7 @@ void acpi_ev_terminate(void)
 		}
 	}
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

@@ -61,20 +61,24 @@ ACPI_MODULE_NAME("utlock")
  ******************************************************************************/
 acpi_status acpi_ut_create_rw_lock(struct acpi_rw_lock *lock)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	lock->num_readers = 0;
 	status = acpi_os_create_mutex(&lock->reader_mutex);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	status = acpi_os_create_mutex(&lock->writer_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
 void acpi_ut_delete_rw_lock(struct acpi_rw_lock *lock)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_delete_mutex(lock->reader_mutex);
 	acpi_os_delete_mutex(lock->writer_mutex);
@@ -82,6 +86,7 @@ void acpi_ut_delete_rw_lock(struct acpi_rw_lock *lock)
 	lock->num_readers = 0;
 	lock->reader_mutex = NULL;
 	lock->writer_mutex = NULL;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -104,10 +109,12 @@ void acpi_ut_delete_rw_lock(struct acpi_rw_lock *lock)
 
 acpi_status acpi_ut_acquire_read_lock(struct acpi_rw_lock *lock)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	status = acpi_os_acquire_mutex(lock->reader_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -121,15 +128,18 @@ acpi_status acpi_ut_acquire_read_lock(struct acpi_rw_lock *lock)
 	}
 
 	acpi_os_release_mutex(lock->reader_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
 acpi_status acpi_ut_release_read_lock(struct acpi_rw_lock *lock)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	status = acpi_os_acquire_mutex(lock->reader_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -141,6 +151,7 @@ acpi_status acpi_ut_release_read_lock(struct acpi_rw_lock *lock)
 	}
 
 	acpi_os_release_mutex(lock->reader_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -162,14 +173,18 @@ acpi_status acpi_ut_release_read_lock(struct acpi_rw_lock *lock)
 
 acpi_status acpi_ut_acquire_write_lock(struct acpi_rw_lock *lock)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	status = acpi_os_acquire_mutex(lock->writer_mutex, ACPI_WAIT_FOREVER);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
 void acpi_ut_release_write_lock(struct acpi_rw_lock *lock)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_release_mutex(lock->writer_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

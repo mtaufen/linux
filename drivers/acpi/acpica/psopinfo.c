@@ -68,6 +68,7 @@ static const u8 acpi_gbl_argument_count[] =
 
 const struct acpi_opcode_info *acpi_ps_get_opcode_info(u16 opcode)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 #ifdef ACPI_DEBUG_OUTPUT
 	const char *opcode_name = "Unknown AML opcode";
 #endif
@@ -81,6 +82,7 @@ const struct acpi_opcode_info *acpi_ps_get_opcode_info(u16 opcode)
 
 		/* Simple (8-bit) opcode: 0-255, can't index beyond table  */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (&acpi_gbl_aml_op_info
 			[acpi_gbl_short_op_index[(u8)opcode]]);
 	}
@@ -90,6 +92,7 @@ const struct acpi_opcode_info *acpi_ps_get_opcode_info(u16 opcode)
 
 		/* Valid extended (16-bit) opcode */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (&acpi_gbl_aml_op_info
 			[acpi_gbl_long_op_index[(u8)opcode]]);
 	}
@@ -142,6 +145,7 @@ const struct acpi_opcode_info *acpi_ps_get_opcode_info(u16 opcode)
 
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "%s [%4.4X]\n", opcode_name, opcode));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (&acpi_gbl_aml_op_info[_UNK]);
 }
 
@@ -160,6 +164,7 @@ const struct acpi_opcode_info *acpi_ps_get_opcode_info(u16 opcode)
 
 char *acpi_ps_get_opcode_name(u16 opcode)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 #if defined(ACPI_DISASSEMBLER) || defined (ACPI_DEBUG_OUTPUT)
 
 	const struct acpi_opcode_info *op;
@@ -168,10 +173,12 @@ char *acpi_ps_get_opcode_name(u16 opcode)
 
 	/* Always guaranteed to return a valid pointer */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (op->name);
 
 #else
-	return ("OpcodeName unavailable");
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+return ("OpcodeName unavailable");
 
 #endif
 }
@@ -190,11 +197,14 @@ char *acpi_ps_get_opcode_name(u16 opcode)
 
 u8 acpi_ps_get_argument_count(u32 op_type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (op_type <= AML_TYPE_EXEC_6A_0T_1R) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (acpi_gbl_argument_count[op_type]);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (0);
 }
 

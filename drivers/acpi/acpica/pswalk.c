@@ -61,6 +61,7 @@ ACPI_MODULE_NAME("pswalk")
  ******************************************************************************/
 void acpi_ps_delete_parse_tree(union acpi_parse_object *subtree_root)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op = subtree_root;
 	union acpi_parse_object *next = NULL;
 	union acpi_parse_object *parent = NULL;
@@ -108,4 +109,5 @@ void acpi_ps_delete_parse_tree(union acpi_parse_object *subtree_root)
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -86,6 +86,7 @@ static acpi_status
 acpi_ps_get_arguments(struct acpi_walk_state *walk_state,
 		      u8 * aml_op_start, union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_parse_object *arg = NULL;
 	const struct acpi_opcode_info *op_info;
@@ -293,6 +294,7 @@ acpi_ps_get_arguments(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -316,6 +318,7 @@ static void
 acpi_ps_link_module_code(union acpi_parse_object *parent_op,
 			 u8 *aml_start, u32 aml_length, acpi_owner_id owner_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *prev;
 	union acpi_operand_object *next;
 	union acpi_operand_object *method_obj;
@@ -381,6 +384,7 @@ acpi_ps_link_module_code(union acpi_parse_object *parent_op,
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -398,6 +402,7 @@ acpi_ps_link_module_code(union acpi_parse_object *parent_op,
 
 acpi_status acpi_ps_parse_loop(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_parse_object *op = NULL;	/* current op */
 	struct acpi_parse_state *parser_state;
@@ -623,4 +628,5 @@ acpi_status acpi_ps_parse_loop(struct acpi_walk_state *walk_state)
 
 	status = acpi_ps_complete_final_op(walk_state, op, status);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

@@ -308,12 +308,14 @@ u8
 acpi_rs_get_address_common(struct acpi_resource *resource,
 			   union aml_resource *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Validate the Resource Type */
 
 	if ((aml->address.resource_type > 2) &&
 	    (aml->address.resource_type < 0xC0)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -337,6 +339,7 @@ acpi_rs_get_address_common(struct acpi_resource *resource,
 		    aml->address.specific_flags;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 
@@ -358,6 +361,7 @@ void
 acpi_rs_set_address_common(union aml_resource *aml,
 			   struct acpi_resource *resource)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/* Set the Resource Type and General Flags */
@@ -379,4 +383,5 @@ acpi_rs_set_address_common(union aml_resource *aml,
 		aml->address.specific_flags =
 		    resource->data.address.info.type_specific;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

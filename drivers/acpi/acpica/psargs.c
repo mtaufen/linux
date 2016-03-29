@@ -75,6 +75,7 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
 static u32
 acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *aml = parser_state->aml;
 	u32 package_length = 0;
 	u32 byte_count;
@@ -109,6 +110,7 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state)
 
 	package_length |= (aml[0] & byte_zero_mask);
 	return_UINT32(package_length);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -126,6 +128,7 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state)
 
 u8 *acpi_ps_get_next_package_end(struct acpi_parse_state *parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *start = parser_state->aml;
 	u32 package_length;
 
@@ -136,6 +139,7 @@ u8 *acpi_ps_get_next_package_end(struct acpi_parse_state *parser_state)
 	package_length = acpi_ps_get_next_package_length(parser_state);
 
 	return_PTR(start + package_length);	/* end of package */
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -155,6 +159,7 @@ u8 *acpi_ps_get_next_package_end(struct acpi_parse_state *parser_state)
 
 char *acpi_ps_get_next_namestring(struct acpi_parse_state *parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *start = parser_state->aml;
 	u8 *end = parser_state->aml;
 
@@ -203,6 +208,7 @@ char *acpi_ps_get_next_namestring(struct acpi_parse_state *parser_state)
 
 	parser_state->aml = end;
 	return_PTR((char *)start);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -231,6 +237,7 @@ acpi_ps_get_next_namepath(struct acpi_walk_state *walk_state,
 			  struct acpi_parse_state *parser_state,
 			  union acpi_parse_object *arg, u8 possible_method_call)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	char *path;
 	union acpi_parse_object *name_op;
@@ -371,6 +378,7 @@ acpi_ps_get_next_namepath(struct acpi_walk_state *walk_state,
 
 	arg->common.value.name = path;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -391,6 +399,7 @@ void
 acpi_ps_get_next_simple_arg(struct acpi_parse_state *parser_state,
 			    u32 arg_type, union acpi_parse_object *arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length;
 	u16 opcode;
 	u8 *aml = parser_state->aml;
@@ -467,6 +476,7 @@ acpi_ps_get_next_simple_arg(struct acpi_parse_state *parser_state,
 	acpi_ps_init_op(arg, opcode);
 	parser_state->aml += length;
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -484,6 +494,7 @@ acpi_ps_get_next_simple_arg(struct acpi_parse_state *parser_state,
 static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
 						       *parser_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 *aml;
 	union acpi_parse_object *field;
 	union acpi_parse_object *arg = NULL;
@@ -688,6 +699,7 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
 	}
 
 	return_PTR(field);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -711,6 +723,7 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
 		     struct acpi_parse_state *parser_state,
 		     u32 arg_type, union acpi_parse_object **return_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *arg = NULL;
 	union acpi_parse_object *prev = NULL;
 	union acpi_parse_object *field;
@@ -875,4 +888,5 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
 
 	*return_arg = arg;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

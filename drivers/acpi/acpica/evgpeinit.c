@@ -79,6 +79,7 @@ ACPI_MODULE_NAME("evgpeinit")
  ******************************************************************************/
 acpi_status acpi_ev_gpe_initialize(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 register_count0 = 0;
 	u32 register_count1 = 0;
 	u32 gpe_number_max = 0;
@@ -210,6 +211,7 @@ acpi_status acpi_ev_gpe_initialize(void)
 cleanup:
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -228,6 +230,7 @@ cleanup:
 
 void acpi_ev_update_gpes(acpi_owner_id table_owner_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_gpe_xrupt_info *gpe_xrupt_info;
 	struct acpi_gpe_block_info *gpe_block;
 	struct acpi_gpe_walk_info walk_info;
@@ -244,6 +247,7 @@ void acpi_ev_update_gpes(acpi_owner_id table_owner_id)
 	 */
 	status = acpi_ut_acquire_mutex(ACPI_MTX_EVENTS);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -285,6 +289,7 @@ void acpi_ev_update_gpes(acpi_owner_id table_owner_id)
 	}
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 }
 
@@ -318,6 +323,7 @@ acpi_status
 acpi_ev_match_gpe_method(acpi_handle obj_handle,
 			 u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *method_node =
 	    ACPI_CAST_PTR(struct acpi_namespace_node, obj_handle);
 	struct acpi_gpe_walk_info *walk_info =
@@ -441,6 +447,7 @@ acpi_ev_match_gpe_method(acpi_handle obj_handle,
 			  "Registered GPE method %s as GPE number 0x%.2X\n",
 			  name, gpe_number));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* !ACPI_REDUCED_HARDWARE */

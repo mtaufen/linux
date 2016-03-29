@@ -63,6 +63,7 @@ ACPI_MODULE_NAME("hwtimer")
  ******************************************************************************/
 acpi_status acpi_get_timer_resolution(u32 * resolution)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(acpi_get_timer_resolution);
 
 	if (!resolution) {
@@ -76,6 +77,7 @@ acpi_status acpi_get_timer_resolution(u32 * resolution)
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_timer_resolution)
@@ -93,6 +95,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_timer_resolution)
  ******************************************************************************/
 acpi_status acpi_get_timer(u32 * ticks)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_get_timer);
@@ -109,6 +112,7 @@ acpi_status acpi_get_timer(u32 * ticks)
 
 	status = acpi_hw_read(ticks, &acpi_gbl_FADT.xpm_timer_block);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_timer)
@@ -144,6 +148,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_timer)
 acpi_status
 acpi_get_timer_duration(u32 start_ticks, u32 end_ticks, u32 * time_elapsed)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 delta_ticks;
 	u64 quotient;
@@ -196,6 +201,7 @@ acpi_get_timer_duration(u32 start_ticks, u32 end_ticks, u32 * time_elapsed)
 
 	*time_elapsed = (u32) quotient;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_timer_duration)

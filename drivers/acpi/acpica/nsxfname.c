@@ -80,6 +80,7 @@ acpi_status
 acpi_get_handle(acpi_handle parent,
 		acpi_string pathname, acpi_handle * ret_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node = NULL;
 	struct acpi_namespace_node *prefix_node = NULL;
@@ -89,6 +90,7 @@ acpi_get_handle(acpi_handle parent,
 	/* Parameter Validation */
 
 	if (!ret_handle || !pathname) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -97,6 +99,8 @@ acpi_get_handle(acpi_handle parent,
 	if (parent) {
 		prefix_node = acpi_ns_validate_handle(parent);
 		if (!prefix_node) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_BAD_PARAMETER);
 		}
 	}
@@ -117,12 +121,15 @@ acpi_get_handle(acpi_handle parent,
 		if (!strcmp(pathname, ACPI_NS_ROOT_PATH)) {
 			*ret_handle =
 			    ACPI_CAST_PTR(acpi_handle, acpi_gbl_root_node);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 	} else if (!prefix_node) {
 
 		/* Relative path with null prefix is disallowed */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -134,6 +141,7 @@ acpi_get_handle(acpi_handle parent,
 		*ret_handle = ACPI_CAST_PTR(acpi_handle, node);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -157,6 +165,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_handle)
 acpi_status
 acpi_get_name(acpi_handle handle, u32 name_type, struct acpi_buffer * buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	const char *node_name;
@@ -164,11 +173,13 @@ acpi_get_name(acpi_handle handle, u32 name_type, struct acpi_buffer * buffer)
 	/* Parameter validation */
 
 	if (name_type > ACPI_NAME_TYPE_MAX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_validate_buffer(buffer);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -181,6 +192,7 @@ acpi_get_name(acpi_handle handle, u32 name_type, struct acpi_buffer * buffer)
 						    name_type ==
 						    ACPI_FULL_PATHNAME ? FALSE :
 						    TRUE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -190,6 +202,7 @@ acpi_get_name(acpi_handle handle, u32 name_type, struct acpi_buffer * buffer)
 	 */
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -216,6 +229,7 @@ acpi_get_name(acpi_handle handle, u32 name_type, struct acpi_buffer * buffer)
 unlock_and_exit:
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -238,6 +252,7 @@ static char *acpi_ns_copy_device_id(struct acpi_pnp_device_id *dest,
 				    struct acpi_pnp_device_id *source,
 				    char *string_area)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	/* Create the destination PNP_DEVICE_ID */
 
 	dest->string = string_area;
@@ -246,6 +261,7 @@ static char *acpi_ns_copy_device_id(struct acpi_pnp_device_id *dest,
 	/* Copy actual string and return a pointer to the next string area */
 
 	memcpy(string_area, source->string, source->length);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (string_area + source->length);
 }
 
@@ -280,6 +296,7 @@ acpi_status
 acpi_get_object_info(acpi_handle handle,
 		     struct acpi_device_info **return_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	struct acpi_device_info *info;
 	struct acpi_pnp_device_id_list *cid_list = NULL;
@@ -298,17 +315,20 @@ acpi_get_object_info(acpi_handle handle,
 	/* Parameter validation */
 
 	if (!handle || !return_buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	node = acpi_ns_validate_handle(handle);
 	if (!node) {
 		(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -324,6 +344,7 @@ acpi_get_object_info(acpi_handle handle,
 
 	status = acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -519,6 +540,7 @@ cleanup:
 	if (cls) {
 		ACPI_FREE(cls);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -540,6 +562,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_object_info)
  ******************************************************************************/
 acpi_status acpi_install_method(u8 *buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_header *table =
 	    ACPI_CAST_PTR(struct acpi_table_header, buffer);
 	u8 *aml_buffer;
@@ -556,6 +579,7 @@ acpi_status acpi_install_method(u8 *buffer)
 	/* Parameter validation */
 
 	if (!buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -563,6 +587,7 @@ acpi_status acpi_install_method(u8 *buffer)
 
 	if (!ACPI_COMPARE_NAME(table->signature, ACPI_SIG_DSDT) &&
 	    !ACPI_COMPARE_NAME(table->signature, ACPI_SIG_SSDT)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_HEADER);
 	}
 
@@ -571,6 +596,7 @@ acpi_status acpi_install_method(u8 *buffer)
 	parser_state.aml = buffer + sizeof(struct acpi_table_header);
 	opcode = acpi_ps_peek_opcode(&parser_state);
 	if (opcode != AML_METHOD_OP) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -590,12 +616,14 @@ acpi_status acpi_install_method(u8 *buffer)
 	 */
 	aml_buffer = ACPI_ALLOCATE(aml_length);
 	if (!aml_buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
 	method_obj = acpi_ut_create_internal_object(ACPI_TYPE_METHOD);
 	if (!method_obj) {
 		ACPI_FREE(aml_buffer);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -662,12 +690,14 @@ acpi_status acpi_install_method(u8 *buffer)
 	/* Remove local reference to the method object */
 
 	acpi_ut_remove_reference(method_obj);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 
 error_exit:
 
 	ACPI_FREE(aml_buffer);
 	ACPI_FREE(method_obj);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 ACPI_EXPORT_SYMBOL(acpi_install_method)

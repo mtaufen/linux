@@ -64,6 +64,7 @@ ACPI_MODULE_NAME("tbxfload")
  ******************************************************************************/
 acpi_status __init acpi_load_tables(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_load_tables);
@@ -84,6 +85,7 @@ acpi_status __init acpi_load_tables(void)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_load_tables)
@@ -100,8 +102,78 @@ ACPI_EXPORT_SYMBOL_INIT(acpi_load_tables)
  *              the RSDT/XSDT.
  *
  ******************************************************************************/
+
+
+static inline unsigned int _____min(unsigned int a, unsigned int b) {
+  if (a < b) {
+    return a;
+  }
+  return b;
+}
+
+
+// Rudimentary hex dumper. Misses some corner cases on
+// certain ascii values but good enough for our purposes.
+void _____hex_dump(void *mem, size_t size) {
+  // Prints 16 byte lines as space-separated hex pairs
+  int i = size;
+  int line_i = 0;
+  unsigned char *next = mem;
+  unsigned int print_ascii = 0;
+  unsigned int line_len = _____min(16, size);
+
+  while(i) {
+
+
+    if (print_ascii) {
+      if ('\a' == *next)      { printk("\\a"); }
+      else if ('\b' == *next) { printk("\\b"); }
+      else if ('\f' == *next) { printk("\\f"); }
+      else if ('\n' == *next) { printk("\\n"); }
+      else if ('\r' == *next) { printk("\\r"); }
+      else if ('\t' == *next) { printk("\\t"); }
+      else if ('\v' == *next) { printk("\\v"); }
+      else if ('\\' == *next) { printk("\\ "); }
+      else if ('\'' == *next) { printk("\' "); }
+      else if ('\"' == *next) { printk("\" "); }
+      else if ('\?' == *next) { printk("\? "); }
+      else { printk("%c ", *next); }
+    }
+    else {
+      // Print two bytes and a space
+      if (0x00 == *next) { printk("-- "); }
+      else               { printk("%02x ", *next); }
+    }
+    // Manipulate counters
+    i--;
+    line_i++;
+    next +=1;
+
+    if (line_len == line_i) { // we just printed the end of a line
+      line_i = 0;
+      if (print_ascii) { // we just printed the last ascii char of a line
+        print_ascii = 0;
+        printk("\n");
+      }
+      else { // we just printed the last hex byte of a line
+        print_ascii = 1;
+        // now we're going to print the line again, but in ascii
+        next -= line_len;
+        i += line_len;
+      }
+    }
+  }
+
+  printk("\n");
+
+}
+
+
+
+
 acpi_status acpi_tb_load_namespace(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 i;
 	struct acpi_table_header *new_dsdt;
@@ -117,7 +189,32 @@ acpi_status acpi_tb_load_namespace(void)
 	 * Load the namespace. The DSDT is required, but any SSDT and
 	 * PSDT tables are optional. Verify the DSDT.
 	 */
+
+	 // Hex dump my dsdt:
+	 // _____hex_dump(0xffffffff80000000 + 0xe01a4, 59);
+
+
+
 	table = &acpi_gbl_root_table_list.tables[acpi_gbl_dsdt_index];
+
+	printk("\n");
+	printk("acpi_gbl_root_table_list addr: %p\n", &acpi_gbl_root_table_list);
+	printk("acpi_gbl_root_table_list.tables: %p\n", acpi_gbl_root_table_list.tables);
+	printk("acpi_gbl_dsdt_index: 0x%x\n", acpi_gbl_dsdt_index);
+	printk("&acpi_gbl_root_table_list.tables[acpi_gbl_dsdt_index]: %p\n", &acpi_gbl_root_table_list.tables[acpi_gbl_dsdt_index]);
+	printk("Hex dumping acpi_gbl_root_table_list:\n");
+	_____hex_dump(&acpi_gbl_root_table_list, sizeof(struct acpi_table_list));
+
+	printk("Here are some of the other global table indices:\n");
+	printk("acpi_gbl_facs_index: 0x%x\n", acpi_gbl_facs_index);
+	printk("acpi_gbl_xfacs_index: 0x%x\n", acpi_gbl_xfacs_index);
+	printk("acpi_gbl_fadt_index: 0x%x\n", acpi_gbl_fadt_index);
+	printk("acpi_gbl_last_owner_id_index: 0x%x\n", acpi_gbl_last_owner_id_index);
+	// printk("acpi_gbl_short_op_index: 0x%x\n", acpi_gbl_short_op_index);
+	// printk("acpi_gbl_long_op_index: 0x%x\n", acpi_gbl_long_op_index);
+	// printk("acpi_gbl_next_history_index: 0x%x\n", acpi_gbl_next_history_index);
+
+	printk("JALOPI\n");
 
 	if (!acpi_gbl_root_table_list.current_table_count ||
 	    !ACPI_COMPARE_NAME(table->signature.ascii, ACPI_SIG_DSDT) ||
@@ -222,6 +319,7 @@ acpi_status acpi_tb_load_namespace(void)
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -243,6 +341,7 @@ unlock_and_exit:
 acpi_status __init
 acpi_install_table(acpi_physical_address address, u8 physical)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u8 flags;
 	u32 table_index;
@@ -259,6 +358,7 @@ acpi_install_table(acpi_physical_address address, u8 physical)
 						FALSE, FALSE, &table_index);
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_install_table)
@@ -281,6 +381,7 @@ ACPI_EXPORT_SYMBOL_INIT(acpi_install_table)
  ******************************************************************************/
 acpi_status acpi_load_table(struct acpi_table_header *table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 table_index;
 
@@ -336,6 +437,7 @@ acpi_status acpi_load_table(struct acpi_table_header *table)
 unlock_and_exit:
 	(void)acpi_ut_release_mutex(ACPI_MTX_INTERPRETER);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_load_table)
@@ -357,6 +459,7 @@ ACPI_EXPORT_SYMBOL(acpi_load_table)
  ******************************************************************************/
 acpi_status acpi_unload_parent_table(acpi_handle object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    ACPI_CAST_PTR(struct acpi_namespace_node, object);
 	acpi_status status = AE_NOT_EXIST;
@@ -444,6 +547,7 @@ acpi_status acpi_unload_parent_table(acpi_handle object)
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_INTERPRETER);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_unload_parent_table)

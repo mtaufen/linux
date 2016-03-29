@@ -70,6 +70,7 @@ ACPI_MODULE_NAME("utxferror")
 void ACPI_INTERNAL_VAR_XFACE
 acpi_error(const char *module_name, u32 line_number, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list arg_list;
 
 	ACPI_MSG_REDIRECT_BEGIN;
@@ -81,6 +82,7 @@ acpi_error(const char *module_name, u32 line_number, const char *format, ...)
 	va_end(arg_list);
 
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_error)
@@ -144,6 +146,7 @@ ACPI_EXPORT_SYMBOL(acpi_exception)
 void ACPI_INTERNAL_VAR_XFACE
 acpi_warning(const char *module_name, u32 line_number, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list arg_list;
 
 	ACPI_MSG_REDIRECT_BEGIN;
@@ -155,6 +158,7 @@ acpi_warning(const char *module_name, u32 line_number, const char *format, ...)
 	va_end(arg_list);
 
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_warning)
@@ -178,6 +182,7 @@ ACPI_EXPORT_SYMBOL(acpi_warning)
 void ACPI_INTERNAL_VAR_XFACE
 acpi_info(const char *module_name, u32 line_number, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list arg_list;
 
 	ACPI_MSG_REDIRECT_BEGIN;
@@ -189,6 +194,7 @@ acpi_info(const char *module_name, u32 line_number, const char *format, ...)
 	va_end(arg_list);
 
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_info)
@@ -211,6 +217,7 @@ void ACPI_INTERNAL_VAR_XFACE
 acpi_bios_error(const char *module_name,
 		u32 line_number, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list arg_list;
 
 	ACPI_MSG_REDIRECT_BEGIN;
@@ -222,6 +229,7 @@ acpi_bios_error(const char *module_name,
 	va_end(arg_list);
 
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_bios_error)
@@ -244,6 +252,7 @@ void ACPI_INTERNAL_VAR_XFACE
 acpi_bios_warning(const char *module_name,
 		  u32 line_number, const char *format, ...)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	va_list arg_list;
 
 	ACPI_MSG_REDIRECT_BEGIN;
@@ -255,6 +264,7 @@ acpi_bios_warning(const char *module_name,
 	va_end(arg_list);
 
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_bios_warning)

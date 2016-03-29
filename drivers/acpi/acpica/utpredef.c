@@ -78,6 +78,7 @@ const union acpi_predefined_info *acpi_ut_get_next_predefined_method(const union
 								     acpi_predefined_info
 								     *this_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/*
 	 * Skip next entry in the table if this name returns a Package
@@ -89,6 +90,7 @@ const union acpi_predefined_info *acpi_ut_get_next_predefined_method(const union
 	}
 
 	this_name++;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (this_name);
 }
 
@@ -106,11 +108,13 @@ const union acpi_predefined_info *acpi_ut_get_next_predefined_method(const union
 
 const union acpi_predefined_info *acpi_ut_match_predefined_method(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const union acpi_predefined_info *this_name;
 
 	/* Quick check for a predefined name, first character must be underscore */
 
 	if (name[0] != '_') {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -119,12 +123,15 @@ const union acpi_predefined_info *acpi_ut_match_predefined_method(char *name)
 	this_name = acpi_gbl_predefined_methods;
 	while (this_name->info.name[0]) {
 		if (ACPI_COMPARE_NAME(name, this_name->info.name)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (this_name);
 		}
 
 		this_name = acpi_ut_get_next_predefined_method(this_name);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);		/* Not found */
 }
 
@@ -143,12 +150,14 @@ const union acpi_predefined_info *acpi_ut_match_predefined_method(char *name)
 
 void acpi_ut_get_expected_return_types(char *buffer, u32 expected_btypes)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 this_rtype;
 	u32 i;
 	u32 j;
 
 	if (!expected_btypes) {
 		strcpy(buffer, "NONE");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -167,6 +176,7 @@ void acpi_ut_get_expected_return_types(char *buffer, u32 expected_btypes)
 
 		this_rtype <<= 1;	/* Next Rtype */
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -223,6 +233,7 @@ static const char *ut_resource_type_names[] = {
 
 const union acpi_predefined_info *acpi_ut_match_resource_name(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const union acpi_predefined_info *this_name;
 
 	/*
@@ -230,6 +241,7 @@ const union acpi_predefined_info *acpi_ut_match_resource_name(char *name)
 	 * be underscore
 	 */
 	if (name[0] != '_') {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -238,12 +250,15 @@ const union acpi_predefined_info *acpi_ut_match_resource_name(char *name)
 	this_name = acpi_gbl_resource_names;
 	while (this_name->info.name[0]) {
 		if (ACPI_COMPARE_NAME(name, this_name->info.name)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (this_name);
 		}
 
 		this_name++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (NULL);		/* Not found */
 }
 
@@ -268,6 +283,7 @@ acpi_ut_display_predefined_method(char *buffer,
 				  const union acpi_predefined_info *this_name,
 				  u8 multi_line)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 arg_count;
 
 	/*
@@ -306,6 +322,7 @@ acpi_ut_display_predefined_method(char *buffer,
 	} else {
 		printf("  No return value\n");
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -325,6 +342,7 @@ acpi_ut_display_predefined_method(char *buffer,
 
 static u32 acpi_ut_get_argument_types(char *buffer, u16 argument_types)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u16 this_argument_type;
 	u16 sub_index;
 	u16 arg_count;
@@ -339,6 +357,7 @@ static u32 acpi_ut_get_argument_types(char *buffer, u16 argument_types)
 	if (arg_count > METHOD_PREDEF_ARGS_MAX) {
 		printf("**** Invalid argument count (%u) "
 		       "in predefined info structure\n", arg_count);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (arg_count);
 	}
 
@@ -352,6 +371,8 @@ static u32 acpi_ut_get_argument_types(char *buffer, u16 argument_types)
 			printf("**** Invalid argument type (%u) "
 			       "in predefined info structure\n",
 			       this_argument_type);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (arg_count);
 		}
 
@@ -360,6 +381,7 @@ static u32 acpi_ut_get_argument_types(char *buffer, u16 argument_types)
 		sub_index = 0;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (arg_count);
 }
 
@@ -378,6 +400,7 @@ static u32 acpi_ut_get_argument_types(char *buffer, u16 argument_types)
 
 u32 acpi_ut_get_resource_bit_width(char *buffer, u16 types)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u16 sub_index;
 	u32 found;
@@ -396,6 +419,7 @@ u32 acpi_ut_get_resource_bit_width(char *buffer, u16 types)
 		types >>= 1;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (found);
 }
 #endif

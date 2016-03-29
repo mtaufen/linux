@@ -90,6 +90,7 @@ union acpi_operand_object *acpi_ut_create_internal_object_dbg(const char
 							      acpi_object_type
 							      type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *object;
 	union acpi_operand_object *second_object;
 
@@ -145,6 +146,7 @@ union acpi_operand_object *acpi_ut_create_internal_object_dbg(const char
 	/* Any per-type initialization should go here */
 
 	return_PTR(object);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -161,6 +163,7 @@ union acpi_operand_object *acpi_ut_create_internal_object_dbg(const char
 
 union acpi_operand_object *acpi_ut_create_package_object(u32 count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *package_desc;
 	union acpi_operand_object **package_elements;
 
@@ -187,6 +190,7 @@ union acpi_operand_object *acpi_ut_create_package_object(u32 count)
 	package_desc->package.count = count;
 	package_desc->package.elements = package_elements;
 	return_PTR(package_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -203,6 +207,7 @@ union acpi_operand_object *acpi_ut_create_package_object(u32 count)
 
 union acpi_operand_object *acpi_ut_create_integer_object(u64 initial_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *integer_desc;
 
 	ACPI_FUNCTION_TRACE(ut_create_integer_object);
@@ -216,6 +221,7 @@ union acpi_operand_object *acpi_ut_create_integer_object(u64 initial_value)
 
 	integer_desc->integer.value = initial_value;
 	return_PTR(integer_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -232,6 +238,7 @@ union acpi_operand_object *acpi_ut_create_integer_object(u64 initial_value)
 
 union acpi_operand_object *acpi_ut_create_buffer_object(acpi_size buffer_size)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *buffer_desc;
 	u8 *buffer = NULL;
 
@@ -269,6 +276,7 @@ union acpi_operand_object *acpi_ut_create_buffer_object(acpi_size buffer_size)
 	/* Return the new buffer descriptor */
 
 	return_PTR(buffer_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -287,6 +295,7 @@ union acpi_operand_object *acpi_ut_create_buffer_object(acpi_size buffer_size)
 
 union acpi_operand_object *acpi_ut_create_string_object(acpi_size string_size)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *string_desc;
 	char *string;
 
@@ -320,6 +329,7 @@ union acpi_operand_object *acpi_ut_create_string_object(acpi_size string_size)
 	/* Return the new string descriptor */
 
 	return_PTR(string_desc);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -336,6 +346,7 @@ union acpi_operand_object *acpi_ut_create_string_object(acpi_size string_size)
 
 u8 acpi_ut_valid_internal_object(void *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_NAME(ut_valid_internal_object);
 
@@ -343,7 +354,8 @@ u8 acpi_ut_valid_internal_object(void *object)
 
 	if (!object) {
 		ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "**** Null Object Ptr\n"));
-		return (FALSE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	return (FALSE);
 	}
 
 	/* Check the descriptor type field */
@@ -353,6 +365,7 @@ u8 acpi_ut_valid_internal_object(void *object)
 
 		/* The object appears to be a valid union acpi_operand_object */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 
 	default:
@@ -363,6 +376,7 @@ u8 acpi_ut_valid_internal_object(void *object)
 		break;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (FALSE);
 }
 
@@ -384,6 +398,7 @@ u8 acpi_ut_valid_internal_object(void *object)
 void *acpi_ut_allocate_object_desc_dbg(const char *module_name,
 				       u32 line_number, u32 component_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *object;
 
 	ACPI_FUNCTION_TRACE(ut_allocate_object_desc_dbg);
@@ -404,6 +419,7 @@ void *acpi_ut_allocate_object_desc_dbg(const char *module_name,
 			  object, (u32) sizeof(union acpi_operand_object)));
 
 	return_PTR(object);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -420,6 +436,7 @@ void *acpi_ut_allocate_object_desc_dbg(const char *module_name,
 
 void acpi_ut_delete_object_desc(union acpi_operand_object *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE_PTR(ut_delete_object_desc, object);
 
 	/* Object must be of type union acpi_operand_object */
@@ -433,6 +450,7 @@ void acpi_ut_delete_object_desc(union acpi_operand_object *object)
 
 	(void)acpi_os_release_object(acpi_gbl_operand_cache, object);
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -456,6 +474,7 @@ static acpi_status
 acpi_ut_get_simple_object_size(union acpi_operand_object *internal_object,
 			       acpi_size * obj_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size length;
 	acpi_size size;
 	acpi_status status = AE_OK;
@@ -564,6 +583,7 @@ acpi_ut_get_simple_object_size(union acpi_operand_object *internal_object,
 	 */
 	*obj_length = ACPI_ROUND_UP_TO_NATIVE_WORD(length);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -583,6 +603,7 @@ acpi_ut_get_element_length(u8 object_type,
 			   union acpi_operand_object *source_object,
 			   union acpi_generic_state *state, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	struct acpi_pkg_info *info = (struct acpi_pkg_info *)context;
 	acpi_size object_space;
@@ -597,6 +618,8 @@ acpi_ut_get_element_length(u8 object_type,
 		    acpi_ut_get_simple_object_size(source_object,
 						   &object_space);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -615,9 +638,11 @@ acpi_ut_get_element_length(u8 object_type,
 
 		/* No other types allowed */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -642,6 +667,7 @@ static acpi_status
 acpi_ut_get_package_object_size(union acpi_operand_object *internal_object,
 				acpi_size * obj_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_pkg_info info;
 
@@ -671,6 +697,7 @@ acpi_ut_get_package_object_size(union acpi_operand_object *internal_object,
 
 	*obj_length = info.length;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -691,6 +718,7 @@ acpi_status
 acpi_ut_get_object_size(union acpi_operand_object *internal_object,
 			acpi_size * obj_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_ENTRY();
@@ -706,5 +734,6 @@ acpi_ut_get_object_size(union acpi_operand_object *internal_object,
 		    acpi_ut_get_simple_object_size(internal_object, obj_length);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }

@@ -69,12 +69,14 @@ ACPI_MODULE_NAME("dsutils")
  ******************************************************************************/
 void acpi_ds_clear_implicit_return(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ds_clear_implicit_return);
 
 	/*
 	 * Slack must be enabled for this feature
 	 */
 	if (!acpi_gbl_enable_interpreter_slack) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -91,6 +93,7 @@ void acpi_ds_clear_implicit_return(struct acpi_walk_state *walk_state)
 		acpi_ut_remove_reference(walk_state->implicit_return_obj);
 		walk_state->implicit_return_obj = NULL;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifndef ACPI_NO_METHOD_EXECUTION
@@ -116,6 +119,7 @@ u8
 acpi_ds_do_implicit_return(union acpi_operand_object *return_desc,
 			   struct acpi_walk_state *walk_state, u8 add_reference)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ds_do_implicit_return);
 
 	/*
@@ -123,6 +127,7 @@ acpi_ds_do_implicit_return(union acpi_operand_object *return_desc,
 	 * have a valid return object
 	 */
 	if ((!acpi_gbl_enable_interpreter_slack) || (!return_desc)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -138,6 +143,8 @@ acpi_ds_do_implicit_return(union acpi_operand_object *return_desc,
 	 */
 	if (walk_state->implicit_return_obj) {
 		if (walk_state->implicit_return_obj == return_desc) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (TRUE);
 		}
 		acpi_ds_clear_implicit_return(walk_state);
@@ -150,6 +157,7 @@ acpi_ds_do_implicit_return(union acpi_operand_object *return_desc,
 		acpi_ut_add_reference(return_desc);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 
@@ -170,6 +178,7 @@ u8
 acpi_ds_is_result_used(union acpi_parse_object * op,
 		       struct acpi_walk_state * walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_opcode_info *parent_info;
 
 	ACPI_FUNCTION_TRACE_PTR(ds_is_result_used, op);
@@ -316,6 +325,7 @@ result_not_used:
 						  aml_opcode), op));
 
 	return_UINT8(FALSE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -340,6 +350,7 @@ acpi_ds_delete_result_if_not_used(union acpi_parse_object *op,
 				  union acpi_operand_object *result_obj,
 				  struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 
@@ -365,6 +376,7 @@ acpi_ds_delete_result_if_not_used(union acpi_parse_object *op,
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -383,6 +395,7 @@ acpi_ds_delete_result_if_not_used(union acpi_parse_object *op,
 
 acpi_status acpi_ds_resolve_operands(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	acpi_status status = AE_OK;
 
@@ -403,6 +416,7 @@ acpi_status acpi_ds_resolve_operands(struct acpi_walk_state *walk_state)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -419,6 +433,7 @@ acpi_status acpi_ds_resolve_operands(struct acpi_walk_state *walk_state)
 
 void acpi_ds_clear_operands(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	ACPI_FUNCTION_TRACE_PTR(ds_clear_operands, walk_state);
@@ -436,6 +451,7 @@ void acpi_ds_clear_operands(struct acpi_walk_state *walk_state)
 
 	walk_state->num_operands = 0;
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif
 
@@ -460,6 +476,7 @@ acpi_status
 acpi_ds_create_operand(struct acpi_walk_state *walk_state,
 		       union acpi_parse_object *arg, u32 arg_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	char *name_string;
 	u32 name_length;
@@ -689,6 +706,7 @@ acpi_ds_create_operand(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -710,6 +728,7 @@ acpi_status
 acpi_ds_create_operands(struct acpi_walk_state *walk_state,
 			union acpi_parse_object *first_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_parse_object *arg;
 	union acpi_parse_object *arguments[ACPI_OBJ_NUM_OPERANDS];
@@ -771,6 +790,7 @@ cleanup:
 
 	ACPI_EXCEPTION((AE_INFO, status, "While creating Arg %u", index));
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*****************************************************************************
@@ -791,6 +811,7 @@ cleanup:
 
 acpi_status acpi_ds_evaluate_name_path(struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_parse_object *op = walk_state->op;
 	union acpi_operand_object **operand = &walk_state->operands[0];
@@ -875,4 +896,5 @@ push_result:
 exit:
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

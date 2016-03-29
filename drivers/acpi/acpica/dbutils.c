@@ -75,21 +75,26 @@ acpi_object_type
 acpi_db_match_argument(char *user_argument,
 		       struct acpi_db_argument_info *arguments)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (!user_argument || user_argument[0] == 0) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (ACPI_TYPE_NOT_FOUND);
 	}
 
 	for (i = 0; arguments[i].name; i++) {
 		if (strstr(arguments[i].name, user_argument) ==
 		    arguments[i].name) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (i);
 		}
 	}
 
 	/* Argument not recognized */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (ACPI_TYPE_NOT_FOUND);
 }
 
@@ -108,6 +113,7 @@ acpi_db_match_argument(char *user_argument,
 
 void acpi_db_set_output_destination(u32 output_flags)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_gbl_db_output_flags = (u8)output_flags;
 
@@ -117,6 +123,7 @@ void acpi_db_set_output_destination(u32 output_flags)
 	} else {
 		acpi_dbg_level = acpi_gbl_db_console_debug_level;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -134,10 +141,12 @@ void acpi_db_set_output_destination(u32 output_flags)
 
 void acpi_db_dump_external_object(union acpi_object *obj_desc, u32 level)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	if (!obj_desc) {
 		acpi_os_printf("[Null Object]\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -217,6 +226,7 @@ void acpi_db_dump_external_object(union acpi_object *obj_desc, u32 level)
 		acpi_os_printf("[Unknown Type] %X\n", obj_desc->type);
 		break;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -233,8 +243,10 @@ void acpi_db_dump_external_object(union acpi_object *obj_desc, u32 level)
 
 void acpi_db_prep_namestring(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!name) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -261,6 +273,7 @@ void acpi_db_prep_namestring(char *name)
 
 		name++;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -280,6 +293,7 @@ void acpi_db_prep_namestring(char *name)
 
 struct acpi_namespace_node *acpi_db_local_ns_lookup(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char *internal_path;
 	acpi_status status;
 	struct acpi_namespace_node *node = NULL;
@@ -291,6 +305,7 @@ struct acpi_namespace_node *acpi_db_local_ns_lookup(char *name)
 	status = acpi_ns_internalize_name(name, &internal_path);
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Invalid namestring: %s\n", name);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -308,6 +323,7 @@ struct acpi_namespace_node *acpi_db_local_ns_lookup(char *name)
 	}
 
 	ACPI_FREE(internal_path);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (node);
 }
 
@@ -329,10 +345,12 @@ struct acpi_namespace_node *acpi_db_local_ns_lookup(char *name)
 
 void acpi_db_uint32_to_hex_string(u32 value, char *buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	int i;
 
 	if (value == 0) {
 		strcpy(buffer, "0");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -342,6 +360,7 @@ void acpi_db_uint32_to_hex_string(u32 value, char *buffer)
 		buffer[i] = gbl_hex_to_ascii[value & 0x0F];
 		value = value >> 4;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #ifdef ACPI_OBSOLETE_FUNCTIONS
@@ -360,6 +379,7 @@ void acpi_db_uint32_to_hex_string(u32 value, char *buffer)
 
 acpi_status acpi_db_second_pass_parse(union acpi_parse_object *root)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op = root;
 	union acpi_parse_object *method;
 	union acpi_parse_object *search_op;
@@ -381,6 +401,8 @@ acpi_status acpi_db_second_pass_parse(union acpi_parse_object *root)
 			walk_state =
 			    acpi_ds_create_walk_state(0, NULL, NULL, NULL);
 			if (!walk_state) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_NO_MEMORY);
 			}
 
@@ -431,6 +453,7 @@ acpi_status acpi_db_second_pass_parse(union acpi_parse_object *root)
 		op = acpi_ps_get_depth_next(root, op);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -448,11 +471,13 @@ acpi_status acpi_db_second_pass_parse(union acpi_parse_object *root)
 
 void acpi_db_dump_buffer(u32 address)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_os_printf("\nLocation %X:\n", address);
 
 	acpi_dbg_level |= ACPI_LV_TABLES;
 	acpi_ut_debug_dump_buffer(ACPI_TO_POINTER(address), 64, DB_BYTE_DISPLAY,
 				  ACPI_UINT32_MAX);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif

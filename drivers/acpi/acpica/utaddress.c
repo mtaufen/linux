@@ -76,6 +76,7 @@ acpi_ut_add_address_range(acpi_adr_space_type space_id,
 			  acpi_physical_address address,
 			  u32 length, struct acpi_namespace_node *region_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_address_range *range_info;
 	acpi_status status;
 
@@ -114,6 +115,7 @@ acpi_ut_add_address_range(acpi_adr_space_type space_id,
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -137,6 +139,7 @@ void
 acpi_ut_remove_address_range(acpi_adr_space_type space_id,
 			     struct acpi_namespace_node *region_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_address_range *range_info;
 	struct acpi_address_range *prev;
 
@@ -177,6 +180,7 @@ acpi_ut_remove_address_range(acpi_adr_space_type space_id,
 	}
 
 	return_VOID;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -203,6 +207,7 @@ u32
 acpi_ut_check_address_range(acpi_adr_space_type space_id,
 			    acpi_physical_address address, u32 length, u8 warn)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_address_range *range_info;
 	acpi_physical_address end_address;
 	char *pathname;
@@ -261,6 +266,7 @@ acpi_ut_check_address_range(acpi_adr_space_type space_id,
 	}
 
 	return_UINT32(overlap_count);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -278,6 +284,7 @@ acpi_ut_check_address_range(acpi_adr_space_type space_id,
 
 void acpi_ut_delete_address_lists(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_address_range *next;
 	struct acpi_address_range *range_info;
 	int i;
@@ -295,4 +302,5 @@ void acpi_ut_delete_address_lists(void)
 
 		acpi_gbl_address_range_list[i] = NULL;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

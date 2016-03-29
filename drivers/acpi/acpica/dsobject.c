@@ -79,6 +79,7 @@ acpi_ds_build_internal_object(struct acpi_walk_state *walk_state,
 			      union acpi_parse_object *op,
 			      union acpi_operand_object **obj_desc_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 	acpi_object_type type;
@@ -243,6 +244,7 @@ acpi_ds_build_internal_object(struct acpi_walk_state *walk_state,
 exit:
 	*obj_desc_ptr = obj_desc;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -267,6 +269,7 @@ acpi_ds_build_internal_buffer_obj(struct acpi_walk_state *walk_state,
 				  u32 buffer_length,
 				  union acpi_operand_object **obj_desc_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *arg;
 	union acpi_operand_object *obj_desc;
 	union acpi_parse_object *byte_list;
@@ -306,6 +309,8 @@ acpi_ds_build_internal_buffer_obj(struct acpi_walk_state *walk_state,
 				    byte_list->common.aml_opcode, byte_list));
 
 			acpi_ut_remove_reference(obj_desc);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_TYPE);
 		}
 
@@ -347,6 +352,7 @@ acpi_ds_build_internal_buffer_obj(struct acpi_walk_state *walk_state,
 	obj_desc->buffer.flags |= AOPOBJ_DATA_VALID;
 	op->common.node = ACPI_CAST_PTR(struct acpi_namespace_node, obj_desc);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -384,6 +390,7 @@ acpi_ds_build_internal_package_obj(struct acpi_walk_state *walk_state,
 				   u32 element_count,
 				   union acpi_operand_object **obj_desc_ptr)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *arg;
 	union acpi_parse_object *parent;
 	union acpi_operand_object *obj_desc = NULL;
@@ -542,6 +549,7 @@ acpi_ds_build_internal_package_obj(struct acpi_walk_state *walk_state,
 	obj_desc->package.flags |= AOPOBJ_DATA_VALID;
 	op->common.node = ACPI_CAST_PTR(struct acpi_namespace_node, obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -563,6 +571,7 @@ acpi_ds_create_node(struct acpi_walk_state *walk_state,
 		    struct acpi_namespace_node *node,
 		    union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object *obj_desc;
 
@@ -605,6 +614,7 @@ acpi_ds_create_node(struct acpi_walk_state *walk_state,
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* ACPI_NO_METHOD_EXECUTION */
@@ -632,6 +642,7 @@ acpi_ds_init_object_from_op(struct acpi_walk_state *walk_state,
 			    u16 opcode,
 			    union acpi_operand_object **ret_obj_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	const struct acpi_opcode_info *op_info;
 	union acpi_operand_object *obj_desc;
 	acpi_status status = AE_OK;
@@ -849,4 +860,5 @@ acpi_ds_init_object_from_op(struct acpi_walk_state *walk_state,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

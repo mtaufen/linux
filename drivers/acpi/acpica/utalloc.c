@@ -64,6 +64,7 @@ ACPI_MODULE_NAME("utalloc")
  ******************************************************************************/
 void *acpi_os_allocate_zeroed(acpi_size size)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *allocation;
 
 	ACPI_FUNCTION_ENTRY();
@@ -76,6 +77,7 @@ void *acpi_os_allocate_zeroed(acpi_size size)
 		memset(allocation, 0, size);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (allocation);
 }
 
@@ -95,6 +97,7 @@ void *acpi_os_allocate_zeroed(acpi_size size)
 
 acpi_status acpi_ut_create_caches(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	/* Object Caches, for frequently used objects */
@@ -105,6 +108,7 @@ acpi_status acpi_ut_create_caches(void)
 				 ACPI_MAX_NAMESPACE_CACHE_DEPTH,
 				 &acpi_gbl_namespace_cache);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -113,6 +117,7 @@ acpi_status acpi_ut_create_caches(void)
 				 ACPI_MAX_STATE_CACHE_DEPTH,
 				 &acpi_gbl_state_cache);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -122,6 +127,7 @@ acpi_status acpi_ut_create_caches(void)
 				 ACPI_MAX_PARSE_CACHE_DEPTH,
 				 &acpi_gbl_ps_node_cache);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -131,6 +137,7 @@ acpi_status acpi_ut_create_caches(void)
 				 ACPI_MAX_EXTPARSE_CACHE_DEPTH,
 				 &acpi_gbl_ps_node_ext_cache);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -140,6 +147,7 @@ acpi_status acpi_ut_create_caches(void)
 				 ACPI_MAX_OBJECT_CACHE_DEPTH,
 				 &acpi_gbl_operand_cache);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 #ifdef ACPI_DBG_TRACK_ALLOCATIONS
@@ -148,6 +156,7 @@ acpi_status acpi_ut_create_caches(void)
 
 	status = acpi_ut_create_list("Acpi-Global", 0, &acpi_gbl_global_list);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -156,10 +165,12 @@ acpi_status acpi_ut_create_caches(void)
 				sizeof(struct acpi_namespace_node),
 				&acpi_gbl_ns_node_list);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 #endif
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -177,6 +188,7 @@ acpi_status acpi_ut_create_caches(void)
 
 acpi_status acpi_ut_delete_caches(void)
 {
+printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 #ifdef ACPI_DBG_TRACK_ALLOCATIONS
 	char buffer[7];
 
@@ -216,6 +228,7 @@ acpi_status acpi_ut_delete_caches(void)
 	acpi_gbl_ns_node_list = NULL;
 #endif
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -233,10 +246,12 @@ acpi_status acpi_ut_delete_caches(void)
 
 acpi_status acpi_ut_validate_buffer(struct acpi_buffer * buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Obviously, the structure pointer must be valid */
 
 	if (!buffer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -245,15 +260,18 @@ acpi_status acpi_ut_validate_buffer(struct acpi_buffer * buffer)
 	if ((buffer->length == ACPI_NO_BUFFER) ||
 	    (buffer->length == ACPI_ALLOCATE_BUFFER) ||
 	    (buffer->length == ACPI_ALLOCATE_LOCAL_BUFFER)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	/* Length is valid, the buffer pointer must be also */
 
 	if (!buffer->pointer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -275,11 +293,13 @@ acpi_status
 acpi_ut_initialize_buffer(struct acpi_buffer * buffer,
 			  acpi_size required_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size input_buffer_length;
 
 	/* Parameter validation */
 
 	if (!buffer || !required_length) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -299,6 +319,7 @@ acpi_ut_initialize_buffer(struct acpi_buffer * buffer,
 
 		/* Return the exception (and the required buffer length) */
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BUFFER_OVERFLOW);
 
 	case ACPI_ALLOCATE_BUFFER:
@@ -324,6 +345,8 @@ acpi_ut_initialize_buffer(struct acpi_buffer * buffer,
 		/* Existing buffer: Validate the size of the buffer */
 
 		if (input_buffer_length < required_length) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_BUFFER_OVERFLOW);
 		}
 		break;
@@ -332,11 +355,13 @@ acpi_ut_initialize_buffer(struct acpi_buffer * buffer,
 	/* Validate allocation from above or input buffer pointer */
 
 	if (!buffer->pointer) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
 	/* Have a valid buffer, clear it */
 
 	memset(buffer->pointer, 0, required_length);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

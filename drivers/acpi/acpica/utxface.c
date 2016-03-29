@@ -63,6 +63,7 @@ ACPI_MODULE_NAME("utxface")
  ******************************************************************************/
 acpi_status __init acpi_terminate(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_terminate);
@@ -79,6 +80,7 @@ acpi_status __init acpi_terminate(void)
 
 	status = acpi_os_terminate();
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_terminate)
@@ -100,10 +102,13 @@ ACPI_EXPORT_SYMBOL_INIT(acpi_terminate)
  ******************************************************************************/
 acpi_status acpi_subsystem_status(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (acpi_gbl_startup_flags & ACPI_INITIALIZED_OK) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	} else {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_ERROR);
 	}
 }
@@ -129,6 +134,7 @@ ACPI_EXPORT_SYMBOL(acpi_subsystem_status)
  ******************************************************************************/
 acpi_status acpi_get_system_info(struct acpi_buffer * out_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_system_info *info_ptr;
 	acpi_status status;
 
@@ -179,6 +185,7 @@ acpi_status acpi_get_system_info(struct acpi_buffer * out_buffer)
 	info_ptr->debug_level = acpi_dbg_level;
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_system_info)
@@ -196,6 +203,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_system_info)
  ******************************************************************************/
 acpi_status acpi_get_statistics(struct acpi_statistics *stats)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(acpi_get_statistics);
 
 	/* Parameter validation */
@@ -216,6 +224,7 @@ acpi_status acpi_get_statistics(struct acpi_statistics *stats)
 
 	stats->method_count = acpi_method_count;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_statistics)
@@ -237,16 +246,20 @@ ACPI_EXPORT_SYMBOL(acpi_get_statistics)
 acpi_status
 acpi_install_initialization_handler(acpi_init_handler handler, u32 function)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	if (!handler) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	if (acpi_gbl_init_handler) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_ALREADY_EXISTS);
 	}
 
 	acpi_gbl_init_handler = handler;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -266,6 +279,7 @@ ACPI_EXPORT_SYMBOL(acpi_install_initialization_handler)
  ****************************************************************************/
 acpi_status acpi_purge_cached_objects(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_TRACE(acpi_purge_cached_objects);
 
 	(void)acpi_os_purge_cache(acpi_gbl_state_cache);
@@ -274,6 +288,7 @@ acpi_status acpi_purge_cached_objects(void)
 	(void)acpi_os_purge_cache(acpi_gbl_ps_node_ext_cache);
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_purge_cached_objects)
@@ -291,17 +306,20 @@ ACPI_EXPORT_SYMBOL(acpi_purge_cached_objects)
  ****************************************************************************/
 acpi_status acpi_install_interface(acpi_string interface_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_interface_info *interface_info;
 
 	/* Parameter validation */
 
 	if (!interface_name || (strlen(interface_name) == 0)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_os_acquire_mutex(acpi_gbl_osi_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -326,6 +344,7 @@ acpi_status acpi_install_interface(acpi_string interface_name)
 	}
 
 	acpi_os_release_mutex(acpi_gbl_osi_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -344,22 +363,26 @@ ACPI_EXPORT_SYMBOL(acpi_install_interface)
  ****************************************************************************/
 acpi_status acpi_remove_interface(acpi_string interface_name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	/* Parameter validation */
 
 	if (!interface_name || (strlen(interface_name) == 0)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_os_acquire_mutex(acpi_gbl_osi_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	status = acpi_ut_remove_interface(interface_name);
 
 	acpi_os_release_mutex(acpi_gbl_osi_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -381,10 +404,12 @@ ACPI_EXPORT_SYMBOL(acpi_remove_interface)
  ****************************************************************************/
 acpi_status acpi_install_interface_handler(acpi_interface_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	status = acpi_os_acquire_mutex(acpi_gbl_osi_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -395,6 +420,7 @@ acpi_status acpi_install_interface_handler(acpi_interface_handler handler)
 	}
 
 	acpi_os_release_mutex(acpi_gbl_osi_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -415,16 +441,19 @@ ACPI_EXPORT_SYMBOL(acpi_install_interface_handler)
  ****************************************************************************/
 acpi_status acpi_update_interfaces(u8 action)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	status = acpi_os_acquire_mutex(acpi_gbl_osi_mutex, ACPI_WAIT_FOREVER);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	status = acpi_ut_update_interfaces(action);
 
 	acpi_os_release_mutex(acpi_gbl_osi_mutex);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -449,11 +478,13 @@ acpi_check_address_range(acpi_adr_space_type space_id,
 			 acpi_physical_address address,
 			 acpi_size length, u8 warn)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 overlaps;
 	acpi_status status;
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (0);
 	}
 
@@ -461,6 +492,7 @@ acpi_check_address_range(acpi_adr_space_type space_id,
 					       (u32)length, warn);
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (overlaps);
 }
 
@@ -485,6 +517,7 @@ acpi_status
 acpi_decode_pld_buffer(u8 *in_buffer,
 		       acpi_size length, struct acpi_pld_info ** return_buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_pld_info *pld_info;
 	u32 *buffer = ACPI_CAST_PTR(u32, in_buffer);
 	u32 dword;
@@ -493,11 +526,13 @@ acpi_decode_pld_buffer(u8 *in_buffer,
 
 	if (!in_buffer || !return_buffer
 	    || (length < ACPI_PLD_REV1_BUFFER_SIZE)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	pld_info = ACPI_ALLOCATE_ZEROED(sizeof(struct acpi_pld_info));
 	if (!pld_info) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -552,6 +587,7 @@ acpi_decode_pld_buffer(u8 *in_buffer,
 	}
 
 	*return_buffer = pld_info;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 

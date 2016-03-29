@@ -68,6 +68,7 @@ acpi_ns_one_complete_parse(u32 pass_number,
 			   u32 table_index,
 			   struct acpi_namespace_node *start_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *parse_root;
 	acpi_status status;
 	u32 aml_length;
@@ -148,6 +149,7 @@ acpi_ns_one_complete_parse(u32 pass_number,
 cleanup:
 	acpi_ps_delete_parse_tree(parse_root);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -166,6 +168,7 @@ cleanup:
 acpi_status
 acpi_ns_parse_table(u32 table_index, struct acpi_namespace_node *start_node)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(ns_parse_table);
@@ -205,4 +208,5 @@ acpi_ns_parse_table(u32 table_index, struct acpi_namespace_node *start_node)
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

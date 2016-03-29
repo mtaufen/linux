@@ -65,10 +65,12 @@ ACPI_MODULE_NAME("tbxface")
  ******************************************************************************/
 acpi_status acpi_allocate_root_table(u32 initial_table_count)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_gbl_root_table_list.max_table_count = initial_table_count;
 	acpi_gbl_root_table_list.flags = ACPI_ROOT_ALLOW_RESIZE;
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (acpi_tb_resize_root_table_list());
 }
 
@@ -102,6 +104,7 @@ acpi_status __init
 acpi_initialize_tables(struct acpi_table_desc * initial_table_array,
 		       u32 initial_table_count, u8 allow_resize)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_physical_address rsdp_address;
 	acpi_status status;
 
@@ -146,6 +149,7 @@ acpi_initialize_tables(struct acpi_table_desc * initial_table_array,
 	 */
 	status = acpi_tb_parse_root_table(rsdp_address);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_initialize_tables)
@@ -166,6 +170,7 @@ ACPI_EXPORT_SYMBOL_INIT(acpi_initialize_tables)
  ******************************************************************************/
 acpi_status __init acpi_reallocate_root_table(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_reallocate_root_table);
@@ -182,6 +187,7 @@ acpi_status __init acpi_reallocate_root_table(void)
 
 	status = acpi_tb_resize_root_table_list();
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL_INIT(acpi_reallocate_root_table)
@@ -206,6 +212,7 @@ acpi_status
 acpi_get_table_header(char *signature,
 		      u32 instance, struct acpi_table_header *out_table_header)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 j;
 	struct acpi_table_header *header;
@@ -213,6 +220,7 @@ acpi_get_table_header(char *signature,
 	/* Parameter validation */
 
 	if (!signature || !out_table_header) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -240,6 +248,9 @@ acpi_get_table_header(char *signature,
 						       sizeof(struct
 							      acpi_table_header));
 				if (!header) {
+					printk("exit %s at %s:%d\n",
+					       __FUNCTION__, __FILE__,
+					       __LINE__);
 					return (AE_NO_MEMORY);
 				}
 
@@ -249,6 +260,8 @@ acpi_get_table_header(char *signature,
 						     sizeof(struct
 							    acpi_table_header));
 			} else {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_NOT_FOUND);
 			}
 		} else {
@@ -256,9 +269,11 @@ acpi_get_table_header(char *signature,
 			       acpi_gbl_root_table_list.tables[i].pointer,
 			       sizeof(struct acpi_table_header));
 		}
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_NOT_FOUND);
 }
 
@@ -283,6 +298,7 @@ acpi_get_table_with_size(char *signature,
 	       u32 instance, struct acpi_table_header **out_table,
 	       acpi_size *tbl_size)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 	u32 j;
 	acpi_status status;
@@ -290,6 +306,7 @@ acpi_get_table_with_size(char *signature,
 	/* Parameter validation */
 
 	if (!signature || !out_table) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -318,9 +335,11 @@ acpi_get_table_with_size(char *signature,
 			acpi_gbl_root_table_list.tables[i].pointer = NULL;
 		}
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_NOT_FOUND);
 }
 
@@ -330,8 +349,10 @@ acpi_status
 acpi_get_table(char *signature,
 	       u32 instance, struct acpi_table_header **out_table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size tbl_size;
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return acpi_get_table_with_size(signature,
 		       instance, out_table, &tbl_size);
 }
@@ -354,6 +375,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_table)
 acpi_status
 acpi_get_table_by_index(u32 table_index, struct acpi_table_header ** table)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_get_table_by_index);
@@ -389,6 +411,7 @@ acpi_get_table_by_index(u32 table_index, struct acpi_table_header ** table)
 	*table = acpi_gbl_root_table_list.tables[table_index].pointer;
 	(void)acpi_ut_release_mutex(ACPI_MTX_TABLES);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_get_table_by_index)
@@ -408,6 +431,7 @@ ACPI_EXPORT_SYMBOL(acpi_get_table_by_index)
 acpi_status
 acpi_install_table_handler(acpi_table_handler handler, void *context)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_install_table_handler);
@@ -436,6 +460,7 @@ acpi_install_table_handler(acpi_table_handler handler, void *context)
 cleanup:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_install_table_handler)
@@ -454,6 +479,7 @@ ACPI_EXPORT_SYMBOL(acpi_install_table_handler)
  ******************************************************************************/
 acpi_status acpi_remove_table_handler(acpi_table_handler handler)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(acpi_remove_table_handler);
@@ -477,6 +503,7 @@ acpi_status acpi_remove_table_handler(acpi_table_handler handler)
 cleanup:
 	(void)acpi_ut_release_mutex(ACPI_MTX_EVENTS);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 ACPI_EXPORT_SYMBOL(acpi_remove_table_handler)

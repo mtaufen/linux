@@ -68,6 +68,7 @@ acpi_status
 acpi_ns_convert_to_integer(union acpi_operand_object *original_object,
 			   union acpi_operand_object **return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *new_object;
 	acpi_status status;
 	u64 value = 0;
@@ -81,6 +82,8 @@ acpi_ns_convert_to_integer(union acpi_operand_object *original_object,
 		status = acpi_ut_strtoul64(original_object->string.pointer,
 					   ACPI_ANY_BASE, &value);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		break;
@@ -90,6 +93,8 @@ acpi_ns_convert_to_integer(union acpi_operand_object *original_object,
 		/* Buffer-to-Integer conversion. Max buffer size is 64 bits. */
 
 		if (original_object->buffer.length > 8) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_OPERAND_TYPE);
 		}
 
@@ -104,15 +109,18 @@ acpi_ns_convert_to_integer(union acpi_operand_object *original_object,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
 	new_object = acpi_ut_create_integer_object(value);
 	if (!new_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
 	*return_object = new_object;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -133,6 +141,7 @@ acpi_status
 acpi_ns_convert_to_string(union acpi_operand_object *original_object,
 			  union acpi_operand_object **return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *new_object;
 	acpi_size length;
 	acpi_status status;
@@ -150,6 +159,8 @@ acpi_ns_convert_to_string(union acpi_operand_object *original_object,
 
 			new_object = acpi_ut_create_string_object(0);
 			if (!new_object) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_NO_MEMORY);
 			}
 		} else {
@@ -157,6 +168,8 @@ acpi_ns_convert_to_string(union acpi_operand_object *original_object,
 							   &new_object,
 							   ACPI_IMPLICIT_CONVERT_HEX);
 			if (ACPI_FAILURE(status)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (status);
 			}
 		}
@@ -179,6 +192,8 @@ acpi_ns_convert_to_string(union acpi_operand_object *original_object,
 
 		new_object = acpi_ut_create_string_object(length);
 		if (!new_object) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -192,10 +207,12 @@ acpi_ns_convert_to_string(union acpi_operand_object *original_object,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
 	*return_object = new_object;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -216,6 +233,7 @@ acpi_status
 acpi_ns_convert_to_buffer(union acpi_operand_object *original_object,
 			  union acpi_operand_object **return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *new_object;
 	acpi_status status;
 	union acpi_operand_object **elements;
@@ -235,6 +253,8 @@ acpi_ns_convert_to_buffer(union acpi_operand_object *original_object,
 		status =
 		    acpi_ex_convert_to_buffer(original_object, &new_object);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 		break;
@@ -246,6 +266,8 @@ acpi_ns_convert_to_buffer(union acpi_operand_object *original_object,
 		new_object = acpi_ut_create_buffer_object
 		    (original_object->string.length);
 		if (!new_object) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -269,6 +291,8 @@ acpi_ns_convert_to_buffer(union acpi_operand_object *original_object,
 		for (i = 0; i < count; i++) {
 			if ((!*elements) ||
 			    ((*elements)->common.type != ACPI_TYPE_INTEGER)) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_AML_OPERAND_TYPE);
 			}
 			elements++;
@@ -278,6 +302,8 @@ acpi_ns_convert_to_buffer(union acpi_operand_object *original_object,
 
 		new_object = acpi_ut_create_buffer_object(ACPI_MUL_4(count));
 		if (!new_object) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_NO_MEMORY);
 		}
 
@@ -295,10 +321,12 @@ acpi_ns_convert_to_buffer(union acpi_operand_object *original_object,
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_AML_OPERAND_TYPE);
 	}
 
 	*return_object = new_object;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -321,6 +349,7 @@ acpi_ns_convert_to_unicode(struct acpi_namespace_node * scope,
 			   union acpi_operand_object *original_object,
 			   union acpi_operand_object **return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *new_object;
 	char *ascii_string;
 	u16 *unicode_buffer;
@@ -328,6 +357,7 @@ acpi_ns_convert_to_unicode(struct acpi_namespace_node * scope,
 	u32 i;
 
 	if (!original_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -335,10 +365,13 @@ acpi_ns_convert_to_unicode(struct acpi_namespace_node * scope,
 
 	if (original_object->common.type == ACPI_TYPE_BUFFER) {
 		if (original_object->buffer.length < 2) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_OPERAND_VALUE);
 		}
 
 		*return_object = NULL;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -353,6 +386,7 @@ acpi_ns_convert_to_unicode(struct acpi_namespace_node * scope,
 
 	new_object = acpi_ut_create_buffer_object(unicode_length);
 	if (!new_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -365,6 +399,7 @@ acpi_ns_convert_to_unicode(struct acpi_namespace_node * scope,
 	}
 
 	*return_object = new_object;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -388,6 +423,7 @@ acpi_ns_convert_to_resource(struct acpi_namespace_node * scope,
 			    union acpi_operand_object *original_object,
 			    union acpi_operand_object **return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *new_object;
 	u8 *buffer;
 
@@ -407,6 +443,8 @@ acpi_ns_convert_to_resource(struct acpi_namespace_node * scope,
 			/* We can only repair an Integer==0 */
 
 			if (original_object->integer.value) {
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_AML_OPERAND_TYPE);
 			}
 			break;
@@ -418,6 +456,8 @@ acpi_ns_convert_to_resource(struct acpi_namespace_node * scope,
 				/* Additional checks can be added in the future */
 
 				*return_object = NULL;
+				printk("exit %s at %s:%d\n", __FUNCTION__,
+				       __FILE__, __LINE__);
 				return (AE_OK);
 			}
 			break;
@@ -425,6 +465,8 @@ acpi_ns_convert_to_resource(struct acpi_namespace_node * scope,
 		case ACPI_TYPE_STRING:
 		default:
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_AML_OPERAND_TYPE);
 		}
 	}
@@ -433,6 +475,7 @@ acpi_ns_convert_to_resource(struct acpi_namespace_node * scope,
 
 	new_object = acpi_ut_create_buffer_object(2);
 	if (!new_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -444,6 +487,7 @@ acpi_ns_convert_to_resource(struct acpi_namespace_node * scope,
 	buffer[1] = 0x00;
 
 	*return_object = new_object;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -467,6 +511,7 @@ acpi_ns_convert_to_reference(struct acpi_namespace_node * scope,
 			     union acpi_operand_object *original_object,
 			     union acpi_operand_object **return_object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *new_object = NULL;
 	acpi_status status;
 	struct acpi_namespace_node *node;
@@ -519,5 +564,6 @@ acpi_ns_convert_to_reference(struct acpi_namespace_node * scope,
 error_exit:
 	ACPI_FREE(name);
 	*return_object = new_object;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }

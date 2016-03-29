@@ -75,6 +75,7 @@ acpi_status
 acpi_ex_resolve_to_value(union acpi_operand_object **stack_ptr,
 			 struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE_PTR(ex_resolve_to_value, stack_ptr);
@@ -117,6 +118,7 @@ acpi_ex_resolve_to_value(union acpi_operand_object **stack_ptr,
 
 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "Resolved object %p\n", *stack_ptr));
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -137,6 +139,7 @@ static acpi_status
 acpi_ex_resolve_object_to_value(union acpi_operand_object **stack_ptr,
 				struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *stack_desc;
 	union acpi_operand_object *obj_desc = NULL;
@@ -313,6 +316,7 @@ acpi_ex_resolve_object_to_value(union acpi_operand_object **stack_ptr,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -337,6 +341,7 @@ acpi_ex_resolve_multiple(struct acpi_walk_state *walk_state,
 			 acpi_object_type * return_type,
 			 union acpi_operand_object **return_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc = ACPI_CAST_PTR(void, operand);
 	struct acpi_namespace_node *node =
 	    ACPI_CAST_PTR(struct acpi_namespace_node, operand);
@@ -556,4 +561,5 @@ exit:
 		*return_desc = obj_desc;
 	}
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

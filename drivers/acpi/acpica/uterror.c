@@ -200,6 +200,7 @@ acpi_ut_namespace_error(const char *module_name,
 			u32 line_number,
 			const char *internal_name, acpi_status lookup_status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u32 bad_name;
 	char *name = NULL;
@@ -239,6 +240,7 @@ acpi_ut_namespace_error(const char *module_name,
 
 	ACPI_MSG_SUFFIX;
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -265,6 +267,7 @@ acpi_ut_method_error(const char *module_name,
 		     struct acpi_namespace_node *prefix_node,
 		     const char *path, acpi_status method_status)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node = prefix_node;
 
@@ -284,6 +287,7 @@ acpi_ut_method_error(const char *module_name,
 
 	ACPI_MSG_SUFFIX;
 	ACPI_MSG_REDIRECT_END;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif				/* ACPI_NO_ERROR_MESSAGES */

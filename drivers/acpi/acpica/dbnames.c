@@ -135,11 +135,13 @@ static struct acpi_db_argument_info acpi_db_object_types[] = {
 
 void acpi_db_set_scope(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 
 	if (!name || name[0] == 0) {
 		acpi_os_printf("Current scope: %s\n", acpi_gbl_db_scope_buf);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -182,12 +184,14 @@ void acpi_db_set_scope(char *name)
 
 	acpi_gbl_db_scope_node = node;
 	acpi_os_printf("New scope: %s\n", acpi_gbl_db_scope_buf);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return;
 
 error_exit:
 
 	acpi_os_printf("Could not attach scope: %s, %s\n",
 		       name, acpi_format_exception(status));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -206,6 +210,7 @@ error_exit:
 
 void acpi_db_dump_namespace(char *start_arg, char *depth_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_handle subtree_entry = acpi_gbl_root_node;
 	u32 max_depth = ACPI_UINT32_MAX;
 
@@ -214,6 +219,8 @@ void acpi_db_dump_namespace(char *start_arg, char *depth_arg)
 	if (start_arg) {
 		subtree_entry = acpi_db_convert_to_node(start_arg);
 		if (!subtree_entry) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return;
 		}
 
@@ -235,6 +242,7 @@ void acpi_db_dump_namespace(char *start_arg, char *depth_arg)
 	acpi_ns_dump_objects(ACPI_TYPE_ANY, ACPI_DISPLAY_SUMMARY, max_depth,
 			     ACPI_OWNER_ID_MAX, subtree_entry);
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -252,6 +260,7 @@ void acpi_db_dump_namespace(char *start_arg, char *depth_arg)
 
 void acpi_db_dump_namespace_paths(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	acpi_db_set_output_destination(ACPI_DB_DUPLICATE_OUTPUT);
 	acpi_os_printf("ACPI Namespace (from root):\n");
@@ -264,6 +273,7 @@ void acpi_db_dump_namespace_paths(void)
 				  acpi_gbl_root_node);
 
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -281,6 +291,7 @@ void acpi_db_dump_namespace_paths(void)
 
 void acpi_db_dump_namespace_by_owner(char *owner_arg, char *depth_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_handle subtree_entry = acpi_gbl_root_node;
 	u32 max_depth = ACPI_UINT32_MAX;
 	acpi_owner_id owner_id;
@@ -302,6 +313,7 @@ void acpi_db_dump_namespace_by_owner(char *owner_arg, char *depth_arg)
 	acpi_ns_dump_objects(ACPI_TYPE_ANY, ACPI_DISPLAY_SUMMARY, max_depth,
 			     owner_id, subtree_entry);
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -322,6 +334,7 @@ acpi_db_walk_and_match_name(acpi_handle obj_handle,
 			    u32 nesting_level,
 			    void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	char *requested_name = (char *)context;
 	u32 i;
@@ -340,6 +353,8 @@ acpi_db_walk_and_match_name(acpi_handle obj_handle,
 
 			/* No match, just exit */
 
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 	}
@@ -362,6 +377,7 @@ acpi_db_walk_and_match_name(acpi_handle obj_handle,
 		ACPI_FREE(buffer.pointer);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -380,11 +396,13 @@ acpi_db_walk_and_match_name(acpi_handle obj_handle,
 
 acpi_status acpi_db_find_name_in_namespace(char *name_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	char acpi_name[5] = "____";
 	char *acpi_name_ptr = acpi_name;
 
 	if (strlen(name_arg) > ACPI_NAME_SIZE) {
 		acpi_os_printf("Name must be no longer than 4 characters\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -404,6 +422,7 @@ acpi_status acpi_db_find_name_in_namespace(char *name_arg)
 				  NULL, acpi_name, NULL);
 
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -425,6 +444,7 @@ acpi_db_walk_for_predefined_names(acpi_handle obj_handle,
 				  u32 nesting_level,
 				  void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    (struct acpi_namespace_node *)obj_handle;
 	u32 *count = (u32 *)context;
@@ -435,11 +455,13 @@ acpi_db_walk_for_predefined_names(acpi_handle obj_handle,
 
 	predefined = acpi_ut_match_predefined_method(node->name.ascii);
 	if (!predefined) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	pathname = acpi_ns_get_normalized_pathname(node, TRUE);
 	if (!pathname) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -471,6 +493,7 @@ acpi_db_walk_for_predefined_names(acpi_handle obj_handle,
 
 	ACPI_FREE(pathname);
 	(*count)++;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -488,6 +511,7 @@ acpi_db_walk_for_predefined_names(acpi_handle obj_handle,
 
 void acpi_db_check_predefined_names(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 count = 0;
 
 	/* Search all nodes in namespace */
@@ -498,6 +522,7 @@ void acpi_db_check_predefined_names(void)
 				  (void *)&count, NULL);
 
 	acpi_os_printf("Found %u predefined names in the namespace\n", count);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -517,6 +542,7 @@ acpi_db_walk_for_object_counts(acpi_handle obj_handle,
 			       u32 nesting_level,
 			       void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_object_info *info = (struct acpi_object_info *)context;
 	struct acpi_namespace_node *node =
 	    (struct acpi_namespace_node *)obj_handle;
@@ -528,6 +554,7 @@ acpi_db_walk_for_object_counts(acpi_handle obj_handle,
 		info->types[node->type]++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -548,6 +575,7 @@ acpi_db_walk_for_specific_objects(acpi_handle obj_handle,
 				  u32 nesting_level,
 				  void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_info *info = (struct acpi_walk_info *)context;
 	struct acpi_buffer buffer;
 	acpi_status status;
@@ -561,6 +589,7 @@ acpi_db_walk_for_specific_objects(acpi_handle obj_handle,
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could Not get pathname for object %p\n",
 			       obj_handle);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -570,6 +599,7 @@ acpi_db_walk_for_specific_objects(acpi_handle obj_handle,
 	/* Dump short info about the object */
 
 	(void)acpi_ns_dump_one_object(obj_handle, nesting_level, info, NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -588,6 +618,7 @@ acpi_db_walk_for_specific_objects(acpi_handle obj_handle,
 
 acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_walk_info info;
 	acpi_object_type type;
 	struct acpi_object_info *object_info;
@@ -620,6 +651,7 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
 			       total_objects);
 
 		ACPI_FREE(object_info);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -628,6 +660,7 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
 	type = acpi_db_match_argument(obj_type_arg, acpi_db_object_types);
 	if (type == ACPI_TYPE_NOT_FOUND) {
 		acpi_os_printf("Invalid or unsupported argument\n");
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -654,6 +687,7 @@ acpi_status acpi_db_display_objects(char *obj_type_arg, char *display_count_arg)
 	     info.count, acpi_ut_get_type_name(type));
 
 	acpi_db_set_output_destination(ACPI_DB_CONSOLE_OUTPUT);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -673,6 +707,7 @@ static acpi_status
 acpi_db_integrity_walk(acpi_handle obj_handle,
 		       u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_integrity_info *info =
 	    (struct acpi_integrity_info *)context;
 	struct acpi_namespace_node *node =
@@ -692,6 +727,8 @@ acpi_db_integrity_walk(acpi_handle obj_handle,
 			     acpi_ut_get_descriptor_name(node),
 			     ACPI_GET_DESCRIPTOR_TYPE(node),
 			     ACPI_DESC_TYPE_NAMED);
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (AE_OK);
 		}
 
@@ -706,11 +743,13 @@ acpi_db_integrity_walk(acpi_handle obj_handle,
 	if (node->type > ACPI_TYPE_LOCAL_MAX) {
 		acpi_os_printf("Invalid Object Type for Node %p, Type = %X\n",
 			       node, node->type);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	if (!acpi_ut_valid_acpi_name(node->name.ascii)) {
 		acpi_os_printf("Invalid AcpiName for Node %p\n", node);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -724,6 +763,7 @@ acpi_db_integrity_walk(acpi_handle obj_handle,
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -741,6 +781,7 @@ acpi_db_integrity_walk(acpi_handle obj_handle,
 
 void acpi_db_check_integrity(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_integrity_info info = { 0, 0 };
 
 	/* Search all nodes in namespace */
@@ -751,6 +792,7 @@ void acpi_db_check_integrity(void)
 
 	acpi_os_printf("Verified %u namespace nodes with %u Objects\n",
 		       info.nodes, info.objects);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -773,6 +815,7 @@ acpi_db_walk_for_references(acpi_handle obj_handle,
 			    u32 nesting_level,
 			    void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc =
 	    (union acpi_operand_object *)context;
 	struct acpi_namespace_node *node =
@@ -792,6 +835,7 @@ acpi_db_walk_for_references(acpi_handle obj_handle,
 			       node, acpi_ut_get_node_name(node));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -809,6 +853,7 @@ acpi_db_walk_for_references(acpi_handle obj_handle,
 
 void acpi_db_find_references(char *object_arg)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_size address;
 
@@ -822,6 +867,7 @@ void acpi_db_find_references(char *object_arg)
 	(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
 				  ACPI_UINT32_MAX, acpi_db_walk_for_references,
 				  NULL, (void *)obj_desc, NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -841,6 +887,7 @@ static acpi_status
 acpi_db_bus_walk(acpi_handle obj_handle,
 		 u32 nesting_level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node =
 	    (struct acpi_namespace_node *)obj_handle;
 	acpi_status status;
@@ -851,6 +898,7 @@ acpi_db_bus_walk(acpi_handle obj_handle,
 
 	if ((node->type != ACPI_TYPE_DEVICE) &&
 	    (node->type != ACPI_TYPE_PROCESSOR)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -859,6 +907,7 @@ acpi_db_bus_walk(acpi_handle obj_handle,
 	status = acpi_get_handle(node, METHOD_NAME__PRT,
 				 ACPI_CAST_PTR(acpi_handle, &temp_node));
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -869,11 +918,13 @@ acpi_db_bus_walk(acpi_handle obj_handle,
 	if (ACPI_FAILURE(status)) {
 		acpi_os_printf("Could Not get pathname for object %p\n",
 			       obj_handle);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	status = acpi_get_object_info(obj_handle, &info);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
@@ -922,6 +973,7 @@ acpi_db_bus_walk(acpi_handle obj_handle,
 	}
 
 	ACPI_FREE(info);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -939,9 +991,11 @@ acpi_db_bus_walk(acpi_handle obj_handle,
 
 void acpi_db_get_bus_info(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	/* Search all nodes in namespace */
 
 	(void)acpi_walk_namespace(ACPI_TYPE_ANY, ACPI_ROOT_OBJECT,
 				  ACPI_UINT32_MAX, acpi_db_bus_walk, NULL, NULL,
 				  NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

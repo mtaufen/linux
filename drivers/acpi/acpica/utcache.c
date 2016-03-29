@@ -67,11 +67,13 @@ acpi_os_create_cache(char *cache_name,
 		     u16 object_size,
 		     u16 max_depth, struct acpi_memory_list **return_cache)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_memory_list *cache;
 
 	ACPI_FUNCTION_ENTRY();
 
 	if (!cache_name || !return_cache || (object_size < 16)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -79,6 +81,7 @@ acpi_os_create_cache(char *cache_name,
 
 	cache = acpi_os_allocate(sizeof(struct acpi_memory_list));
 	if (!cache) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NO_MEMORY);
 	}
 
@@ -90,6 +93,7 @@ acpi_os_create_cache(char *cache_name,
 	cache->max_depth = max_depth;
 
 	*return_cache = cache;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -107,17 +111,20 @@ acpi_os_create_cache(char *cache_name,
 
 acpi_status acpi_os_purge_cache(struct acpi_memory_list * cache)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	void *next;
 	acpi_status status;
 
 	ACPI_FUNCTION_ENTRY();
 
 	if (!cache) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_CACHES);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -135,6 +142,7 @@ acpi_status acpi_os_purge_cache(struct acpi_memory_list * cache)
 	}
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_CACHES);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -153,6 +161,7 @@ acpi_status acpi_os_purge_cache(struct acpi_memory_list * cache)
 
 acpi_status acpi_os_delete_cache(struct acpi_memory_list * cache)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_ENTRY();
@@ -161,12 +170,14 @@ acpi_status acpi_os_delete_cache(struct acpi_memory_list * cache)
 
 	status = acpi_os_purge_cache(cache);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
 	/* Now we can delete the cache object */
 
 	acpi_os_free(cache);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -187,11 +198,13 @@ acpi_status acpi_os_delete_cache(struct acpi_memory_list * cache)
 acpi_status
 acpi_os_release_object(struct acpi_memory_list * cache, void *object)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 
 	ACPI_FUNCTION_ENTRY();
 
 	if (!cache || !object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -207,6 +220,8 @@ acpi_os_release_object(struct acpi_memory_list * cache, void *object)
 	else {
 		status = acpi_ut_acquire_mutex(ACPI_MTX_CACHES);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -224,6 +239,7 @@ acpi_os_release_object(struct acpi_memory_list * cache, void *object)
 		(void)acpi_ut_release_mutex(ACPI_MTX_CACHES);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -242,6 +258,7 @@ acpi_os_release_object(struct acpi_memory_list * cache, void *object)
 
 void *acpi_os_acquire_object(struct acpi_memory_list *cache)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	void *object;
 
@@ -309,5 +326,6 @@ void *acpi_os_acquire_object(struct acpi_memory_list *cache)
 	}
 
 	return_PTR(object);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 #endif				/* ACPI_USE_LOCAL_CACHE */

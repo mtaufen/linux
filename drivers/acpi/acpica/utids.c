@@ -69,6 +69,7 @@ acpi_status
 acpi_ut_execute_HID(struct acpi_namespace_node *device_node,
 		    struct acpi_pnp_device_id **return_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	struct acpi_pnp_device_id *hid;
 	u32 length;
@@ -123,6 +124,7 @@ cleanup:
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -147,6 +149,7 @@ acpi_status
 acpi_ut_execute_UID(struct acpi_namespace_node *device_node,
 		    struct acpi_pnp_device_id **return_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	struct acpi_pnp_device_id *uid;
 	u32 length;
@@ -201,6 +204,7 @@ cleanup:
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -230,6 +234,7 @@ acpi_status
 acpi_ut_execute_CID(struct acpi_namespace_node *device_node,
 		    struct acpi_pnp_device_id_list **return_cid_list)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object **cid_objects;
 	union acpi_operand_object *obj_desc;
 	struct acpi_pnp_device_id_list *cid_list;
@@ -347,6 +352,7 @@ cleanup:
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -372,6 +378,7 @@ acpi_status
 acpi_ut_execute_CLS(struct acpi_namespace_node *device_node,
 		    struct acpi_pnp_device_id **return_id)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	union acpi_operand_object **cls_objects;
 	u32 count;
@@ -436,4 +443,5 @@ cleanup:
 
 	acpi_ut_remove_reference(obj_desc);
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

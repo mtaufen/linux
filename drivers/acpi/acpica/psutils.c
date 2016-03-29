@@ -62,14 +62,17 @@ ACPI_MODULE_NAME("psutils")
  ******************************************************************************/
 union acpi_parse_object *acpi_ps_create_scope_op(u8 *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *scope_op;
 
 	scope_op = acpi_ps_alloc_op(AML_SCOPE_OP, aml);
 	if (!scope_op) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
 	scope_op->named.name = ACPI_ROOT_NAME;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (scope_op);
 }
 
@@ -88,6 +91,7 @@ union acpi_parse_object *acpi_ps_create_scope_op(u8 *aml)
 
 void acpi_ps_init_op(union acpi_parse_object *op, u16 opcode)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	op->common.descriptor_type = ACPI_DESC_TYPE_PARSER;
@@ -96,6 +100,7 @@ void acpi_ps_init_op(union acpi_parse_object *op, u16 opcode)
 	ACPI_DISASM_ONLY_MEMBERS(strncpy(op->common.aml_op_name,
 					 (acpi_ps_get_opcode_info(opcode))->
 					 name, sizeof(op->common.aml_op_name)));
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -115,6 +120,7 @@ void acpi_ps_init_op(union acpi_parse_object *op, u16 opcode)
 
 union acpi_parse_object *acpi_ps_alloc_op(u16 opcode, u8 *aml)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_parse_object *op;
 	const struct acpi_opcode_info *op_info;
 	u8 flags = ACPI_PARSEOP_GENERIC;
@@ -154,6 +160,7 @@ union acpi_parse_object *acpi_ps_alloc_op(u16 opcode, u8 *aml)
 		op->common.flags = flags;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (op);
 }
 
@@ -172,6 +179,7 @@ union acpi_parse_object *acpi_ps_alloc_op(u16 opcode, u8 *aml)
 
 void acpi_ps_free_op(union acpi_parse_object *op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_NAME(ps_free_op);
 
 	if (op->common.aml_opcode == AML_INT_RETURN_VALUE_OP) {
@@ -184,6 +192,7 @@ void acpi_ps_free_op(union acpi_parse_object *op)
 	} else {
 		(void)acpi_os_release_object(acpi_gbl_ps_node_ext_cache, op);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -199,6 +208,8 @@ void acpi_ps_free_op(union acpi_parse_object *op)
  */
 u8 acpi_ps_is_leading_char(u32 c)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((u8) (c == '_' || (c >= 'A' && c <= 'Z')));
 }
 
@@ -207,15 +218,18 @@ u8 acpi_ps_is_leading_char(u32 c)
  */
 u32 acpi_ps_get_name(union acpi_parse_object * op)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* The "generic" object has no name associated with it */
 
 	if (op->common.flags & ACPI_PARSEOP_GENERIC) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (0);
 	}
 
 	/* Only the "Extended" parse objects have a name */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (op->named.name);
 }
 
@@ -224,12 +238,15 @@ u32 acpi_ps_get_name(union acpi_parse_object * op)
  */
 void acpi_ps_set_name(union acpi_parse_object *op, u32 name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* The "generic" object has no name associated with it */
 
 	if (op->common.flags & ACPI_PARSEOP_GENERIC) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	op->named.name = name;
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

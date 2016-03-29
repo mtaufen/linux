@@ -68,12 +68,14 @@ acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size);
 
 acpi_status acpi_tb_initialize_facs(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_facs *facs;
 
 	/* If Hardware Reduced flag is set, there is no FACS */
 
 	if (acpi_gbl_reduced_hardware) {
 		acpi_gbl_FACS = NULL;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	} else if (acpi_gbl_FADT.Xfacs &&
 		   (!acpi_gbl_FADT.facs
@@ -93,6 +95,7 @@ acpi_status acpi_tb_initialize_facs(void)
 
 	/* If there is no FACS, just continue. There was already an error msg */
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 #endif				/* !ACPI_REDUCED_HARDWARE */
@@ -113,6 +116,7 @@ acpi_status acpi_tb_initialize_facs(void)
 
 void acpi_tb_check_dsdt_header(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Compare original length and checksum to current values */
 
@@ -135,6 +139,7 @@ void acpi_tb_check_dsdt_header(void)
 		acpi_gbl_original_dsdt_header.checksum =
 		    acpi_gbl_DSDT->checksum;
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -153,6 +158,7 @@ void acpi_tb_check_dsdt_header(void)
 
 struct acpi_table_header *acpi_tb_copy_dsdt(u32 table_index)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_header *new_table;
 	struct acpi_table_desc *table_desc;
 
@@ -162,6 +168,7 @@ struct acpi_table_header *acpi_tb_copy_dsdt(u32 table_index)
 	if (!new_table) {
 		ACPI_ERROR((AE_INFO, "Could not copy DSDT of length 0x%X",
 			    table_desc->length));
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (NULL);
 	}
 
@@ -178,6 +185,7 @@ struct acpi_table_header *acpi_tb_copy_dsdt(u32 table_index)
 		   "Forced DSDT copy: length 0x%05X copied locally, original unmapped",
 		   new_table->length));
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (new_table);
 }
 
@@ -201,6 +209,7 @@ struct acpi_table_header *acpi_tb_copy_dsdt(u32 table_index)
 static acpi_physical_address
 acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u64 address64;
 
 	/*
@@ -212,6 +221,7 @@ acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size)
 		 * 32-bit platform, RSDT: Return 32-bit table entry
 		 * 64-bit platform, RSDT: Expand 32-bit to 64-bit and return
 		 */
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((acpi_physical_address)
 			(*ACPI_CAST_PTR(u32, table_entry)));
 	} else {
@@ -233,6 +243,7 @@ acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size)
 					   ACPI_FORMAT_UINT64(address64)));
 		}
 #endif
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((acpi_physical_address) (address64));
 	}
 }
@@ -256,6 +267,7 @@ acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size)
 
 acpi_status __init acpi_tb_parse_root_table(acpi_physical_address rsdp_address)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_table_rsdp *rsdp;
 	u32 table_entry_size;
 	u32 i;
@@ -361,15 +373,22 @@ acpi_status __init acpi_tb_parse_root_table(acpi_physical_address rsdp_address)
 			goto next_table;
 		}
 
+		printk("table_index before acpi_tb_install_standard_table(): 0x%x\n", table_index);
 		status = acpi_tb_install_standard_table(address,
 							ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL,
 							FALSE, TRUE,
 							&table_index);
 
+		printk("status of acpi_tb_install_standard_table(): 0x%x\n", status);
+		printk("table_index after acpi_tb_install_standard_table(): 0x%x\n", table_index);
+
+
+
 		if (ACPI_SUCCESS(status) &&
 		    ACPI_COMPARE_NAME(&acpi_gbl_root_table_list.
 				      tables[table_index].signature,
 				      ACPI_SIG_FADT)) {
+			printk("The fadt install was successful!\n");
 			acpi_gbl_fadt_index = table_index;
 			acpi_tb_parse_fadt();
 		}
@@ -381,6 +400,7 @@ next_table:
 
 	acpi_os_unmap_memory(table, length);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -397,15 +417,19 @@ next_table:
 
 u8 acpi_is_valid_signature(char *signature)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 i;
 
 	/* Validate each character in the signature */
 
 	for (i = 0; i < ACPI_NAME_SIZE; i++) {
 		if (!acpi_ut_valid_acpi_char(signature[i], i)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (FALSE);
 		}
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }

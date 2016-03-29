@@ -83,6 +83,7 @@ acpi_ex_add_table(u32 table_index,
 		  struct acpi_namespace_node *parent_node,
 		  union acpi_operand_object **ddb_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *obj_desc;
 	acpi_status status;
 	acpi_owner_id owner_id;
@@ -132,6 +133,7 @@ acpi_ex_add_table(u32 table_index,
 	}
 
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -151,6 +153,7 @@ acpi_status
 acpi_ex_load_table_op(struct acpi_walk_state *walk_state,
 		      union acpi_operand_object **return_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	union acpi_operand_object **operand = &walk_state->operands[0];
 	struct acpi_namespace_node *parent_node;
@@ -265,6 +268,7 @@ acpi_ex_load_table_op(struct acpi_walk_state *walk_state,
 
 	*return_desc = ddb_handle;
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -285,6 +289,7 @@ acpi_ex_load_table_op(struct acpi_walk_state *walk_state,
 static acpi_status
 acpi_ex_region_read(union acpi_operand_object *obj_desc, u32 length, u8 *buffer)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	u64 value;
 	u32 region_offset = 0;
@@ -297,6 +302,8 @@ acpi_ex_region_read(union acpi_operand_object *obj_desc, u32 length, u8 *buffer)
 		    acpi_ev_address_space_dispatch(obj_desc, NULL, ACPI_READ,
 						   region_offset, 8, &value);
 		if (ACPI_FAILURE(status)) {
+			printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__,
+			       __LINE__);
 			return (status);
 		}
 
@@ -305,6 +312,7 @@ acpi_ex_region_read(union acpi_operand_object *obj_desc, u32 length, u8 *buffer)
 		region_offset++;
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (AE_OK);
 }
 
@@ -334,6 +342,7 @@ acpi_ex_load_op(union acpi_operand_object *obj_desc,
 		union acpi_operand_object *target,
 		struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	union acpi_operand_object *ddb_handle;
 	struct acpi_table_header *table_header;
 	struct acpi_table_header *table;
@@ -539,6 +548,7 @@ acpi_ex_load_op(union acpi_operand_object *obj_desc,
 	}
 
 	return_ACPI_STATUS(status);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -555,6 +565,7 @@ acpi_ex_load_op(union acpi_operand_object *obj_desc,
 
 acpi_status acpi_ex_unload_table(union acpi_operand_object *ddb_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status = AE_OK;
 	union acpi_operand_object *table_desc = ddb_handle;
 	u32 table_index;
@@ -623,4 +634,5 @@ acpi_status acpi_ex_unload_table(union acpi_operand_object *ddb_handle)
 	 */
 	ddb_handle->common.flags &= ~AOPOBJ_DATA_VALID;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

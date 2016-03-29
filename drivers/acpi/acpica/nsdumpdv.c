@@ -69,6 +69,7 @@ static acpi_status
 acpi_ns_dump_one_device(acpi_handle obj_handle,
 			u32 level, void *context, void **return_value)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_buffer buffer;
 	struct acpi_device_info *info;
 	acpi_status status;
@@ -95,6 +96,7 @@ acpi_ns_dump_one_device(acpi_handle obj_handle,
 		ACPI_FREE(info);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -112,6 +114,7 @@ acpi_ns_dump_one_device(acpi_handle obj_handle,
 
 void acpi_ns_dump_root_devices(void)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_handle sys_bus_handle;
 	acpi_status status;
 
@@ -120,11 +123,13 @@ void acpi_ns_dump_root_devices(void)
 	/* Only dump the table if tracing is enabled */
 
 	if (!(ACPI_LV_TABLES & acpi_dbg_level)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
 	status = acpi_get_handle(NULL, METHOD_NAME__SB_, &sys_bus_handle);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return;
 	}
 
@@ -135,6 +140,7 @@ void acpi_ns_dump_root_devices(void)
 					ACPI_UINT32_MAX, ACPI_NS_WALK_NO_UNLOCK,
 					acpi_ns_dump_one_device, NULL, NULL,
 					NULL);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 #endif

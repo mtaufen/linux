@@ -73,10 +73,12 @@ static const char *acpi_ex_get_trace_event_name(acpi_trace_event_type type);
 
 static u8 acpi_ex_interpreter_trace_enabled(char *name)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	/* Check if tracing is enabled */
 
 	if (!(acpi_gbl_trace_flags & ACPI_TRACE_ENABLED)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
@@ -91,20 +93,24 @@ static u8 acpi_ex_interpreter_trace_enabled(char *name)
 	 *    not be cleared by the trace stopper during the first match
 	 */
 	if (acpi_gbl_trace_method_object) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (TRUE);
 	}
 
 	if (name &&
 	    (acpi_gbl_trace_method_name &&
 	     strcmp(acpi_gbl_trace_method_name, name))) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
 	if ((acpi_gbl_trace_flags & ACPI_TRACE_ONESHOT) &&
 	    !acpi_gbl_trace_method_name) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (FALSE);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (TRUE);
 }
 
@@ -124,22 +130,27 @@ static u8 acpi_ex_interpreter_trace_enabled(char *name)
 
 static const char *acpi_ex_get_trace_event_name(acpi_trace_event_type type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	switch (type) {
 	case ACPI_TRACE_AML_METHOD:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return "Method";
 
 	case ACPI_TRACE_AML_OPCODE:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return "Opcode";
 
 	case ACPI_TRACE_AML_REGION:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return "Region";
 
 	default:
 
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return "";
 	}
 }
@@ -165,6 +176,7 @@ void
 acpi_ex_trace_point(acpi_trace_event_type type,
 		    u8 begin, u8 *aml, char *pathname)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_NAME(ex_trace_point);
 
@@ -179,6 +191,7 @@ acpi_ex_trace_point(acpi_trace_event_type type,
 				  acpi_ex_get_trace_event_name(type),
 				  begin ? "Begin" : "End", aml));
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -201,6 +214,7 @@ acpi_ex_start_trace_method(struct acpi_namespace_node *method_node,
 			   union acpi_operand_object *obj_desc,
 			   struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	char *pathname = NULL;
 	u8 enabled = FALSE;
@@ -245,6 +259,7 @@ exit:
 	if (pathname) {
 		ACPI_FREE(pathname);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -267,6 +282,7 @@ acpi_ex_stop_trace_method(struct acpi_namespace_node *method_node,
 			  union acpi_operand_object *obj_desc,
 			  struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	char *pathname = NULL;
 	u8 enabled;
@@ -318,6 +334,7 @@ exit_path:
 	if (pathname) {
 		ACPI_FREE(pathname);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -338,6 +355,7 @@ void
 acpi_ex_start_trace_opcode(union acpi_parse_object *op,
 			   struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_NAME(ex_start_trace_opcode);
 
@@ -346,6 +364,7 @@ acpi_ex_start_trace_opcode(union acpi_parse_object *op,
 		ACPI_TRACE_POINT(ACPI_TRACE_AML_OPCODE, TRUE,
 				 op->common.aml, op->common.aml_op_name);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -366,6 +385,7 @@ void
 acpi_ex_stop_trace_opcode(union acpi_parse_object *op,
 			  struct acpi_walk_state *walk_state)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 
 	ACPI_FUNCTION_NAME(ex_stop_trace_opcode);
 
@@ -374,4 +394,5 @@ acpi_ex_stop_trace_opcode(union acpi_parse_object *op,
 		ACPI_TRACE_POINT(ACPI_TRACE_AML_OPCODE, FALSE,
 				 op->common.aml, op->common.aml_op_name);
 	}
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

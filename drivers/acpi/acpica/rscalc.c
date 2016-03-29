@@ -73,6 +73,7 @@ acpi_rs_stream_option_length(u32 resource_length, u32 minimum_total_length);
 
 static u8 acpi_rs_count_set_bits(u16 bit_field)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u8 bits_set;
 
 	ACPI_FUNCTION_ENTRY();
@@ -84,6 +85,7 @@ static u8 acpi_rs_count_set_bits(u16 bit_field)
 		bit_field &= (u16) (bit_field - 1);
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (bits_set);
 }
 
@@ -104,6 +106,7 @@ static u8 acpi_rs_count_set_bits(u16 bit_field)
 static acpi_rs_length
 acpi_rs_struct_option_length(struct acpi_resource_source *resource_source)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	ACPI_FUNCTION_ENTRY();
 
 	/*
@@ -112,9 +115,11 @@ acpi_rs_struct_option_length(struct acpi_resource_source *resource_source)
 	 * resource_source_index (1).
 	 */
 	if (resource_source->string_ptr) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return ((acpi_rs_length) (resource_source->string_length + 1));
 	}
 
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (0);
 }
 
@@ -138,6 +143,7 @@ static u32
 acpi_rs_stream_option_length(u32 resource_length,
 			     u32 minimum_aml_resource_length)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 string_length = 0;
 
 	ACPI_FUNCTION_ENTRY();
@@ -167,6 +173,7 @@ acpi_rs_stream_option_length(u32 resource_length,
 	 * Round the length up to a multiple of the native word in order to
 	 * guarantee that the entire resource descriptor is native word aligned
 	 */
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return ((u32) ACPI_ROUND_UP_TO_NATIVE_WORD(string_length));
 }
 
@@ -190,6 +197,7 @@ acpi_status
 acpi_rs_get_aml_length(struct acpi_resource *resource,
 		       acpi_size resource_list_size, acpi_size * size_needed)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_size aml_size_needed = 0;
 	struct acpi_resource *resource_end;
 	acpi_rs_length total_size;
@@ -378,6 +386,7 @@ acpi_rs_get_aml_length(struct acpi_resource *resource,
 	/* Did not find an end_tag resource descriptor */
 
 	return_ACPI_STATUS(AE_AML_NO_RESOURCE_END_TAG);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -612,6 +621,7 @@ acpi_status
 acpi_rs_get_pci_routing_table_length(union acpi_operand_object *package_object,
 				     acpi_size * buffer_size_needed)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 number_of_elements;
 	acpi_size temp_size_needed = 0;
 	union acpi_operand_object **top_object_list;
@@ -718,4 +728,5 @@ acpi_rs_get_pci_routing_table_length(union acpi_operand_object *package_object,
 	*buffer_size_needed =
 	    temp_size_needed + sizeof(struct acpi_pci_routing_table);
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }

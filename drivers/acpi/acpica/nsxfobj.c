@@ -65,12 +65,14 @@ ACPI_MODULE_NAME("nsxfobj")
  ******************************************************************************/
 acpi_status acpi_get_type(acpi_handle handle, acpi_object_type * ret_type)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	acpi_status status;
 
 	/* Parameter Validation */
 
 	if (!ret_type) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
@@ -78,11 +80,13 @@ acpi_status acpi_get_type(acpi_handle handle, acpi_object_type * ret_type)
 
 	if (handle == ACPI_ROOT_OBJECT) {
 		*ret_type = ACPI_TYPE_ANY;
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_OK);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -91,12 +95,14 @@ acpi_status acpi_get_type(acpi_handle handle, acpi_object_type * ret_type)
 	node = acpi_ns_validate_handle(handle);
 	if (!node) {
 		(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	*ret_type = node->type;
 
 	status = acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -117,22 +123,26 @@ ACPI_EXPORT_SYMBOL(acpi_get_type)
  ******************************************************************************/
 acpi_status acpi_get_parent(acpi_handle handle, acpi_handle * ret_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	struct acpi_namespace_node *node;
 	struct acpi_namespace_node *parent_node;
 	acpi_status status;
 
 	if (!ret_handle) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	/* Special case for the predefined Root Node (no parent) */
 
 	if (handle == ACPI_ROOT_OBJECT) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_NULL_ENTRY);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -158,6 +168,7 @@ acpi_status acpi_get_parent(acpi_handle handle, acpi_handle * ret_handle)
 unlock_and_exit:
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 
@@ -185,6 +196,7 @@ acpi_get_next_object(acpi_object_type type,
 		     acpi_handle parent,
 		     acpi_handle child, acpi_handle * ret_handle)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	acpi_status status;
 	struct acpi_namespace_node *node;
 	struct acpi_namespace_node *parent_node = NULL;
@@ -193,11 +205,13 @@ acpi_get_next_object(acpi_object_type type,
 	/* Parameter validation */
 
 	if (type > ACPI_TYPE_EXTERNAL_MAX) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (AE_BAD_PARAMETER);
 	}
 
 	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
 	if (ACPI_FAILURE(status)) {
+		printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 		return (status);
 	}
 
@@ -238,6 +252,7 @@ acpi_get_next_object(acpi_object_type type,
 unlock_and_exit:
 
 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	return (status);
 }
 

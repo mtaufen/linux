@@ -64,6 +64,7 @@ acpi_status
 acpi_ex_store_buffer_to_buffer(union acpi_operand_object *source_desc,
 			       union acpi_operand_object *target_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length;
 	u8 *buffer;
 
@@ -142,6 +143,7 @@ acpi_ex_store_buffer_to_buffer(union acpi_operand_object *source_desc,
 	target_desc->buffer.flags = source_desc->buffer.flags;
 	target_desc->common.flags &= ~AOPOBJ_STATIC_POINTER;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
 
 /*******************************************************************************
@@ -161,6 +163,7 @@ acpi_status
 acpi_ex_store_string_to_string(union acpi_operand_object *source_desc,
 			       union acpi_operand_object *target_desc)
 {
+	printk("enter %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 	u32 length;
 	u8 *buffer;
 
@@ -218,4 +221,5 @@ acpi_ex_store_string_to_string(union acpi_operand_object *source_desc,
 
 	target_desc->string.length = length;
 	return_ACPI_STATUS(AE_OK);
+	printk("exit %s at %s:%d\n", __FUNCTION__, __FILE__, __LINE__);
 }
